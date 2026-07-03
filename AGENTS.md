@@ -37,24 +37,25 @@ DEV_VAULT 已通过 symlink 把本主题挂进 `../DEV_VAULT/.obsidian/themes/Op
 | 行号 | 区段 |
 |------|------|
 | 16   | OPENCODE DESIGN TOKENS（`:root` 亮色 ~20，`.theme-dark` ~201：调色板 / 语义别名 / `--oc-*` 短 token / callout / 圆角 / 字体栈） |
-| 377  | 1. BASE（`body`、prose 节奏） |
-| 418  | 2. SIDEBAR & LOGO（左栏、vault 双色 wordmark、ribbon、侧栏图标对齐、设置图标） |
-| 786  | 3. TABS（沉浸式单栏 tab，浮动 pill 几何，pin 标记） |
-| 985  | 4. HEADINGS & TYPOGRAPHY |
-| 1057 | 5. TABLE（关掉原生斑马纹、行 hover、紧凑表格） |
-| 1137 | 6. CALLOUT（Starlight aside 风：中性面 + 语义色轨/标题/图标） |
-| 1349 | 7. CODE BLOCKS（语言标签栏、复制按钮——刻意禁用） |
-| 1457 | 8. CHECKBOXES & LISTS（普通勾选变量驱动，其余任务态自定义） |
-| 1637 | 9. SETTINGS & MODALS（toggle pill、buttons、select/dropdown） |
-| 1905 | 10. TAGS |
-| 1951 | 11. RIGHT SIDEBAR / OUTLINE / BACKLINKS |
-| 2130 | 12. SCROLLBARS |
-| 2157 | 13. PROMPT / COMMAND PALETTE |
-| 2211 | 14. TOOLTIPS / MENUS / DROPDOWNS（含 notice/toast 终端气泡） |
-| 2300 | 15. STATUS BAR & TITLE BAR |
-| 2394 | 16. SYNTAX HIGHLIGHTING（基础回退） |
-| 2477 | 17. EDITOR / SOURCE MODE PARITY（源码模式：标题、格式标记、链接、inline code、选区） |
-| 2746 | 18. MOBILE / NARROW LAYOUT（`max-width: 600px`） |
+| 377  | 1. BASE（`body`、prose 节奏、frontmatter properties） |
+| 439  | 2. SIDEBAR & LOGO（左栏、vault 双色 wordmark、ribbon、侧栏图标对齐、设置图标、root split divider） |
+| 819  | 3. TABS（沉浸式单栏 tab，浮动 pill 几何，pin 标记） |
+| 1018 | 4. HEADINGS & TYPOGRAPHY |
+| 1090 | 5. TABLE（关掉原生斑马纹、行 hover、紧凑表格） |
+| 1185 | 6. CALLOUT（Starlight aside 风：中性面 + 语义色轨/标题/图标） |
+| 1399 | 7. CODE BLOCKS（语言标签栏、复制按钮——刻意禁用） |
+| 1507 | 8. CHECKBOXES & LISTS（普通勾选变量驱动，其余任务态自定义） |
+| 1687 | 9. SETTINGS & MODALS（toggle pill、buttons、select/dropdown） |
+| 1955 | 10. TAGS |
+| 2005 | 11. RIGHT SIDEBAR / OUTLINE / BACKLINKS |
+| 2211 | 12. SCROLLBARS |
+| 2238 | 13. PROMPT / COMMAND PALETTE |
+| 2292 | 14. TOOLTIPS / MENUS / DROPDOWNS（含 notice/toast 终端气泡） |
+| 2381 | 15. STATUS BAR & TITLE BAR |
+| 2475 | 16. SYNTAX HIGHLIGHTING（基础回退） |
+| 2569 | 17. EDITOR / SOURCE MODE PARITY（源码模式：标题、格式标记、链接、inline code、选区） |
+| 2838 | 18. MOBILE / NARROW LAYOUT（`max-width: 600px`） |
+| 2893 | 19. REDUCED MOTION（`prefers-reduced-motion` 全局过渡/动画压到 0.01ms） |
 
 ## 视觉品味（CSS 通用，迁移自 taste-skill）
 
