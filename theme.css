@@ -88,7 +88,7 @@
   --border-hairline: rgba(255, 255, 255, 0.06);
   --border-split: rgba(255, 255, 255, 0.035);
   --chrome-tab-border: rgba(255, 255, 255, 0.085);
-  --chrome-split-border: rgba(255, 255, 255, 0.035);
+  --chrome-split-border: rgba(255, 255, 255, 0.1);
   --bg-active: rgba(255, 255, 255, 0.09);
   --bg-hover: rgba(255, 255, 255, 0.04);
   --bg-nav-hover: rgba(255, 255, 255, 0.06);
@@ -269,7 +269,7 @@
   --border-hairline: rgba(0, 0, 0, 0.06);
   --border-split: rgba(0, 0, 0, 0.035);
   --chrome-tab-border: rgba(0, 0, 0, 0.09);
-  --chrome-split-border: rgba(0, 0, 0, 0.035);
+  --chrome-split-border: rgba(0, 0, 0, 0.1);
   --bg-active: rgba(0, 0, 0, 0.07);
   --bg-hover: rgba(0, 0, 0, 0.03);
   --bg-nav-hover: rgba(0, 0, 0, 0.045);
@@ -412,6 +412,47 @@ body {
 .view-header-title {
   color: var(--text-muted);
   font-weight: 500;
+}
+
+/* Frontmatter properties: dissolve the card so metadata reads as the
+   opening lines of the note, not as a boxed widget.
+   Obsidian's defaults are already border-less / transparent; the residual
+   "frame" feel comes from (a) the block padding + horizontal translateX
+   that offsets it from the text column, and (b) per-row hover/focus
+   box-shadow rings (--metadata-property-box-shadow-hover/-focus). Kill both. */
+.metadata-container {
+  --metadata-property-box-shadow-hover: none;
+  --metadata-property-box-shadow-focus: none;
+  --metadata-property-background-hover: transparent;
+  --metadata-property-background-active: transparent;
+  --metadata-label-background-hover: transparent;
+  --metadata-label-background-active: transparent;
+  --metadata-padding: 0;
+  transform: none;
+  background-color: transparent;
+  border: none;
+}
+/* Suppress the hover/focus ring on each property row in Live Preview. */
+.metadata-property,
+.metadata-property-key {
+  box-shadow: none !important;
+}
+
+/* The generic input[type="text"] rule in §9 (SETTINGS) styles every text
+   input as a bordered white box. That collaterally hits frontmatter inputs
+   (key + value), turning each property into a visible white box. Exempt the
+   whole metadata-container from that generic input chrome so rows read as
+   plain text. */
+.metadata-container input.metadata-property-key-input,
+.metadata-container .metadata-input-text,
+.metadata-container .metadata-input-number,
+.metadata-container textarea {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: var(--metadata-input-padding);
+  font-family: var(--metadata-label-font);
 }
 
 /* ============================================================
@@ -669,6 +710,19 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Restore a visible hairline divider between editor panes in the root split.
+   Side splits keep their pseudo-element hairlines and transparent handles.
+   We rely on Obsidian's default 1px border (vertical: inline-end,
+   horizontal: bottom) so the invisible grab area stays larger than the line. */
+.workspace-split.mod-root .workspace-leaf-resize-handle {
+  background-color: transparent !important;
+  border-color: var(--chrome-split-border) !important;
+}
+.workspace-split.mod-root .workspace-leaf-resize-handle:hover {
+  border-color: var(--oc-border) !important;
+}
+
 /* NOTE on sidebar icon alignment (v1.10.9 root-cause fix):
    The 📁/🔍/🔖 icons in the left sidebar are NOT ribbon actions
    (.side-dock-actions) — they are sidebar TAB HEADERS living in
