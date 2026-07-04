@@ -65,10 +65,13 @@
   --link-external-color: var(--link-color);
   --link-external-color-hover: var(--link-color-hover);
   --link-unresolved-color: var(--text-muted);
-  --tag-background: var(--text-normal);
-  --tag-background-hover: var(--text-muted);
-  --tag-color: var(--background-primary);
-  --tag-color-hover: var(--background-primary);
+  /* Tag: flat tinted fill (white overlay) + normal text color, not an inverted
+     solid pill — keeps tags quiet when many appear together. Border on the
+     .tag rule is tuned to match (see §10 TAGS). */
+  --tag-background: rgba(255, 255, 255, 0.08);
+  --tag-background-hover: rgba(255, 255, 255, 0.14);
+  --tag-color: var(--text-normal);
+  --tag-color-hover: var(--text-normal);
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
   --text-selection: rgba(0, 122, 255, 0.25);
@@ -246,10 +249,13 @@
   --link-external-color: var(--link-color);
   --link-external-color-hover: var(--link-color-hover);
   --link-unresolved-color: var(--text-muted);
-  --tag-background: var(--text-normal);
-  --tag-background-hover: var(--text-muted);
-  --tag-color: var(--background-primary);
-  --tag-color-hover: var(--background-primary);
+  /* Tag: flat tinted fill (black overlay) + normal text color, not an inverted
+     solid pill — keeps tags quiet when many appear together. Border on the
+     .tag rule is tuned to match (see §10 TAGS). */
+  --tag-background: rgba(0, 0, 0, 0.05);
+  --tag-background-hover: rgba(0, 0, 0, 0.09);
+  --tag-color: var(--text-normal);
+  --tag-color-hover: var(--text-normal);
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
   --text-selection: rgba(0, 122, 255, 0.20);
@@ -1230,6 +1236,12 @@ a:hover {
   font-family: var(--font-default);
   flex: 0 0 auto;
   min-width: auto;
+  /* Clamp a long title (e.g. a full sentence in [!warning]) so the left column
+     of the two-column flex-row callout doesn't blow out and squeeze the
+     content column. Short titles stay exactly content-sized (signature aside
+     look preserved); only oversized ones wrap inside this width. */
+  max-width: 27ch;
+  flex-wrap: wrap;
   /* Match .callout-content's line-height so the title's first-line top-leading
      equals the content's — otherwise the two columns (flex-start) start their
      text at different y and the right side reads ~2px low. */
@@ -1413,6 +1425,17 @@ a:hover {
 .callout[data-callout="fail"] .callout-icon,
 .callout[data-callout="missing"] .callout-icon {
   color: var(--callout-error-text);
+}
+
+/* Quote callout: the left column carries the quote glyph (icon) + the quoted
+   line as the title. The right column (.callout-content) holds the body that
+   follows the quote. Under flex-row + align-items:flex-start, the body's first
+   line tops out at the same y as the icon — reading as if the body floats next
+   to the quote mark rather than under it. Drop the body so it aligns with the
+   title's text (the line "below" the quote glyph) instead. Quote-only; every
+   other callout type keeps the shared top alignment. */
+.callout[data-callout="quote"] .callout-content {
+  padding-top: 0.4em;
 }
 
 /* ============================================================
@@ -1977,7 +2000,7 @@ input[type="text"]:focus, input[type="search"]:focus, textarea:focus {
 .tag,
 .cm-hashtag {
   background-color: var(--tag-background) !important;
-  border: 1px solid var(--text-normal);
+  border: none;
   border-radius: var(--oc-radius);
   padding: 3px 10px;
   font-size: 0.8em;
@@ -1985,8 +2008,8 @@ input[type="text"]:focus, input[type="search"]:focus, textarea:focus {
   font-weight: 500;
   text-decoration: none !important;
   font-family: var(--font-default);
-  transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-  line-height: 1.4;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  line-height: 1.6;
   /* Tags are atomic — never break mid-tag (e.g. "#测" / "试" in a narrow
      dataview column). Allow the cell to overflow horizontally instead. */
   white-space: nowrap;
@@ -2006,19 +2029,73 @@ a.tag {
 .cm-hashtag:hover {
   background-color: var(--tag-background-hover) !important;
   color: var(--tag-color-hover) !important;
-  border-color: var(--text-muted);
 }
 
+/* Live preview splits a tag into adjacent sibling spans: .cm-hashtag-begin
+   (#), zero or more .cm-hashtag (body — e.g. each underscore-separated chunk
+   of #in_progress), then .cm-hashtag-end. With no border, the only thing that
+   makes them read as ONE pill is matching background + zero gap at the seams.
+   - padding-left/right:0 at the inner edges keeps the tinted fill continuous;
+     horizontal padding lives only on the outer ends (begin's left, end's right).
+   - border-radius is applied only to the outer corners so the pill has one
+     rounded silhouette instead of each segment drawing its own half-circles. */
 .cm-hashtag.cm-hashtag-begin {
   border-radius: var(--oc-radius) 0 0 var(--oc-radius);
   padding-left: 10px;
-  padding-right: 1px;
+  padding-right: 0;
 }
 
 .cm-hashtag.cm-hashtag-end {
   border-radius: 0 var(--oc-radius) var(--oc-radius) 0;
-  padding-left: 1px;
+  padding-left: 0;
   padding-right: 10px;
+}
+
+/* Middle segments (a tag like #in_progress can split into more than two
+   spans): no radius, no horizontal padding — they sit between begin/end and
+   must not re-introduce a gap or a visible corner. */
+.cm-hashtag:not(.cm-hashtag-begin):not(.cm-hashtag-end) {
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Atomic hover: a tag is one interactive unit, so hovering any segment should
+   light up every segment of the same tag. The :hover rule above already covers
+   the hovered segment itself; these two rules cover the REST of it.
+   - First rule: when the begin (#) is hovered, lift every later sibling span
+     belonging to the same tag (covers 2-span and 3-span cases).
+   - Second rule: when any non-begin segment is hovered, lift the leading begin
+     backwards. :has(~ .cm-hashtag:hover) matches "an element that has any
+     later sibling hashtag currently hovered". */
+.cm-hashtag.cm-hashtag-begin:hover ~ .cm-hashtag,
+.cm-hashtag.cm-hashtag-begin:has(~ .cm-hashtag:hover) {
+  background-color: var(--tag-background-hover) !important;
+  color: var(--tag-color-hover) !important;
+}
+
+/* Frontmatter tags render through Obsidian's multi-select widget, NOT as
+   .tag/.cm-hashtag — so the rules above don't reach them. Mirror the body tag
+   look: same tinted fill, no border, same compact size. Descenders (g/y/p/q)
+   are handled by overflow:visible — they extend past the pill edge like normal
+   inline text, instead of forcing the pill taller to "fit" them (which made
+   frontmatter tags read noticeably larger than body tags at equal padding). */
+.multi-select-pill {
+  background-color: var(--tag-background) !important;
+  border: none;
+  border-radius: var(--oc-radius);
+  box-shadow: none;
+  font-size: 0.8em;
+  overflow: visible;
+}
+
+.multi-select-pill-content {
+  padding: 2px 8px;
+  line-height: 1.4;
+}
+
+.multi-select-pill:hover {
+  background-color: var(--tag-background-hover) !important;
 }
 
 /* ============================================================
