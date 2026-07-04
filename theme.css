@@ -1427,15 +1427,41 @@ a:hover {
   color: var(--callout-error-text);
 }
 
-/* Quote callout: the left column carries the quote glyph (icon) + the quoted
-   line as the title. The right column (.callout-content) holds the body that
-   follows the quote. Under flex-row + align-items:flex-start, the body's first
-   line tops out at the same y as the icon — reading as if the body floats next
-   to the quote mark rather than under it. Drop the body so it aligns with the
-   title's text (the line "below" the quote glyph) instead. Quote-only; every
-   other callout type keeps the shared top alignment. */
-.callout[data-callout="quote"] .callout-content {
-  padding-top: 0.4em;
+/* Quote callout keeps the shared two-column aside layout (icon+title left,
+   body right), but the right-column body should align with the quoted TEXT,
+   not the quote glyph. The hard part: in the shared layout .callout-title is a
+   flex row whose first child is the icon, so flex `baseline` alignment takes
+   the ICON's baseline as the left column's baseline — never the text's.
+   Inline/block tricks still leave the icon in the flow, perturbing the title
+   box position. The clean fix is to pull the icon OUT of the flow entirely
+   with absolute positioning: .callout-title becomes `position: relative` and
+   hosts the icon absolutely in its top-left corner, while the only thing left
+   in-flow inside it is the quoted text. So .callout-title's baseline IS the
+   text's baseline, and `align-items: baseline` on the callout then aligns the
+   body's first <p> line with the quote line exactly — no magic px/em, and it
+   tracks font-size changes. Quote-only; every other callout type keeps the
+   shared flex-center'd icon+title. */
+.callout[data-callout="quote"] {
+  align-items: baseline;
+}
+
+.callout[data-callout="quote"] .callout-title {
+  display: block;
+  position: relative;
+  /* Hold horizontal space for the absolutely-positioned glyph so the quoted
+     text doesn't underlap it. 1em glyph + 0.3em gap, in the title's em. */
+  padding-left: 1.3em;
+}
+
+.callout[data-callout="quote"] .callout-icon {
+  position: absolute;
+  /* Sit at the top-left of the title box, above the quote line. top:0 + the
+     text's half-leading above the cap height make the glyph read as hanging
+     over the start of the quote. */
+  top: 0;
+  left: 0;
+  width: 1em;
+  height: 1em;
 }
 
 /* ============================================================
