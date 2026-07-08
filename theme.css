@@ -23,6 +23,8 @@
   --oc-surface-elevated: #1c1c1f;
   --oc-border: #38383a;
   --oc-border-muted: #2c2c2e;
+  /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
+  --oc-border-strong: #48484a;
   --oc-text: #ffffff;
   --oc-text-secondary: #c7c7cc;
   --oc-text-muted: #a1a1a6;
@@ -42,7 +44,7 @@
   --background-modifier-form-field: var(--oc-surface);
   --background-modifier-form-field-highlighted: var(--oc-surface-elevated);
   --background-modifier-border: var(--oc-border);
-  --background-modifier-border-hover: var(--oc-border-muted);
+  --background-modifier-border-hover: var(--oc-border-strong);
   --background-modifier-border-focus: var(--oc-accent);
   --background-modifier-error: rgba(255, 69, 58, 0.12);
   --background-modifier-error-hover: rgba(255, 69, 58, 0.18);
@@ -87,7 +89,7 @@
   --bg-tertiary: var(--oc-surface-elevated);
   --bg-surface: var(--oc-surface-elevated);
   --border-color: var(--oc-border);
-  --border-hover: var(--oc-border-muted);
+  --border-hover: var(--oc-border-strong);
   --border-hairline: rgba(255, 255, 255, 0.06);
   --border-split: rgba(255, 255, 255, 0.035);
   --chrome-tab-border: rgba(255, 255, 255, 0.085);
@@ -122,82 +124,14 @@
   --status-chip-separator: rgba(255, 255, 255, 0.22);
   --status-chip-shadow: none;
   --status-chip-sync: var(--text-muted);
-  /* Checkbox: monochrome fill (black in light / white in dark, via
-     --text-normal), small radius, tick uses --background-primary for
-     contrast. --checklist-done-decoration:none drops the strikethrough on
-     done tasks (Folio-style: just fade via --checklist-done-color). */
-  --checkbox-radius: 3px;
-  --checkbox-color: var(--text-normal);
-  --checkbox-color-hover: var(--text-muted);
-  --checkbox-marker-color: var(--background-primary);
-  --checklist-done-decoration: none;
-  /* Blockquote: double rail, not accent blue. */
-  --blockquote-border-color: var(--text-muted);
-  --blockquote-border-thickness: 1.5px;
-  --blockquote-rail-secondary-color: var(--oc-border-muted);
-  --blockquote-rail-secondary-thickness: 1px;
-  --blockquote-rail-gap: 7px;
-  --hr-color: var(--border-color);
-  --hr-thickness: 1px;
-  /* Radius scale — one consistent system across the whole theme:
-       content surfaces (code / tables / callouts) = 0px  (sharp doc style)
-       small chips (tags, inline)                   = --oc-radius        4px
-       controls (buttons / inputs / icons / tabs)   = --oc-radius-control 6px
-       floating popovers (menus / palette / tooltip)= --oc-radius-panel   8px
-       modals / settings window                     = --oc-radius-modal  12px */
-  --oc-radius-control: 6px;
-  --oc-radius-panel: 8px;
-  --oc-radius-modal: 12px;
-  /* Unify the top window chrome: titlebar, tab bar and the sidebar-toggle
-     all share ONE surface. Obsidian's default focused variant is white
-     (--background-secondary-alt), which made the collapse-sidebar icon read
-     whiter than its neighbours and broke the immersive titlebar. */
-  --titlebar-background: var(--oc-surface);
-  --titlebar-background-focused: var(--oc-surface);
-  --tab-container-background: var(--oc-surface);
   /* Borderless dropdown chevron — light stroke for dark bg */
   --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
-  /* Toggle switches — refined rounded-RECTANGLE, OpenCode client style.
-     Not a pill: small corner radius on both track and knob. Geometry is
-     variable-driven (height = thumb + 2*border, knob inset = border), so
-     the knob is centered by construction on every platform — we never
-     touch ::after geometry directly.
-     Dark mode colors: OFF track is a mid gray (knob reads against it),
-     ON track flips to white (--text-normal) with a near-black knob. */
+  /* Toggle switch colors (geometry lives in the shared token block below):
+     OFF track is a mid gray (knob reads against it), ON track flips to
+     white (--text-normal) with a near-black knob. */
   --oc-toggle-off: #636366;
-  --oc-toggle-on: var(--text-normal);
-  --toggle-radius: 5px;
-  --toggle-thumb-radius: 3px;
   --toggle-thumb-color: #0c0c0e;
-  --toggle-s-border-width: 3px;
-  --toggle-s-width: 36px;
-  --toggle-s-thumb-width: 14px;
-  --toggle-s-thumb-height: 14px;
-  --toggle-border-width: 3px;
-  --toggle-width: 36px;
-  --toggle-thumb-width: 14px;
-  --toggle-thumb-height: 14px;
-
-  /* Logo split: number of leading characters shown muted.
-     Uses ch units so it tracks monospace char width precisely.
-     Override per-vault if your name is longer/shorter or CJK
-     (CJK glyphs are ~2ch wide, so halve this for full-width text). */
-  --oc-logo-split: 4ch;
-
-  /* Radius strategy: small, consistent corners */
-  --oc-radius: 4px;
-  --radius-s: 0px;
-  --radius-m: var(--oc-radius);
-  --radius-l: var(--oc-radius);
-  --radius-xl: var(--oc-radius);
-  --control-radius: var(--oc-radius);
-  --control-radius-sm: var(--oc-radius);
-
-  /* Typography: OpenCode uses a mono-forward stack */
-  --font-default: 'IBM Plex Mono', 'Berkeley Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace, 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --font-monospace: var(--font-default);
-  --font-heading: var(--font-default);
 }
 
 .theme-light {
@@ -207,6 +141,8 @@
   --oc-surface-elevated: #ffffff;
   --oc-border: #d2d2d7;
   --oc-border-muted: #e5e5ea;
+  /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
+  --oc-border-strong: #b9b9bf;
   --oc-text: #1d1d1f;
   --oc-text-secondary: #424245;
   --oc-text-muted: #6e6e73;
@@ -226,7 +162,7 @@
   --background-modifier-form-field: var(--oc-bg);
   --background-modifier-form-field-highlighted: var(--oc-surface);
   --background-modifier-border: var(--oc-border);
-  --background-modifier-border-hover: var(--oc-border-muted);
+  --background-modifier-border-hover: var(--oc-border-strong);
   --background-modifier-border-focus: var(--oc-accent);
   --background-modifier-error: rgba(255, 59, 48, 0.10);
   --background-modifier-error-hover: rgba(255, 59, 48, 0.16);
@@ -256,8 +192,10 @@
   --tag-background-hover: rgba(0, 0, 0, 0.09);
   --tag-color: var(--text-normal);
   --tag-color-hover: var(--text-normal);
-  --text-error: var(--oc-danger);
-  --text-success: var(--oc-success);
+  /* Deeper variants for TEXT on white: raw --oc-success/--oc-danger sit at
+     ~2–3:1 contrast on #fff (below AA). Backgrounds keep the raw palette. */
+  --text-error: #d70015;
+  --text-success: #248a3d;
   --text-selection: rgba(0, 122, 255, 0.20);
 
   --interactive-normal: var(--oc-surface);
@@ -271,7 +209,7 @@
   --bg-tertiary: var(--oc-surface-elevated);
   --bg-surface: var(--oc-surface-elevated);
   --border-color: var(--oc-border);
-  --border-hover: var(--oc-border-muted);
+  --border-hover: var(--oc-border-strong);
   --border-hairline: rgba(0, 0, 0, 0.06);
   --border-split: rgba(0, 0, 0, 0.035);
   --chrome-tab-border: rgba(0, 0, 0, 0.09);
@@ -304,6 +242,23 @@
   --status-chip-separator: rgba(0, 0, 0, 0.20);
   --status-chip-shadow: 0 6px 18px rgba(0, 0, 0, 0.035);
   --status-chip-sync: var(--text-muted);
+  /* Borderless dropdown chevron — dark stroke for light bg */
+  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+  /* Toggle switch colors (geometry lives in the shared token block below):
+     OFF track is a light gray, ON track flips to near-black (--text-normal)
+     with a white knob — matches the OpenCode desktop switch. */
+  --oc-toggle-off: #c7c7cc;
+  --toggle-thumb-color: #ffffff;
+}
+
+/* Shared tokens — identical in light & dark, declared once so a value can't
+   drift between the two theme blocks. Kept on .theme-dark/.theme-light (not
+   :root/body) to preserve class-level specificity: Obsidian's .mod-macos
+   redefines --toggle-* sizes at class specificity, and these must keep
+   winning via source order at equal specificity. */
+.theme-dark,
+.theme-light {
   /* Checkbox: monochrome fill (black in light / white in dark, via
      --text-normal), small radius, tick uses --background-primary for
      contrast. --checklist-done-decoration:none drops the strikethrough on
@@ -313,6 +268,7 @@
   --checkbox-color-hover: var(--text-muted);
   --checkbox-marker-color: var(--background-primary);
   --checklist-done-decoration: none;
+
   /* Blockquote: double rail, not accent blue. */
   --blockquote-border-color: var(--text-muted);
   --blockquote-border-thickness: 1.5px;
@@ -321,15 +277,24 @@
   --blockquote-rail-gap: 7px;
   --hr-color: var(--border-color);
   --hr-thickness: 1px;
+
   /* Radius scale — one consistent system across the whole theme:
        content surfaces (code / tables / callouts) = 0px  (sharp doc style)
        small chips (tags, inline)                   = --oc-radius        4px
        controls (buttons / inputs / icons / tabs)   = --oc-radius-control 6px
        floating popovers (menus / palette / tooltip)= --oc-radius-panel   8px
        modals / settings window                     = --oc-radius-modal  12px */
+  --oc-radius: 4px;
   --oc-radius-control: 6px;
   --oc-radius-panel: 8px;
   --oc-radius-modal: 12px;
+  --radius-s: 0px;
+  --radius-m: var(--oc-radius);
+  --radius-l: var(--oc-radius);
+  --radius-xl: var(--oc-radius);
+  --control-radius: var(--oc-radius);
+  --control-radius-sm: var(--oc-radius);
+
   /* Unify the top window chrome: titlebar, tab bar and the sidebar-toggle
      all share ONE surface. Obsidian's default focused variant is white
      (--background-secondary-alt), which made the collapse-sidebar icon read
@@ -337,19 +302,15 @@
   --titlebar-background: var(--oc-surface);
   --titlebar-background-focused: var(--oc-surface);
   --tab-container-background: var(--oc-surface);
-  /* Borderless dropdown chevron — dark stroke for light bg */
-  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
   /* Toggle switches — refined rounded-RECTANGLE, OpenCode client style.
-     Not a pill: small corner radius on both track and knob. Light mode:
-     OFF track is a light gray, ON track flips to near-black
-     (--text-normal) with a white knob — matches the OpenCode desktop
-     switch (black fill + white knob). */
-  --oc-toggle-off: #c7c7cc;
+     Not a pill: small corner radius on both track and knob. Geometry is
+     variable-driven (height = thumb + 2*border, knob inset = border), so
+     the knob is centered by construction on every platform — we never
+     touch ::after geometry directly. Track/knob COLORS stay per-theme. */
   --oc-toggle-on: var(--text-normal);
   --toggle-radius: 5px;
   --toggle-thumb-radius: 3px;
-  --toggle-thumb-color: #ffffff;
   --toggle-s-border-width: 3px;
   --toggle-s-width: 36px;
   --toggle-s-thumb-width: 14px;
@@ -361,19 +322,16 @@
 
   /* Logo split: number of leading characters shown muted.
      Matches OpenCode "open|code" — first 4 chars muted, rest bold.
-     CJK names use ~2ch/glyph, so set ~2ch per CJK character. */
+     Uses ch units so it tracks monospace char width; override per-vault if
+     your name is longer/shorter or CJK (~2ch per CJK glyph). */
   --oc-logo-split: 4ch;
 
-  /* Radius */
-  --oc-radius: 4px;
-  --radius-s: 0px;
-  --radius-m: var(--oc-radius);
-  --radius-l: var(--oc-radius);
-  --radius-xl: var(--oc-radius);
-  --control-radius: var(--oc-radius);
-  --control-radius-sm: var(--oc-radius);
+  /* OpenCode sharp "O" mark, reused by the ribbon settings icon and the
+     vault-profile settings button. Mask alpha only — the visible color
+     comes from each element's background-color. */
+  --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
 
-  /* Typography */
+  /* Typography: OpenCode uses a mono-forward stack */
   --font-default: 'IBM Plex Mono', 'Berkeley Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace, 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-monospace: var(--font-default);
   --font-heading: var(--font-default);
@@ -605,8 +563,8 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   width: 18px;
   height: 18px;
   background-color: var(--text-muted);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--oc-icon-o-mark);
+  mask-image: var(--oc-icon-o-mark);
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -808,10 +766,18 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
    A prior override (7px/7px) was reverted because Folio — which
    aligns correctly — leaves this entirely at the Obsidian default. */
 
-/* Hide help icon */
-svg[class*="help" i] { display: none !important; }
-.workspace-split.mod-left-split .clickable-icon:has(svg.lucide-help-circle),
-.workspace-split.mod-left-split .side-dock-ribbon-action:has(svg.lucide-help-circle) {
+/* Hide the help icon — scoped to the ribbon / left dock. (A previous global
+   svg[class*="help"] also nuked any plugin or settings icon whose class merely
+   contained "help".) Two layers: hide the whole button when the wrapper is a
+   known class (no dead gap left behind), and a scoped svg fallback for help
+   glyphs whose wrapper we can't name (e.g. the one beside the vault title). */
+.workspace-ribbon .clickable-icon:has(svg[class*="help" i]),
+.workspace-split.mod-left-split .clickable-icon:has(svg[class*="help" i]),
+.workspace-split.mod-left-split .side-dock-ribbon-action:has(svg[class*="help" i]) {
+  display: none !important;
+}
+.workspace-ribbon svg[class*="help" i],
+.workspace-split.mod-left-split svg[class*="help" i] {
   display: none !important;
 }
 
@@ -827,8 +793,8 @@ svg[class*="help" i] { display: none !important; }
   width: 18px;
   height: 18px;
   background-color: var(--text-muted);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--oc-icon-o-mark);
+  mask-image: var(--oc-icon-o-mark);
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -929,7 +895,7 @@ svg[class*="help" i] { display: none !important; }
   transition: color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
   position: relative;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 11px;
   box-shadow: none !important;
 }
 
@@ -1211,9 +1177,13 @@ a:hover {
    6. CALLOUT (STARLIGHT ASIDE STYLE)
    ============================================================ */
 .callout {
+  /* One variable carries the semantic color to rail/title/icon (it inherits
+     into descendants); per-type rules below retarget only this var plus the
+     per-type bg token, so snippet overrides of a single type keep working. */
+  --oc-callout-color: var(--callout-info-text);
   background-color: var(--callout-info-bg);
   border: none;
-  border-left: 2px solid var(--callout-info-text);
+  border-left: 2px solid var(--oc-callout-color);
   border-radius: 0;
   padding: 12px 16px;
   margin: 1.2em 0;
@@ -1225,7 +1195,7 @@ a:hover {
 }
 
 .callout-title {
-  color: var(--callout-info-text);
+  color: var(--oc-callout-color);
   font-weight: 600;
   font-size: 0.9em;
   display: flex;
@@ -1250,11 +1220,11 @@ a:hover {
 
 .callout-title-inner {
   font-weight: 600;
-  color: var(--callout-info-text);
+  color: var(--oc-callout-color);
 }
 
 .callout-icon {
-  color: var(--callout-info-text);
+  color: var(--oc-callout-color);
   display: flex;
   align-items: center;
   width: 16px;
@@ -1290,141 +1260,39 @@ a:hover {
 .callout-content code {
   font-family: var(--font-monospace);
   font-size: 0.85em;
-  background-color: rgba(0, 0, 0, 0.05);
+  /* Same flat overlay tint as tags — one token covers both themes. */
+  background-color: var(--tag-background);
   padding: 2px 5px;
   border-radius: 0;
 }
 
-.theme-dark .callout-content code {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-/* Default / abstract / summary / question / quote -> neutral muted blue */
-.callout[data-callout="abstract"],
-.callout[data-callout="summary"],
-.callout[data-callout="question"],
-.callout[data-callout="quote"],
-.callout[data-callout="example"] {
-  background-color: var(--callout-info-bg);
-  border-left-color: var(--callout-info-text);
-}
-
-.callout[data-callout="abstract"] .callout-title,
-.callout[data-callout="summary"] .callout-title,
-.callout[data-callout="question"] .callout-title,
-.callout[data-callout="quote"] .callout-title,
-.callout[data-callout="example"] .callout-title,
-.callout[data-callout="abstract"] .callout-title-inner,
-.callout[data-callout="summary"] .callout-title-inner,
-.callout[data-callout="question"] .callout-title-inner,
-.callout[data-callout="quote"] .callout-title-inner,
-.callout[data-callout="example"] .callout-title-inner,
-.callout[data-callout="abstract"] .callout-icon,
-.callout[data-callout="summary"] .callout-icon,
-.callout[data-callout="question"] .callout-icon,
-.callout[data-callout="quote"] .callout-icon,
-.callout[data-callout="example"] .callout-icon {
-  color: var(--callout-info-text);
-}
-
-/* Note / info -> blue */
-.callout[data-callout="note"],
-.callout[data-callout="info"] {
-  background-color: var(--callout-info-bg);
-  border-left-color: var(--callout-info-text);
-}
-
-.callout[data-callout="note"] .callout-title,
-.callout[data-callout="info"] .callout-title,
-.callout[data-callout="note"] .callout-title-inner,
-.callout[data-callout="info"] .callout-title-inner,
-.callout[data-callout="note"] .callout-icon,
-.callout[data-callout="info"] .callout-icon {
-  color: var(--callout-info-text);
-}
+/* Per-type semantics: retarget --oc-callout-color (+ the bg token). Rail,
+   title and icon all follow via the base rules above — in reading mode AND
+   live preview. Default / note / info / abstract / summary / question /
+   quote / example -> neutral muted blue, already the .callout default. */
 
 /* Tip -> purple */
 .callout[data-callout="tip"] {
+  --oc-callout-color: var(--callout-tip-text);
   background-color: var(--callout-tip-bg);
-  border-left-color: var(--callout-tip-text);
-}
-
-.callout[data-callout="tip"] .callout-title,
-.callout[data-callout="tip"] .callout-title-inner,
-.callout[data-callout="tip"] .callout-icon {
-  color: var(--callout-tip-text);
 }
 
 /* Success -> green */
-.callout[data-callout="success"],
-.callout[data-callout="check"],
-.callout[data-callout="done"] {
+.callout:is([data-callout="success"], [data-callout="check"], [data-callout="done"]) {
+  --oc-callout-color: var(--callout-success-text);
   background-color: var(--callout-success-bg);
-  border-left-color: var(--callout-success-text);
-}
-
-.callout[data-callout="success"] .callout-title,
-.callout[data-callout="check"] .callout-title,
-.callout[data-callout="done"] .callout-title,
-.callout[data-callout="success"] .callout-title-inner,
-.callout[data-callout="check"] .callout-title-inner,
-.callout[data-callout="done"] .callout-title-inner,
-.callout[data-callout="success"] .callout-icon,
-.callout[data-callout="check"] .callout-icon,
-.callout[data-callout="done"] .callout-icon {
-  color: var(--callout-success-text);
 }
 
 /* Warning / caution / attention -> orange */
-.callout[data-callout="warning"],
-.callout[data-callout="caution"],
-.callout[data-callout="attention"] {
+.callout:is([data-callout="warning"], [data-callout="caution"], [data-callout="attention"]) {
+  --oc-callout-color: var(--callout-warning-text);
   background-color: var(--callout-warning-bg);
-  border-left-color: var(--callout-warning-text);
-}
-
-.callout[data-callout="warning"] .callout-title,
-.callout[data-callout="caution"] .callout-title,
-.callout[data-callout="attention"] .callout-title,
-.callout[data-callout="warning"] .callout-title-inner,
-.callout[data-callout="caution"] .callout-title-inner,
-.callout[data-callout="attention"] .callout-title-inner,
-.callout[data-callout="warning"] .callout-icon,
-.callout[data-callout="caution"] .callout-icon,
-.callout[data-callout="attention"] .callout-icon {
-  color: var(--callout-warning-text);
 }
 
 /* Danger / error / bug / failure / fail / missing -> red */
-.callout[data-callout="danger"],
-.callout[data-callout="error"],
-.callout[data-callout="bug"],
-.callout[data-callout="failure"],
-.callout[data-callout="fail"],
-.callout[data-callout="missing"] {
+.callout:is([data-callout="danger"], [data-callout="error"], [data-callout="bug"], [data-callout="failure"], [data-callout="fail"], [data-callout="missing"]) {
+  --oc-callout-color: var(--callout-error-text);
   background-color: var(--callout-error-bg);
-  border-left-color: var(--callout-error-text);
-}
-
-.callout[data-callout="danger"] .callout-title,
-.callout[data-callout="error"] .callout-title,
-.callout[data-callout="bug"] .callout-title,
-.callout[data-callout="failure"] .callout-title,
-.callout[data-callout="fail"] .callout-title,
-.callout[data-callout="missing"] .callout-title,
-.callout[data-callout="danger"] .callout-title-inner,
-.callout[data-callout="error"] .callout-title-inner,
-.callout[data-callout="bug"] .callout-title-inner,
-.callout[data-callout="failure"] .callout-title-inner,
-.callout[data-callout="fail"] .callout-title-inner,
-.callout[data-callout="missing"] .callout-title-inner,
-.callout[data-callout="danger"] .callout-icon,
-.callout[data-callout="error"] .callout-icon,
-.callout[data-callout="bug"] .callout-icon,
-.callout[data-callout="failure"] .callout-icon,
-.callout[data-callout="fail"] .callout-icon,
-.callout[data-callout="missing"] .callout-icon {
-  color: var(--callout-error-text);
 }
 
 /* Quote callout keeps the shared two-column aside layout (icon+title left,
@@ -1577,12 +1445,17 @@ a:hover {
    ============================================================ */
 /* Normal [ ] / [x] checkboxes stay variable-driven. Alternate task states
    follow Minimal's marker vocabulary, but redraw the symbols in Opendian's
-   monochrome technical language: outline, fill, and muted geometry only. */
+   monochrome technical language: outline, fill, and muted geometry only.
+   Mechanism: the per-state rules further down only define custom properties
+   (--oc-task-icon mask + optional --oc-task-color). Custom properties
+   INHERIT, so defining them on whatever carries [data-task] — the reading-
+   mode li, the LP task line, or the input itself — reaches the input; the
+   two :checked rules below are the single place they are consumed. */
 input:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-task='"'], [data-task="“"], [data-task="*"], [data-task="<"], [data-task=">"], [data-task="b"], [data-task="c"], [data-task="d"], [data-task="f"], [data-task="i"], [data-task="I"], [data-task="k"], [data-task="l"], [data-task="p"], [data-task="S"], [data-task="u"], [data-task="w"]):checked,
 li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-task='"'], [data-task="“"], [data-task="*"], [data-task="<"], [data-task=">"], [data-task="b"], [data-task="c"], [data-task="d"], [data-task="f"], [data-task="i"], [data-task="I"], [data-task="k"], [data-task="l"], [data-task="p"], [data-task="S"], [data-task="u"], [data-task="w"]) > input:checked,
 li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-task='"'], [data-task="“"], [data-task="*"], [data-task="<"], [data-task=">"], [data-task="b"], [data-task="c"], [data-task="d"], [data-task="f"], [data-task="i"], [data-task="I"], [data-task="k"], [data-task="l"], [data-task="p"], [data-task="S"], [data-task="u"], [data-task="w"]) > p > input:checked {
   --checkbox-marker-color: transparent;
-  color: var(--text-muted);
+  color: var(--oc-task-color, var(--text-muted));
   background-color: currentColor !important;
   background-image: none !important;
   border-color: transparent !important;
@@ -1603,17 +1476,13 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
   display: none;
 }
 
-input[data-task="/"]:checked,
-li[data-task="/"] > input:checked,
-li[data-task="/"] > p > input:checked {
+[data-task="/"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%221.1%22%20y%3D%221.1%22%20width%3D%2213.8%22%20height%3D%2213.8%22%20rx%3D%222.4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%2F%3E%3Cpath%20d%3D%22M12.6%203.3%203.4%2012.7%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="-"]:checked,
-li[data-task="-"] > input:checked,
-li[data-task="-"] > p > input:checked {
+[data-task="-"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%221.1%22%20y%3D%221.1%22%20width%3D%2213.8%22%20height%3D%2213.8%22%20rx%3D%222.4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%2F%3E%3Cpath%20d%3D%22M3.8%208h8.4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-faint);
+  --oc-task-color: var(--text-faint);
 }
 
 .markdown-rendered li[data-task="-"].task-list-item,
@@ -1622,123 +1491,85 @@ li[data-task="-"] > p > input:checked {
   text-decoration: line-through solid var(--text-faint) 1px;
 }
 
-input[data-task=">"]:checked,
-li[data-task=">"] > input:checked,
-li[data-task=">"] > p > input:checked {
+[data-task=">"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.5%208h8%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22square%22%2F%3E%3Cpath%20d%3D%22m8.5%204.5%203.5%203.5-3.5%203.5%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="<"]:checked,
-li[data-task="<"] > input:checked,
-li[data-task="<"] > p > input:checked {
+[data-task="<"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%2210%22%20height%3D%229%22%20rx%3D%221.5%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M5%202.8v3M11%202.8v3M3.5%207h9%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="?"]:checked,
-li[data-task="?"] > input:checked,
-li[data-task="?"] > p > input:checked {
+[data-task="?"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.1%205.5c.15-2%201.55-3.3%203.45-3.3%202.05%200%203.45%201.25%203.45%203.05%200%201.55-.95%202.35-2.2%203.05-1%20.56-1.35%201-1.35%202.2%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3Ccircle%20cx%3D%228.45%22%20cy%3D%2213.1%22%20r%3D%221.15%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="!"]:checked,
-li[data-task="!"] > input:checked,
-li[data-task="!"] > p > input:checked {
+[data-task="!"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M7.05%202.1h1.9l-.28%208.1H7.33L7.05%202.1Z%22%20fill%3D%22black%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%2213%22%20r%3D%221.2%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="*"]:checked,
-li[data-task="*"] > input:checked,
-li[data-task="*"] > p > input:checked {
+[data-task="*"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22m8%201.8%201.7%204.1%204.4.3-3.3%202.9%201%204.3L8%2011.1l-3.8%202.3%201-4.3-3.3-2.9%204.4-.3L8%201.8Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task='"']:checked,
-input[data-task="“"]:checked,
-li[data-task='"'] > input:checked,
-li[data-task="“"] > input:checked,
-li[data-task='"'] > p > input:checked,
-li[data-task="“"] > p > input:checked {
+[data-task='"'],
+[data-task="“"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.5%205.1h3v3.1c0%202.2-1%203.5-3%204.2v-1.6c.9-.4%201.3-1%201.4-1.9H4.5V5.1Zm5.1%200h3v3.1c0%202.2-1%203.5-3%204.2v-1.6c.9-.4%201.3-1%201.4-1.9H9.6V5.1Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="l"]:checked,
-li[data-task="l"] > input:checked,
-li[data-task="l"] > p > input:checked {
+[data-task="l"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2014s4-4.4%204-7.3a4%204%200%200%200-8%200C4%209.6%208%2014%208%2014Z%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%226.7%22%20r%3D%221.45%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="b"]:checked,
-li[data-task="b"] > input:checked,
-li[data-task="b"] > p > input:checked {
+[data-task="b"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.5%202.5h7v11L8%2011.4l-3.5%202.1v-11Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="i"]:checked,
-li[data-task="i"] > input:checked,
-li[data-task="i"] > p > input:checked {
+[data-task="i"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%225.5%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%225.3%22%20r%3D%220.9%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M8%207.2v4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="S"]:checked,
-li[data-task="S"] > input:checked,
-li[data-task="S"] > p > input:checked {
+[data-task="S"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%225.4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.3%22%2F%3E%3Cpath%20d%3D%22M8%203.9v8.2M10.4%205.3C9.8%204.8%209%204.5%208.1%204.5c-1.3%200-2.3.6-2.3%201.7%200%201.2%201.2%201.5%202.4%201.8%201.2.3%202.3.6%202.3%201.8s-1.1%201.8-2.5%201.8c-1%200-1.9-.3-2.6-1%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.25%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="I"]:checked,
-li[data-task="I"] > input:checked,
-li[data-task="I"] > p > input:checked {
+[data-task="I"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.2%207a2.8%202.8%200%201%201%205.6%200c0%201-.45%201.45-1.05%202.05-.4.4-.65.78-.65%201.35H6.9c0-.57-.25-.95-.65-1.35C5.65%208.45%205.2%208%205.2%207Z%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M6.65%2012h2.7M7.2%2014h1.6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="f"]:checked,
-li[data-task="f"] > input:checked,
-li[data-task="f"] > p > input:checked {
+[data-task="f"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.4%201.8c.3%202.3%202.8%203.2%202.8%206.2a3.9%203.9%200%200%201-7.8%200c0-2%201.2-3.4%202.4-4.4-.1%201.8.8%202.7%201.5%203.2.4-1.3.2-3.3%201.1-5Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="k"]:checked,
-li[data-task="k"] > input:checked,
-li[data-task="k"] > p > input:checked {
+[data-task="k"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Ccircle%20cx%3D%225.8%22%20cy%3D%226.3%22%20r%3D%222.6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22m7.7%208.2%205%205M10.2%2010.7l1.5-1.5M11.7%2012.2l1.3-1.3%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="u"]:checked,
-li[data-task="u"] > input:checked,
-li[data-task="u"] > p > input:checked {
+[data-task="u"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3%2011.5%206.5%208l2.2%202.2L13%205.9%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.65%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3Cpath%20d%3D%22M9.3%205.7H13v3.7%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.65%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="d"]:checked,
-li[data-task="d"] > input:checked,
-li[data-task="d"] > p > input:checked {
+[data-task="d"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3%204.5%206.5%208l2.2-2.2L13%2010.1%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.65%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3Cpath%20d%3D%22M9.3%2010.3H13V6.6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.65%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-input[data-task="w"]:checked,
-li[data-task="w"] > input:checked,
-li[data-task="w"] > p > input:checked {
+[data-task="w"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20fill%3D%22black%22%20fill-rule%3D%22evenodd%22%20d%3D%22M2.3%2013.2h11.4l.55-8.2-3.75%203.15L8%202.6%205.5%208.15%201.75%205l.55%208.2Zm2.15-2h7.1l.22-2.9-1.95%201.65L8%205.9%206.18%209.95%204.23%208.3l.22%202.9Z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="p"]:checked,
-li[data-task="p"] > input:checked,
-li[data-task="p"] > p > input:checked {
+[data-task="p"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2210%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M8%205v6M5%208h6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
-  color: var(--text-normal);
+  --oc-task-color: var(--text-normal);
 }
 
-input[data-task="c"]:checked,
-li[data-task="c"] > input:checked,
-li[data-task="c"] > p > input:checked {
+[data-task="c"] {
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2210%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M5%208h6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
@@ -2086,16 +1917,19 @@ a.tag {
   padding-right: 0;
 }
 
-/* Atomic hover: a tag is one interactive unit, so hovering any segment should
-   light up every segment of the same tag. The :hover rule above already covers
-   the hovered segment itself; these two rules cover the REST of it.
-   - First rule: when the begin (#) is hovered, lift every later sibling span
-     belonging to the same tag (covers 2-span and 3-span cases).
-   - Second rule: when any non-begin segment is hovered, lift the leading begin
-     backwards. :has(~ .cm-hashtag:hover) matches "an element that has any
-     later sibling hashtag currently hovered". */
-.cm-hashtag.cm-hashtag-begin:hover ~ .cm-hashtag,
-.cm-hashtag.cm-hashtag-begin:has(~ .cm-hashtag:hover) {
+/* Atomic hover: a tag is one interactive unit, so hovering any segment lights
+   the rest of it. A tag's spans are CONSECUTIVE siblings and the next tag on
+   the line always starts with .cm-hashtag-begin, so walk ADJACENT siblings
+   and stop at any begin — the previous general-sibling (~) version bled onto
+   every later tag on the same line. Chains cover tags split into up to four
+   spans (begin + 3 body chunks, i.e. two underscores); longer tags only lose
+   the linked-hover nicety on their far segments. */
+.cm-hashtag-begin:hover + .cm-hashtag:not(.cm-hashtag-begin),
+.cm-hashtag-begin:hover + .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin),
+.cm-hashtag-begin:hover + .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin),
+.cm-hashtag-begin:has(+ .cm-hashtag:not(.cm-hashtag-begin):hover),
+.cm-hashtag-begin:has(+ .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin):hover),
+.cm-hashtag-begin:has(+ .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin) + .cm-hashtag:not(.cm-hashtag-begin):hover) {
   background-color: var(--tag-background-hover) !important;
   color: var(--tag-color-hover) !important;
 }
@@ -2205,8 +2039,10 @@ a.tag {
   pointer-events: none;
   background-color: transparent !important;
   box-shadow: none !important;
-  transition: max-height 0.28s cubic-bezier(0.25, 0.8, 0.25, 1),
-              opacity 0.18s ease, margin 0.28s ease;
+  /* Animate opacity ONLY (theme red line: transform/opacity, never layout).
+     The old max-height/margin tween reflowed the whole file tree every frame;
+     now the row snaps open and the buttons fade in. */
+  transition: opacity 0.18s ease;
 }
 .workspace-split.mod-left-split .nav-header:hover .nav-buttons-container,
 .workspace-split.mod-right-split .nav-header:hover .nav-buttons-container {
@@ -2697,11 +2533,14 @@ a.tag {
   background-color: var(--background-primary);
 }
 
+/* Edit/read parity: no font-size here. Reading mode follows the user's
+   Appearance font size (--font-text-size); the previous hardcoded 14px made
+   every mode switch visibly re-scale the page (and disabled the font-size
+   slider in edit mode). line-height matches the 1.7 reading-mode rhythm. */
 .markdown-source-view .cm-content,
 .markdown-source-view .cm-line {
   font-family: var(--font-monospace);
-  font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--text-normal);
 }
 
@@ -2806,10 +2645,13 @@ a.tag {
 /* Inline code in source mode */
 .markdown-source-view .cm-inline-code {
   font-family: var(--font-monospace);
+  /* Match reading-mode inline code exactly: 0.85em / 600 / 2px 6px. */
+  font-size: 0.85em;
+  font-weight: 600;
   color: var(--text-normal);
   background-color: var(--bg-secondary);
   border: none;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 0;
 }
 
@@ -2837,56 +2679,23 @@ a.tag {
   font-size: 12px;
 }
 
-/* Callouts in source/live preview */
+/* Callouts in source/live preview: re-assert the rail against native LP
+   rules. The semantic color rides on --oc-callout-color, so §6's per-type
+   overrides apply here too — no per-type duplication needed. */
 .markdown-source-view .callout {
-  border-left: 2px solid var(--callout-info-text);
-}
-
-.markdown-source-view .callout[data-callout="abstract"],
-.markdown-source-view .callout[data-callout="summary"],
-.markdown-source-view .callout[data-callout="question"],
-.markdown-source-view .callout[data-callout="quote"],
-.markdown-source-view .callout[data-callout="example"],
-.markdown-source-view .callout[data-callout="note"],
-.markdown-source-view .callout[data-callout="info"] {
-  border-left-color: var(--callout-info-text);
-}
-
-.markdown-source-view .callout[data-callout="tip"] {
-  border-left-color: var(--callout-tip-text);
-}
-
-.markdown-source-view .callout[data-callout="success"],
-.markdown-source-view .callout[data-callout="check"],
-.markdown-source-view .callout[data-callout="done"] {
-  border-left-color: var(--callout-success-text);
-}
-
-.markdown-source-view .callout[data-callout="warning"],
-.markdown-source-view .callout[data-callout="caution"],
-.markdown-source-view .callout[data-callout="attention"] {
-  border-left-color: var(--callout-warning-text);
-}
-
-.markdown-source-view .callout[data-callout="danger"],
-.markdown-source-view .callout[data-callout="error"],
-.markdown-source-view .callout[data-callout="bug"],
-.markdown-source-view .callout[data-callout="failure"],
-.markdown-source-view .callout[data-callout="fail"],
-.markdown-source-view .callout[data-callout="missing"] {
-  border-left-color: var(--callout-error-text);
+  border-left: 2px solid var(--oc-callout-color);
 }
 
 /* Tables in source/live preview — the rendered table editor is a
    .cm-table-widget, not just token spans like .cm-table. Pin both layers to
-   the same 14px as normal editor lines so table text cannot jump larger than
-   surrounding prose. */
+   the same 0.95× scale reading-mode tables use (tracking the user's font
+   size) so table text cannot jump larger than surrounding prose. */
 .markdown-source-view .cm-table,
 .markdown-source-view .HyperMD-table,
 .markdown-source-view .HyperMD-table-row,
 .markdown-source-view .HyperMD-table-cell {
   color: var(--text-normal);
-  font-size: 14px !important;
+  font-size: calc(var(--font-text-size) * 0.95) !important;
 }
 
 .markdown-source-view.mod-cm6 .cm-table-widget,
@@ -2896,7 +2705,7 @@ a.tag {
 .markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper,
 .markdown-source-view.mod-cm6 .cm-table-widget .cm-line,
 .markdown-source-view.mod-cm6 .cm-table-widget-row .cm-table-widget-cell {
-  font-size: 14px !important;
+  font-size: calc(var(--font-text-size) * 0.95) !important;
   line-height: 1.65;
 }
 
@@ -2963,11 +2772,6 @@ a.tag {
 @media (max-width: 600px) {
   body {
     font-size: 13px;
-  }
-
-  .mod-root .workspace-tab-header {
-    padding: 8px 10px;
-    font-size: 12px;
   }
 
   .nav-file-title,

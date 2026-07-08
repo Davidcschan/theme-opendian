@@ -15,8 +15,10 @@ states (no drop shadows). When in doubt, choose the more restrained, more
 4. **改完即验**（见下）。纯 CSS 看不出对错，必须肉眼确认。
 5. Obsidian 约定：**优先用官方 CSS 变量**（`--background-primary`、`--text-normal`、
    `--interactive-accent`…），自造 token 用 `--oc-*` 前缀。
-6. **light / dark 双覆盖**：design token 分两套（`:root` 亮色 + `.theme-dark`）。
-   改颜色相关的东西，两套都要顾到，否则暗色模式会破。
+6. **light / dark 双覆盖**：design token 分两套（`.theme-light` + `.theme-dark`），
+   其后还有一个 `.theme-dark, .theme-light` **共享块**放主题无关 token（radius scale、
+   toggle 几何、字体栈、checkbox/blockquote 参数等）。改颜色相关的东西两套都要顾到，
+   否则暗色模式会破；与主题无关的值只改共享块，不要往两套色板块里重复塞。
 7. **manifest name 永远是 `Opendian`**（不是 `Opendian-dev`）。Obsidian 审核会读 tag 指向的 commit 的 manifest，name 不符会被拒。
 
 ## 可视化验证回路
@@ -37,26 +39,26 @@ DEV_VAULT 已通过 symlink 把本主题挂进 `../DEV_VAULT/.obsidian/themes/Op
 
 | 行号 | 区段 |
 |------|------|
-| 16   | OPENCODE DESIGN TOKENS（`:root` 亮色 ~20，`.theme-dark` ~201：调色板 / 语义别名 / `--oc-*` 短 token / callout / 圆角 / 字体栈） |
-| 377  | 1. BASE（`body`、prose 节奏、frontmatter properties） |
-| 439  | 2. SIDEBAR & LOGO（左栏、vault 双色 wordmark、ribbon、侧栏图标对齐、设置图标、root split divider） |
-| 819  | 3. TABS（沉浸式单栏 tab，浮动 pill 几何，pin 标记） |
-| 1018 | 4. HEADINGS & TYPOGRAPHY |
-| 1090 | 5. TABLE（关掉原生斑马纹、行 hover、紧凑表格） |
-| 1185 | 6. CALLOUT（Starlight aside 风：中性面 + 语义色轨/标题/图标） |
-| 1399 | 7. CODE BLOCKS（语言标签栏、复制按钮——刻意禁用） |
-| 1507 | 8. CHECKBOXES & LISTS（普通勾选变量驱动，其余任务态自定义） |
-| 1687 | 9. SETTINGS & MODALS（toggle pill、buttons、select/dropdown） |
-| 1955 | 10. TAGS |
-| 2005 | 11. RIGHT SIDEBAR / OUTLINE / BACKLINKS |
-| 2211 | 12. SCROLLBARS |
-| 2238 | 13. PROMPT / COMMAND PALETTE |
-| 2292 | 14. TOOLTIPS / MENUS / DROPDOWNS（含 notice/toast 终端气泡） |
-| 2381 | 15. STATUS BAR & TITLE BAR |
-| 2475 | 16. SYNTAX HIGHLIGHTING（基础回退） |
-| 2569 | 17. EDITOR / SOURCE MODE PARITY（源码模式：标题、格式标记、链接、inline code、选区） |
-| 2838 | 18. MOBILE / NARROW LAYOUT（`max-width: 600px`） |
-| 2893 | 19. REDUCED MOTION（`prefers-reduced-motion` 全局过渡/动画压到 0.01ms） |
+| 16   | OPENCODE DESIGN TOKENS（`.theme-dark` ~19、`.theme-light` ~139、共享块 ~223：调色板 / 语义别名 / `--oc-*` 短 token / callout / 圆角 / 字体栈） |
+| 341  | 1. BASE（`body`、prose 节奏、frontmatter properties） |
+| 423  | 2. SIDEBAR & LOGO（左栏、vault 双色 wordmark、ribbon、侧栏图标对齐、设置图标、root split divider） |
+| 805  | 3. TABS（沉浸式单栏 tab，浮动 pill 几何，pin 标记） |
+| 1004 | 4. HEADINGS & TYPOGRAPHY |
+| 1076 | 5. TABLE（关掉原生斑马纹、行 hover、紧凑表格） |
+| 1171 | 6. CALLOUT（Starlight aside 风：`--oc-callout-color` 变量驱动语义色） |
+| 1330 | 7. CODE BLOCKS（语言标签栏、复制按钮——刻意禁用） |
+| 1438 | 8. CHECKBOXES & LISTS（普通勾选变量驱动，其余任务态经 `--oc-task-icon/-color` 继承） |
+| 1581 | 9. SETTINGS & MODALS（toggle pill、buttons、select/dropdown） |
+| 1849 | 10. TAGS |
+| 1956 | 11. RIGHT SIDEBAR / OUTLINE / BACKLINKS |
+| 2164 | 12. SCROLLBARS |
+| 2191 | 13. PROMPT / COMMAND PALETTE |
+| 2245 | 14. TOOLTIPS / MENUS / DROPDOWNS（含 notice/toast 终端气泡） |
+| 2334 | 15. STATUS BAR & TITLE BAR |
+| 2428 | 16. SYNTAX HIGHLIGHTING（基础回退） |
+| 2522 | 17. EDITOR / SOURCE MODE PARITY（源码模式：标题、格式标记、链接、inline code、选区；字号跟随 `--font-text-size`，与阅读模式对齐） |
+| 2764 | 18. MOBILE / NARROW LAYOUT（`max-width: 600px`） |
+| 2818 | 19. REDUCED MOTION（`prefers-reduced-motion` 全局过渡/动画压到 0.01ms） |
 
 ## 视觉品味（CSS 通用，迁移自 taste-skill）
 
