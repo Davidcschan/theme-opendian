@@ -895,7 +895,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   transition: color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
   position: relative;
   font-weight: 500;
-  font-size: 11px;
+  --tab-font-size: 11px;
   box-shadow: none !important;
 }
 
