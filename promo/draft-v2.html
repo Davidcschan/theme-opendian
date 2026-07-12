@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+
+/* ==== Opendian light-mode tokens (from theme.css .theme-light) ==== */
+:root {
+  --oc-bg: #ffffff;
+  --oc-surface: #f5f5f7;
+  --oc-border: #d2d2d7;
+  --oc-border-muted: #e5e5ea;
+  --oc-text: #1d1d1f;
+  --oc-text-secondary: #424245;
+  --oc-text-muted: #6e6e73;
+  --oc-text-disabled: #86868b;
+  --border-hairline: rgba(0, 0, 0, 0.06);
+  --chrome-tab-border: rgba(0, 0, 0, 0.09);
+  --bg-active: rgba(0, 0, 0, 0.07);
+  --bg-tab-active: rgba(0, 0, 0, 0.12);
+  --tag-background: rgba(0, 0, 0, 0.05);
+  --callout-surface: rgba(0, 0, 0, 0.018);
+  --callout-info-text: #315f8f;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+  --pixel: 'Pixelify Sans', monospace;
+  /* artboard */
+  --canvas: #f2efe9;
+  --strip: #131316;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+
+body {
+  background: var(--canvas);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* faint vertical page grid on the canvas (organizer, not a subject) */
+.canvas-grid {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 199px,
+    rgba(0,0,0,0.028) 199px, rgba(0,0,0,0.028) 200px);
+  pointer-events: none;
+}
+
+/* ================= BRAND STRIP ================= */
+.strip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 150px;
+  background: var(--strip);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64px;
+  overflow: hidden;
+}
+.strip .grid {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 199px,
+    rgba(255,255,255,0.055) 199px, rgba(255,255,255,0.055) 200px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+.o-mark {
+  width: 40px; height: 40px;
+  border: 10px solid #ffffff;
+}
+.wordmark {
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: 66px;
+  line-height: 1;
+  letter-spacing: 0.015em;
+  color: #86868b;
+  transform: translateY(-4px);
+}
+.wordmark b {
+  font-weight: 700;
+  color: #ffffff;
+}
+.strip-right {
+  position: relative;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-end;
+}
+.tagline {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: #b4b4ba;
+  letter-spacing: 0.01em;
+}
+.tagline .dim { color: #5c5c62; }
+.tokens {
+  display: flex;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #7c7c83;
+}
+.tokens span {
+  border: 1px solid rgba(255,255,255,0.16);
+  padding: 3px 10px;
+}
+
+/* ================= WORKSPACE (cropped, bleeds right + bottom) ================= */
+.workspace {
+  position: absolute;
+  top: 208px;
+  left: 64px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--oc-bg);
+  border: 1px solid var(--oc-border);
+  border-right: none;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- tab bar --- */
+.tabbar {
+  height: 44px;
+  background: var(--oc-surface);
+  border-bottom: 1px solid var(--chrome-tab-border);
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.tab {
+  font-size: 13px;
+  color: var(--oc-text-muted);
+  padding: 6px 16px;
+  border-radius: 4px;
+}
+.tab.active {
+  background: var(--bg-tab-active);
+  color: var(--oc-text);
+  font-weight: 500;
+}
+
+.body { flex: 1; display: flex; min-height: 0; }
+
+/* --- file tree --- */
+.tree {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--oc-surface);
+  border-right: 1px solid var(--chrome-tab-border);
+  padding: 20px 10px;
+  font-size: 13px;
+  color: var(--oc-text-secondary);
+  display: flex;
+  flex-direction: column;
+}
+.titem {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding-left: 10px;
+  position: relative;
+}
+.titem .chev {
+  color: var(--oc-text-disabled);
+  font-size: 10px;
+  margin-right: 7px;
+  width: 10px;
+}
+.titem.folder { font-weight: 500; color: var(--oc-text); }
+.tgroup {
+  margin-left: 15px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-hairline);
+}
+.titem.active {
+  background: var(--bg-active);
+  color: var(--oc-text);
+}
+.titem.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--oc-text);
+}
+.titem.file { padding-left: 27px; }
+.tgroup .titem.file { padding-left: 10px; }
+/* dual-colour vault title (fingerprint #12) */
+.vault {
+  margin-top: auto;
+  padding: 14px 10px 46px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--oc-text-disabled);
+}
+.vault b { color: var(--oc-text); font-weight: 600; }
+
+/* --- content --- */
+.content {
+  flex: 1;
+  background: var(--oc-bg);
+  overflow: hidden;
+  padding: 44px 0 0;
+}
+.page {
+  width: 690px;
+  margin: 0 auto;
+}
+h1 {
+  font-family: var(--mono);
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--oc-text);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.tags { margin: 12px 0 24px; display: flex; gap: 8px; }
+.tag {
+  font-size: 12px;
+  color: var(--oc-text);
+  background: var(--tag-background);
+  padding: 2px 9px;
+  border-radius: 4px;
+}
+blockquote {
+  border-left: 1.5px solid var(--oc-text-muted);
+  background-image: linear-gradient(to right,
+    transparent 7px,
+    var(--oc-border-muted) 7px,
+    var(--oc-border-muted) 8px,
+    transparent 8px);
+  background-repeat: no-repeat;
+  background-size: 8px 100%;
+  padding: 2px 0 2px 24px;
+  color: var(--oc-text-muted);
+  font-size: 14.5px;
+  margin-bottom: 26px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+  margin-bottom: 28px;
+}
+th:nth-child(1), td:nth-child(1) { width: 26%; }
+th:nth-child(2), td:nth-child(2) { width: 38%; }
+th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--oc-text);
+  padding: 8px 14px 8px 0;
+  border-bottom: 1px solid var(--oc-border);
+}
+td {
+  padding: 9px 14px 9px 0;
+  color: var(--oc-text-secondary);
+  border-bottom: 1px solid var(--border-hairline);
+}
+td:first-child { color: var(--oc-text); }
+td.num { font-variant-numeric: tabular-nums; }
+
+/* --- callout (zero radius, low tint, 2px semantic rail) --- */
+.callout {
+  background: var(--callout-surface);
+  border-left: 2px solid var(--callout-info-text);
+  padding: 12px 18px 13px;
+  margin-bottom: 28px;
+  font-size: 13.5px;
+}
+.callout .ctitle {
+  color: var(--callout-info-text);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.callout .cbody { color: var(--oc-text-secondary); }
+.cbody code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  font-weight: 600;
+  background: var(--oc-surface);
+  padding: 2px 6px;
+  border-radius: 0;
+}
+
+pre {
+  background: var(--oc-surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: 0;
+}
+.lang {
+  padding: 7px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--oc-text-muted);
+  border-bottom: 1px solid var(--border-hairline);
+}
+pre code {
+  display: block;
+  padding: 14px 18px 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--oc-text);
+}
+code .m { color: var(--oc-text-muted); }
+
+/* --- properties pane (right, cropped by canvas edge) --- */
+.props {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--oc-surface);
+  border-left: 1px solid var(--chrome-tab-border);
+  padding: 24px 18px;
+  font-size: 12.5px;
+  color: var(--oc-text-muted);
+}
+.prow {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 10px;
+}
+.prow .pkey {
+  width: 74px;
+  flex-shrink: 0;
+  color: var(--oc-text-secondary);
+}
+.prow .pbar {
+  height: 6px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 3px;
+}
+.props .phead {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--oc-text-disabled);
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div class="canvas-grid"></div>
+
+<div class="strip">
+  <div class="grid"></div>
+  <div class="brand">
+    <div class="o-mark"></div>
+    <div class="wordmark">open<b>dian</b></div>
+  </div>
+  <div class="strip-right">
+    <div class="tagline"><span class="dim">*</span> A quiet developer theme for Obsidian <span class="dim">*</span></div>
+    <div class="tokens"><span>[ mono ]</span><span>[ sharp ]</span><span>[ light / dark ]</span></div>
+  </div>
+</div>
+
+<div class="workspace">
+  <div class="tabbar">
+    <div class="tab active">Reference</div>
+    <div class="tab">Syntax</div>
+    <div class="tab">Draft</div>
+  </div>
+  <div class="body">
+    <div class="tree">
+      <div class="titem folder"><span class="chev">&#9662;</span>Workspace</div>
+      <div class="tgroup">
+        <div class="titem file">Index</div>
+        <div class="titem file active">Reference</div>
+        <div class="titem file">Draft</div>
+      </div>
+      <div class="titem folder"><span class="chev">&#9656;</span>Syntax</div>
+      <div class="titem folder"><span class="chev">&#9656;</span>Archive</div>
+      <div class="vault">OPEN<b>DIAN</b></div>
+    </div>
+    <div class="content">
+      <div class="page">
+        <h1>Reference</h1>
+        <div class="tags"><span class="tag">#reference</span><span class="tag">#spec</span></div>
+        <blockquote>Dense values, quiet rules.</blockquote>
+        <table>
+          <tr><th>Field</th><th>Value</th><th>Note</th></tr>
+          <tr><td>height</td><td class="num">420&ndash;540 mm</td><td>min. range</td></tr>
+          <tr><td>depth</td><td class="num">440&ndash;500 mm</td><td>5-step</td></tr>
+          <tr><td>width</td><td class="num">520 mm</td><td>R20 edge</td></tr>
+          <tr><td>weight</td><td class="num">18.5 kg</td><td>net</td></tr>
+        </table>
+        <div class="callout">
+          <div class="ctitle">Note</div>
+          <div class="cbody">Content stays sharp; controls use <code>--oc-radius</code>.</div>
+        </div>
+        <pre><div class="lang">CSS</div><code>.token-field {
+  color: <span class="m">var(--text-muted)</span>;
+}</code></pre>
+      </div>
+    </div>
+    <div class="props">
+      <div class="phead">Properties</div>
+      <div class="prow"><span class="pkey">title</span><span class="pbar" style="width:96px"></span></div>
+      <div class="prow"><span class="pkey">tags</span><span class="pbar" style="width:64px"></span></div>
+      <div class="prow"><span class="pkey">status</span><span class="pbar" style="width:48px"></span></div>
+      <div class="prow"><span class="pkey">type</span><span class="pbar" style="width:72px"></span></div>
+      <div class="prow"><span class="pkey">source</span><span class="pbar" style="width:56px"></span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
