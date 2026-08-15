@@ -4,7 +4,7 @@
 
 > **A developer-documentation theme for Obsidian.** Monospace typography, a layered radius system, and minimal chrome — inspired by the [OpenCode](https://opencode.ai) visual language. Makes your vault feel like a professional code editor, not a note-taking app.
 
-[中文介绍](https://github.com/elijahchan2019/obsidian-opendian-theme/blob/main/README.zh-CN.md) · Light &amp; Dark · Desktop &amp; Mobile · No plugin required
+[中文介绍](https://github.com/elijah7x/theme-opendian/blob/main/README.zh-CN.md) · Light &amp; Dark · Desktop &amp; Mobile · No plugin required
 
 ## Recommended Font
 

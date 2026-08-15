@@ -123,9 +123,9 @@ DEV_VAULT 已通过 symlink 把本主题挂进 `../DEV_VAULT/.obsidian/themes/Op
 
 **发完 30 秒强制自检（缺一不可）：**
 ```bash
-gh api repos/elijahchan2019/obsidian-opendian-theme/releases/latest --jq '.tag_name'  # == manifest version，无 v
+gh api repos/elijah7x/theme-opendian/releases/latest --jq '.tag_name'  # == manifest version，无 v
 gh release view <版本> --json assets --jq '.assets[].name'                            # theme.css / manifest.json 在
-gh api repos/elijahchan2019/obsidian-opendian-theme/releases --jq '.[]|select(.tag_name=="<版本>")|.draft'  # 必须 false
+gh api repos/elijah7x/theme-opendian/releases --jq '.[]|select(.tag_name=="<版本>")|.draft'  # 必须 false
 ```
 > ⚠️ 坑：`gh release create` 传大图可能**客户端超时**，把 release 卡在 **draft** 态
 > ——draft 不建 tag、不算 Latest、市场也看不到。若自检发现 `draft=true`，

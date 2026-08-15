@@ -4,7 +4,7 @@
 
 > **一款为 Obsidian 打造的开发者文档主题。** 等宽字体、分层圆角标尺、极简线条——以 [OpenCode](https://opencode.ai) 官方视觉语言为灵感，让你的知识库拥有专业代码编辑器的质感，而非笔记应用的观感。
 
-[English](https://github.com/elijahchan2019/obsidian-opendian-theme/blob/main/README.md) · 亮色 &amp; 暗色 · 桌面 &amp; 移动端 · 无需插件
+[English](https://github.com/elijah7x/theme-opendian/blob/main/README.md) · 亮色 &amp; 暗色 · 桌面 &amp; 移动端 · 无需插件
 
 ## 推荐字体
 
