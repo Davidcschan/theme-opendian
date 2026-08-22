@@ -10,10 +10,13 @@
 
 Opendian is designed around **IBM Plex Mono**, the same open-source mono family used by OpenCode's documentation. The theme includes a fallback stack, but installing IBM Plex Mono gives the sidebar, headings, and editor text the intended spacing.
 
+If your notes are mostly in Chinese, also install a **CJK monospace** — [Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) or [Maple Mono CN](https://font.subf.dev). Their CJK glyphs are exactly 2:1 against Latin, so mixed-script text keeps the mono rhythm. Without one, CJK falls back to a proportional sans and everything still works.
+
 macOS users with Homebrew can install it with:
 
 ```bash
 brew install --cask font-ibm-plex-mono
+brew install --cask font-sarasa-gothic   # CJK monospace (or font-maple-mono-cn)
 ```
 
 You can also download it from the official [IBM Plex repository](https://github.com/IBM/plex). Restart Obsidian after installing the font.
@@ -77,7 +80,7 @@ Opendian covers every surface that shapes the developer writing experience:
 - **Inline code** — borderless neutral tint + monochrome text
 - **Callouts** — slim semantic rail + low-tint surface, with color concentrated on title/icon
 - **Tables** — minimalist 1px horizontal hairline rows, zero radius, compact density
-- **Blockquotes** — double neutral rail, no accent color bleed
+- **Blockquotes** — single quiet neutral rail, no accent color bleed
 - **Headings** — monospace, no decorative underlines, edit-reading size parity
 - **Tabs** — immersive bar with a flat active chip, hairline dividers, and a geometric pinned-tab marker
 - **Sidebar** — black accent bar on active file, auto-collapsing top toolbar
@@ -138,6 +141,7 @@ Manual installation is also possible by downloading the latest release and placi
 - Light and dark modes
 - Desktop and mobile
 - No plugin required
+- Optional: with the Style Settings plugin installed, you can tune the accent color, logo split point, inline-code tint, and content-corner radius from the settings UI (defaults apply without it)
 
 ## License
 

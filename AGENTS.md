@@ -39,7 +39,8 @@ DEV_VAULT 已通过 symlink 把本主题挂进 `../DEV_VAULT/.obsidian/themes/Op
 
 | 行号 | 区段 |
 |------|------|
-| 16   | OPENCODE DESIGN TOKENS（`.theme-dark` ~19、`.theme-light` ~139、共享块 ~223：调色板 / 语义别名 / `--oc-*` 短 token / callout / 圆角 / 字体栈） |
+| 15   | STYLE SETTINGS（`@settings` 块——Style Settings 插件的旋钮定义：accent / logo 分割点 / 行内代码底色 / 内容圆角；无插件时整段只是注释，零影响） |
+| 47   | OPENCODE DESIGN TOKENS（`.theme-dark` ~50、`.theme-light` ~170、共享块 ~255：调色板 / 语义别名 / tint 标尺（`--oc-tint-1~4`）/ 间距标尺（`--oc-space-1~6`）/ 动效（`--oc-motion`）/ `--oc-*` 短 token / callout / 圆角 / 字体栈） |
 | 341  | 1. BASE（`body`、prose 节奏、frontmatter properties） |
 | 423  | 2. SIDEBAR & LOGO（左栏、vault 双色 wordmark、ribbon、侧栏图标对齐、设置图标、root split divider） |
 | 805  | 3. TABS（沉浸式单栏 tab，浮动 pill 几何，pin 标记） |

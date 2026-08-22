@@ -12,6 +12,37 @@
   - Fonts:  IBM Plex Mono / Berkeley Mono stack
 */
 
+/* @settings
+
+name: Opendian
+id: opendian
+settings:
+    -
+        id: oc-accent
+        title: Accent color
+        description: Drives focus rings, interactive accents and text selection. Default is OpenCode blue.
+        type: variable-themed-color
+        format: hex
+        default-light: '#007aff'
+        default-dark: '#007aff'
+    -
+        id: oc-logo-split
+        title: Logo split point
+        description: Leading vault-name characters shown muted, in ch units (one CJK glyph ≈ 2ch).
+        type: variable-text
+        default: '4ch'
+    -
+        id: opendian-plain-inline-code
+        title: Plain inline code
+        description: Remove the tinted background from inline code.
+        type: class-toggle
+    -
+        id: opendian-soft-content
+        title: Soft content corners
+        description: Round code blocks, callouts and inline code with the 4px chip radius instead of sharp corners.
+        type: class-toggle
+*/
+
 /* ============================================================
    OPENCODE DESIGN TOKENS
    ============================================================ */
@@ -70,18 +101,25 @@
   /* Tag: flat tinted fill (white overlay) + normal text color, not an inverted
      solid pill — keeps tags quiet when many appear together. Border on the
      .tag rule is tuned to match (see §10 TAGS). */
-  --tag-background: rgba(255, 255, 255, 0.08);
-  --tag-background-hover: rgba(255, 255, 255, 0.14);
+  --tag-background: var(--oc-tint-3);
+  --tag-background-hover: var(--oc-tint-4);
   --tag-color: var(--text-normal);
   --tag-color-hover: var(--text-normal);
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
-  --text-selection: rgba(0, 122, 255, 0.25);
+  --text-selection: color-mix(in srgb, var(--oc-accent) 25%, transparent);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
   --interactive-accent: var(--oc-accent);
   --interactive-accent-hover: var(--oc-accent-hover);
+
+  /* Tint scale — one perceptually-even ladder for every hover/active fill.
+     Components pick a step instead of inventing an alpha. */
+  --oc-tint-1: rgba(255, 255, 255, 0.04);
+  --oc-tint-2: rgba(255, 255, 255, 0.06);
+  --oc-tint-3: rgba(255, 255, 255, 0.09);
+  --oc-tint-4: rgba(255, 255, 255, 0.14);
 
   /* Custom short tokens (legacy-compatible) */
   --bg-color: var(--oc-bg);
@@ -94,12 +132,12 @@
   --border-split: rgba(255, 255, 255, 0.035);
   --chrome-tab-border: rgba(255, 255, 255, 0.085);
   --chrome-split-border: rgba(255, 255, 255, 0.1);
-  --bg-active: rgba(255, 255, 255, 0.09);
-  --bg-hover: rgba(255, 255, 255, 0.04);
-  --bg-nav-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: var(--oc-tint-3);
+  --bg-hover: var(--oc-tint-1);
+  --bg-nav-hover: var(--oc-tint-2);
   /* Active tab needs a noticeably darker fill than a hover/selected icon
      so the open file reads at a glance, without jumping to a flat white. */
-  --bg-tab-active: rgba(255, 255, 255, 0.14);
+  --bg-tab-active: var(--oc-tint-4);
 
   /* Callouts: neutral technical surface, semantic color on rail/title/icon. */
   --callout-surface: rgba(255, 255, 255, 0.026);
@@ -188,20 +226,27 @@
   /* Tag: flat tinted fill (black overlay) + normal text color, not an inverted
      solid pill — keeps tags quiet when many appear together. Border on the
      .tag rule is tuned to match (see §10 TAGS). */
-  --tag-background: rgba(0, 0, 0, 0.05);
-  --tag-background-hover: rgba(0, 0, 0, 0.09);
+  --tag-background: var(--oc-tint-2);
+  --tag-background-hover: var(--oc-tint-3);
   --tag-color: var(--text-normal);
   --tag-color-hover: var(--text-normal);
   /* Deeper variants for TEXT on white: raw --oc-success/--oc-danger sit at
      ~2–3:1 contrast on #fff (below AA). Backgrounds keep the raw palette. */
   --text-error: #d70015;
   --text-success: #248a3d;
-  --text-selection: rgba(0, 122, 255, 0.20);
+  --text-selection: color-mix(in srgb, var(--oc-accent) 20%, transparent);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
   --interactive-accent: var(--oc-accent);
   --interactive-accent-hover: var(--oc-accent-hover);
+
+  /* Tint scale — one perceptually-even ladder for every hover/active fill.
+     Components pick a step instead of inventing an alpha. */
+  --oc-tint-1: rgba(0, 0, 0, 0.03);
+  --oc-tint-2: rgba(0, 0, 0, 0.05);
+  --oc-tint-3: rgba(0, 0, 0, 0.07);
+  --oc-tint-4: rgba(0, 0, 0, 0.12);
 
   /* Custom short tokens */
   --bg-color: var(--oc-bg);
@@ -214,10 +259,10 @@
   --border-split: rgba(0, 0, 0, 0.035);
   --chrome-tab-border: rgba(0, 0, 0, 0.09);
   --chrome-split-border: rgba(0, 0, 0, 0.1);
-  --bg-active: rgba(0, 0, 0, 0.07);
-  --bg-hover: rgba(0, 0, 0, 0.03);
-  --bg-nav-hover: rgba(0, 0, 0, 0.045);
-  --bg-tab-active: rgba(0, 0, 0, 0.12);
+  --bg-active: var(--oc-tint-3);
+  --bg-hover: var(--oc-tint-1);
+  --bg-nav-hover: var(--oc-tint-2);
+  --bg-tab-active: var(--oc-tint-4);
 
   /* Callouts */
   --callout-surface: rgba(0, 0, 0, 0.018);
@@ -269,13 +314,14 @@
   --checkbox-marker-color: var(--background-primary);
   --checklist-done-decoration: none;
 
-  /* Blockquote: double rail, not accent blue. */
-  --blockquote-border-color: var(--text-muted);
-  --blockquote-border-thickness: 1.5px;
+  /* Blockquote: single quiet rail, not accent blue. The secondary-rail
+     tokens stay at 0 so §17's Live Preview :after renders nothing. */
+  --blockquote-border-color: var(--border-color);
+  --blockquote-border-thickness: 2px;
   --blockquote-rail-secondary-color: var(--oc-border-muted);
-  --blockquote-rail-secondary-thickness: 1px;
-  --blockquote-rail-gap: 7px;
-  --hr-color: var(--border-color);
+  --blockquote-rail-secondary-thickness: 0px;
+  --blockquote-rail-gap: 0px;
+  --hr-color: var(--oc-border-muted);
   --hr-thickness: 1px;
 
   /* Radius scale — one consistent system across the whole theme:
@@ -294,6 +340,20 @@
   --radius-xl: var(--oc-radius);
   --control-radius: var(--oc-radius);
   --control-radius-sm: var(--oc-radius);
+
+  /* Spacing scale — 4px base grid. Component padding/margin/gap route
+     through these steps so whitespace snaps to one grid; fine-tuned
+     internals (1px/2px/5px/10px…) stay literal. */
+  --oc-space-1: 4px;
+  --oc-space-2: 8px;
+  --oc-space-3: 12px;
+  --oc-space-4: 16px;
+  --oc-space-5: 20px;
+  --oc-space-6: 24px;
+
+  /* Motion — one duration/easing for all UI transitions (color/opacity
+     only; never animate layout properties). */
+  --oc-motion: 0.12s ease;
 
   /* Unify the top window chrome: titlebar, tab bar and the sidebar-toggle
      all share ONE surface. Obsidian's default focused variant is white
@@ -331,8 +391,11 @@
      comes from each element's background-color. */
   --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
 
-  /* Typography: OpenCode uses a mono-forward stack */
-  --font-default: 'IBM Plex Mono', 'Berkeley Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace, 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* Typography: OpenCode uses a mono-forward stack. CJK falls back to true
+     monospace CJK faces first (Sarasa / Maple Mono CN, 2:1 width ratio) so
+     mixed-script text keeps the mono rhythm instead of collapsing into a
+     proportional sans. */
+  --font-default: 'IBM Plex Mono', 'Berkeley Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', 'Sarasa Mono SC', 'Maple Mono CN', monospace, 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-monospace: var(--font-default);
   --font-heading: var(--font-default);
 }
@@ -464,8 +527,8 @@ body {
    stays accurate across vault names of different lengths in a
    monospace stack. Override --oc-logo-split per-vault as needed. */
 .nav-folder.mod-root > .nav-folder-title {
-  margin: 12px 12px 20px 12px;
-  padding: 8px 12px;
+  margin: var(--oc-space-3) var(--oc-space-3) var(--oc-space-5) var(--oc-space-3);
+  padding: var(--oc-space-2) var(--oc-space-3);
   background-color: transparent;
   border: none;
   font-family: var(--font-heading);
@@ -506,7 +569,7 @@ body:not(.is-mobile) .workspace-split.mod-left-split
   .workspace-sidedock-vault-profile {
   border-top: none !important;
   align-items: center;
-  gap: 8px;
+  gap: var(--oc-space-2);
   padding-inline: 18px 20px;
 }
 
@@ -598,7 +661,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   margin: 1px 0;
   color: var(--text-normal);
   letter-spacing: var(--sidebar-text-tracking);
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: background-color var(--oc-motion), color var(--oc-motion);
 }
 
 .nav-file-title.is-active {
@@ -621,7 +684,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 
 .nav-folder-collapse-indicator {
   opacity: 0.4;
-  transition: opacity 0.12s ease;
+  transition: opacity var(--oc-motion);
 }
 .nav-folder-title:hover .nav-folder-collapse-indicator {
   opacity: 0.8;
@@ -702,7 +765,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 .workspace-ribbon .clickable-icon {
   opacity: 0.45;
   border-radius: var(--oc-radius-control);
-  transition: opacity 0.12s ease, background-color 0.12s ease;
+  transition: opacity var(--oc-motion), background-color var(--oc-motion);
 }
 .workspace-ribbon .clickable-icon:hover {
   opacity: 0.9;
@@ -892,7 +955,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   border-radius: var(--oc-radius-control) !important;
   margin: 0 !important;
   padding: 0 !important;
-  transition: color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+  transition: color var(--oc-motion), background-color var(--oc-motion), box-shadow var(--oc-motion);
   position: relative;
   font-weight: 500;
   --tab-font-size: 11px;
@@ -904,7 +967,7 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   background-color: transparent !important;
   border-radius: var(--oc-radius-control);
   height: 30px;
-  padding: 0 12px;
+  padding: 0 var(--oc-space-3);
   align-items: center;
 }
 
@@ -1024,10 +1087,10 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   border-bottom: none;
 }
 
-.HyperMD-header-1, .markdown-rendered h1 { font-size: 1.85em !important; margin-top: 1.6em; margin-bottom: 0.6em; font-weight: 700; }
-.HyperMD-header-2, .markdown-rendered h2 { font-size: 1.55em !important; margin-top: 1.4em; margin-bottom: 0.5em; }
-.HyperMD-header-3, .markdown-rendered h3 { font-size: 1.3em !important; margin-top: 1.2em; margin-bottom: 0.4em; }
-.HyperMD-header-4, .markdown-rendered h4 { font-size: 1.1em !important; font-weight: 600; margin-top: 1em; margin-bottom: 0.3em; color: var(--text-normal); }
+.HyperMD-header-1, .markdown-rendered h1 { font-size: 1.6em !important; margin-top: 1.4em; margin-bottom: 0.6em; font-weight: 700; }
+.HyperMD-header-2, .markdown-rendered h2 { font-size: 1.35em !important; margin-top: 1.3em; margin-bottom: 0.5em; }
+.HyperMD-header-3, .markdown-rendered h3 { font-size: 1.15em !important; margin-top: 1.2em; margin-bottom: 0.4em; }
+.HyperMD-header-4, .markdown-rendered h4 { font-size: 1.05em !important; font-weight: 600; margin-top: 1em; margin-bottom: 0.3em; color: var(--text-normal); }
 .HyperMD-header-5, .markdown-rendered h5 { font-size: 1em !important; font-weight: 600; color: var(--text-muted); margin-top: 0.8em; }
 .HyperMD-header-6, .markdown-rendered h6 { font-size: 0.95em !important; font-weight: 600; color: var(--text-muted); }
 
@@ -1038,7 +1101,7 @@ a {
   text-decoration-color: var(--link-decoration-color);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  transition: color 0.12s ease, text-decoration-color 0.12s ease;
+  transition: color var(--oc-motion), text-decoration-color var(--oc-motion);
 }
 a:hover {
   color: var(--link-color-hover);
@@ -1062,15 +1125,6 @@ a:hover {
   color: var(--text-muted);
   font-style: normal;
   margin-inline-start: 0;
-  background-image: linear-gradient(
-    to right,
-    transparent var(--blockquote-rail-gap),
-    var(--blockquote-rail-secondary-color) var(--blockquote-rail-gap),
-    var(--blockquote-rail-secondary-color) calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness)),
-    transparent calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness))
-  );
-  background-repeat: no-repeat;
-  background-size: calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness)) 100%;
 }
 
 .markdown-rendered blockquote p {
@@ -1149,7 +1203,7 @@ a:hover {
 
 .markdown-rendered th:first-child,
 .markdown-rendered td:first-child {
-  padding-left: 4px;
+  padding-left: var(--oc-space-1);
 }
 
 /* Compact tables */
@@ -1185,13 +1239,13 @@ a:hover {
   border: none;
   border-left: 2px solid var(--oc-callout-color);
   border-radius: 0;
-  padding: 12px 16px;
+  padding: var(--oc-space-3) var(--oc-space-4);
   margin: 1.2em 0;
   box-shadow: none;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--oc-space-3);
 }
 
 .callout-title {
@@ -1200,7 +1254,7 @@ a:hover {
   font-size: 0.9em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--oc-space-2);
   padding: 0;
   margin: 0;
   font-family: var(--font-default);
@@ -1342,13 +1396,13 @@ a:hover {
   border: 1px solid var(--border-hairline);
   border-radius: 0;
   padding: 0;
-  margin: 1.4em 0;
+  margin: 1.2em 0;
   overflow: hidden;
   position: relative;
 }
 
 .markdown-rendered pre code {
-  padding: 16px 18px;
+  padding: var(--oc-space-4) var(--oc-space-5);
   display: block;
   font-family: var(--font-monospace);
   font-size: 13px;
@@ -1362,13 +1416,29 @@ a:hover {
 .markdown-rendered code:not(pre code) {
   font-family: var(--font-monospace);
   font-size: 0.85em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-normal);
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-hover);
   border: none;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 0;
   line-height: 1.4;
+}
+
+/* Style Settings toggles (see @settings block at the top of the file):
+   - opendian-plain-inline-code: drop the tinted chip behind inline code
+   - opendian-soft-content: swap sharp content corners for the 4px chip radius */
+body.opendian-plain-inline-code .markdown-rendered code:not(pre code),
+body.opendian-plain-inline-code .markdown-source-view .cm-inline-code {
+  background-color: transparent;
+  padding-inline: 1px;
+}
+
+body.opendian-soft-content .markdown-rendered pre,
+body.opendian-soft-content .callout,
+body.opendian-soft-content .markdown-rendered code:not(pre code),
+body.opendian-soft-content .markdown-source-view .cm-inline-code {
+  border-radius: var(--oc-radius);
 }
 
 /* Code block language label — single header bar above the code.
@@ -1378,7 +1448,7 @@ a:hover {
 .markdown-rendered pre:has(> code[class*="language-"])::before {
   content: 'Code';
   display: block;
-  padding: 6px 18px;
+  padding: 5px var(--oc-space-4);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -1437,7 +1507,7 @@ a:hover {
 /* Code block with language label needs inner code padding adjustment */
 .markdown-rendered pre[class*="language-"] code,
 .markdown-rendered pre:has(> code[class*="language-"]) code {
-  padding-top: 12px;
+  padding-top: var(--oc-space-3);
 }
 
 /* ============================================================
@@ -1573,14 +1643,14 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
   --oc-task-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2210%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M5%208h6%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fsvg%3E");
 }
 
-.markdown-rendered ul > li, .markdown-rendered ol > li { margin-bottom: 4px; }
+.markdown-rendered ul > li, .markdown-rendered ol > li { margin-bottom: var(--oc-space-1); }
 
 .markdown-rendered ul, .markdown-rendered ol {
   padding-left: 1.4em;
 }
 
 .markdown-rendered li > ul, .markdown-rendered li > ol {
-  margin-top: 4px;
+  margin-top: var(--oc-space-1);
 }
 
 /* ============================================================
@@ -1594,13 +1664,13 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
   overflow: hidden;
 }
 
-/* Settings window shares the rounded frame; its inner sidebar must clip to
-   the same radius so the top-left corner isn't a square poking out. */
-.modal.mod-settings,
-.modal.mod-settings .vertical-tab-header {
-  border-top-left-radius: var(--oc-radius-modal);
-  border-bottom-left-radius: var(--oc-radius-modal);
-}
+/* The settings sidebar must NOT carry its own corner radius: .modal above
+   already pairs border-radius with overflow:hidden, which clips the square
+   child cleanly along the modal's inner curve. Forcing radius on
+   .vertical-tab-header instead draws a second arc 1px inside the modal's
+   border ring — the "double-arc" sliver at the top-left corner (regressed
+   when Obsidian 1.13 moved the settings search box to the top of the
+   sidebar, making the arc clearly visible). */
 
 .modal.mod-settings {
   --setting-item-background: transparent;
@@ -1623,10 +1693,10 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
 
 .vertical-tab-nav-item {
   border-radius: var(--oc-radius-control);
-  padding: 5px 12px;
-  margin: 1px 8px;
+  padding: 5px var(--oc-space-3);
+  margin: 1px var(--oc-space-2);
   min-height: 28px;
-  transition: background-color 0.12s ease;
+  transition: background-color var(--oc-motion);
   display: flex;
   align-items: center;
   color: var(--text-muted);
@@ -1652,10 +1722,10 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
 
 .setting-item {
   border-top: 1px solid var(--border-hairline);
-  padding: 16px 0;
+  padding: var(--oc-space-4) 0;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--oc-space-6);
 }
 
 .modal.mod-settings .setting-item {
@@ -1663,7 +1733,7 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
   border-radius: 0;
   box-shadow: none;
   margin-bottom: 0;
-  padding: 16px;
+  padding: var(--oc-space-4);
 }
 .setting-item-info {
   flex: 1 1 auto;
@@ -1674,7 +1744,7 @@ li:is([data-task="/"], [data-task="-"], [data-task="!"], [data-task="?"], [data-
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--oc-space-2);
   min-height: 28px;
 }
 .setting-item-name {
@@ -1716,7 +1786,7 @@ button.mod-cta,
 :where(.modal, .prompt, .setting-item-control, .vertical-tab-content, .modal-content) button {
   border-radius: var(--oc-radius-control) !important;
   font-family: var(--font-default);
-  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+  transition: background-color var(--oc-motion), border-color var(--oc-motion), color var(--oc-motion), box-shadow var(--oc-motion);
   font-weight: 600;
   line-height: 1.4;
 }
@@ -1762,7 +1832,7 @@ button.mod-cta.mod-small {
 /* Large buttons */
 :where(.modal, .prompt, .setting-item-control, .vertical-tab-content, .modal-content) button:not(.mod-cta):not(.clickable-icon).mod-large,
 button.mod-cta.mod-large {
-  padding: 8px 20px;
+  padding: var(--oc-space-2) var(--oc-space-5);
   font-size: 14px;
 }
 
@@ -1787,7 +1857,7 @@ select,
   font-family: var(--font-default) !important;
   font-size: 0.95em;
   color: var(--text-normal);
-  transition: background-color 0.12s ease;
+  transition: background-color var(--oc-motion);
   appearance: none !important;
   -webkit-appearance: none !important;
   background-image: var(--oc-dropdown-arrow) !important;
@@ -1865,7 +1935,7 @@ input[type="text"]:focus, input[type="search"]:focus, textarea:focus {
   font-weight: 500;
   text-decoration: none !important;
   font-family: var(--font-default);
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: background-color var(--oc-motion), color var(--oc-motion);
   line-height: 1.6;
   /* Tags are atomic — never break mid-tag (e.g. "#测" / "试" in a narrow
      dataview column). Allow the cell to overflow horizontally instead. */
@@ -1963,7 +2033,7 @@ a.tag {
    ============================================================ */
 .workspace-split.mod-right-split .view-content {
   background-color: var(--background-secondary);
-  padding: 8px 0;
+  padding: var(--oc-space-2) 0;
 }
 
 /* Collapse the empty .view-header inside sidebar panes. Outline / backlinks
@@ -2030,12 +2100,12 @@ a.tag {
      when the buttons fit one line, so the file-explorer / outline rails are
      unchanged — they still render a single centered row. */
   flex-wrap: wrap;
-  gap: 4px;
+  gap: var(--oc-space-1);
   overflow: hidden;
   max-height: 0;
   opacity: 0;
   margin: 0 !important;
-  padding: 0 8px;
+  padding: 0 var(--oc-space-2);
   pointer-events: none;
   background-color: transparent !important;
   box-shadow: none !important;
@@ -2124,7 +2194,7 @@ a.tag {
   margin: 1px 0;
   color: var(--text-normal);
   letter-spacing: var(--sidebar-text-tracking);
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: background-color var(--oc-motion), color var(--oc-motion);
   line-height: 1.5;
 }
 
@@ -2220,11 +2290,11 @@ a.tag {
 }
 
 .suggestion-item {
-  padding: 8px 12px;
+  padding: var(--oc-space-2) var(--oc-space-3);
   border-radius: var(--oc-radius);
   margin: 0 6px;
   color: var(--text-normal);
-  transition: background-color 0.12s ease;
+  transition: background-color var(--oc-motion);
 }
 
 .suggestion-item.is-selected {
@@ -2315,7 +2385,7 @@ a.tag {
   padding: 7px 10px;
   margin: 0;
   color: var(--text-normal);
-  transition: background-color 0.12s ease;
+  transition: background-color var(--oc-motion);
 }
 
 .menu-item:hover {
@@ -2333,7 +2403,7 @@ a.tag {
 
 .menu-separator {
   border-bottom: 1px solid var(--border-color);
-  margin: 4px 0;
+  margin: var(--oc-space-1) 0;
 }
 
 /* ============================================================
@@ -2355,7 +2425,7 @@ a.tag {
   font-size: 12px;
   gap: 0;
   min-height: 24px;
-  margin: 0 8px 8px 0;
+  margin: 0 var(--oc-space-2) var(--oc-space-2) 0;
   overflow: hidden;
   padding: 2px 6px;
 }
@@ -2368,7 +2438,7 @@ a.tag {
   min-height: 18px;
   padding: 0 7px;
   position: relative;
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: background-color var(--oc-motion), color var(--oc-motion);
 }
 
 .status-bar-item.plugin-editor-status,
@@ -2422,7 +2492,7 @@ a.tag {
 .titlebar-button {
   color: var(--text-muted);
   opacity: 0.6;
-  transition: opacity 0.12s ease, background-color 0.12s ease;
+  transition: opacity var(--oc-motion), background-color var(--oc-motion);
 }
 
 .titlebar-button:hover {
@@ -2548,7 +2618,7 @@ a.tag {
    CRITICAL: font-size is set ONLY on the line-level .HyperMD-header-N
    classes (see §4). The span-level .cm-header-N here must NOT repeat
    font-size — Obsidian wraps the span inside the HyperMD line, so a
-   size on both layers multiplies (e.g. 1.85em × 1.85em ≈ 3.4x), which
+   size on both layers multiplies (e.g. 1.6em × 1.6em ≈ 2.6x), which
    is why headings looked much bigger in edit mode than reading mode
    despite identical declared values. Here we keep only color/weight. */
 .markdown-source-view .cm-header {
@@ -2645,13 +2715,13 @@ a.tag {
 /* Inline code in source mode */
 .markdown-source-view .cm-inline-code {
   font-family: var(--font-monospace);
-  /* Match reading-mode inline code exactly: 0.85em / 600 / 2px 6px. */
+  /* Match reading-mode inline code exactly: 0.85em / 500 / 1px 5px. */
   font-size: 0.85em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-normal);
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-hover);
   border: none;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 0;
 }
 

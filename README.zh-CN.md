@@ -10,10 +10,13 @@
 
 Opendian 围绕 **IBM Plex Mono** 设计，这是 OpenCode 文档也在使用的开源等宽字体。主题本身已经写好了回退字体栈；不安装也可以使用，但安装 IBM Plex Mono 后，侧边栏、标题和正文的字距会更接近设计稿。
 
+如果你的笔记以中文为主，建议再装一款 **CJK 等宽字体**——[更纱黑体 Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) 或 [Maple Mono CN](https://font.subf.dev)。它们的中英文宽度严格 2:1，中英混排时等宽韵律不会断。不装则回退到苹方，一切照常。
+
 macOS 用户如果已安装 Homebrew，可以运行：
 
 ```bash
 brew install --cask font-ibm-plex-mono
+brew install --cask font-sarasa-gothic   # 中文等宽（或 font-maple-mono-cn）
 ```
 
 也可以从 [IBM Plex 官方仓库](https://github.com/IBM/plex)下载。安装后建议重启 Obsidian。
@@ -77,7 +80,7 @@ Opendian 覆盖了塑造开发者写作体验的每一个表面：
 - **行内代码** —— 无边框中性底色 + 单色文字
 - **Callout** —— 细语义竖线 + 低透明底面，颜色集中在标题和图标
 - **表格** —— 极简 1px 水平细线、零圆角、紧凑密度
-- **引用块** —— 双中性竖线，无强调色溢出
+- **引用块** —— 单条中性细竖线，无强调色溢出
 - **标题** —— 等宽字体、无装饰下划线、编辑/阅读模式字号一致
 - **页签** —— 沉浸式顶栏 + 平面活跃 chip、极细分隔线、几何图钉标记
 - **侧边栏** —— 活跃文件黑色强调条、顶部工具栏悬停自动折叠
@@ -138,6 +141,7 @@ Opendian 支持 Obsidian 原生任务语法，也支持常见的 Minimal 风格�
 - 支持亮色与暗色模式
 - 支持桌面端与移动端
 - 不依赖插件
+- 可选增强：安装 Style Settings 插件后，可在设置里直接调节强调色、库名分割点、行内代码底色与内容区圆角（不装插件则全部使用默认值）
 
 ## 许可证
 
