@@ -6,24 +6,15 @@
 
 [中文介绍](https://github.com/elijah7x/theme-opendian/blob/main/README.zh-CN.md) · Light &amp; Dark · Desktop &amp; Mobile · No plugin required
 
-## Recommended Font
+## Typography & Fonts
 
-Opendian is designed around **IBM Plex Mono**, the same open-source mono family used by OpenCode's documentation. The theme includes a fallback stack, but installing IBM Plex Mono gives the sidebar, headings, and editor text the intended spacing.
+Opendian mirrors **opencode.ai/docs** (Starlight's system font stacks): system sans for prose and UI (SF Pro on macOS), system mono for code (SF Mono). **No font installation required** — every platform gets the docs-site look out of the box.
 
-If your notes are mostly in Chinese, also install a **CJK monospace** — [Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) or [Maple Mono CN](https://font.subf.dev). Their CJK glyphs are exactly 2:1 against Latin, so mixed-script text keeps the mono rhythm. Without one, CJK falls back to a proportional sans and everything still works.
-
-macOS users with Homebrew can install it with:
-
-```bash
-brew install --cask font-ibm-plex-mono
-brew install --cask font-sarasa-gothic   # CJK monospace (or font-maple-mono-cn)
-```
-
-You can also download it from the official [IBM Plex repository](https://github.com/IBM/plex). Restart Obsidian after installing the font.
+> CJK comments inside code fall back to Maple Mono CN / Sarasa Mono SC (true 2:1 monospaces), then PingFang. Optionally keep the mono rhythm in CJK code with `brew install --cask font-maple-mono-cn`.
 
 ## Why Opendian
 
-- **Monospace-first typography** — IBM Plex Mono → Berkeley Mono → JetBrains Mono across headings, body, and UI. Your vault reads like terminal output and technical documentation.
+- **Docs-grade typography** — system sans prose + system mono code, the same font strategy as opencode.ai/docs. Your vault reads like a professional documentation site, not a note app.
 - **Layered radius system** — content stays sharp (0px for code blocks, tables, callouts), controls are soft (4–8px for buttons, inputs, tabs), modals are softer (12px). One coherent principle instead of random roundness.
 - **Minimal-lines chrome** — hard 1px borders are replaced by background-step separation. The tab bar, titlebar, and view header blend into one immersive surface.
 - **OpenCode color system** — precise tokens derived from the OpenCode website and desktop client. Monochrome links and primary actions, with blue reserved for selection and semantic accents.
@@ -56,11 +47,11 @@ Opendian is built on the OpenCode color system — a precise, monochrome-forward
 | Text Main | `#FFFFFF` | Body text |
 | Accent | `#007AFF` | Selection and semantic accents |
 
-Typography uses a monospace-first stack with CJK fallbacks:
+Typography mirrors the opencode.ai/docs system stacks, with CJK fallbacks:
 
-- **Headings and body:** IBM Plex Mono, Berkeley Mono, JetBrains Mono, SF Mono → Source Han Sans SC
-- **Interface:** Same mono stack → PingFang SC
-- **Code:** Same mono stack (no fallback needed)
+- **Headings and body:** system sans (SF Pro on macOS) → PingFang SC / Source Han Sans SC
+- **Interface:** same sans stack
+- **Code:** system mono (SF Mono) → Maple Mono CN / Sarasa Mono SC
 
 ### Radius Scale
 

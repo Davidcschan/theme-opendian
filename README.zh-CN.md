@@ -6,24 +6,15 @@
 
 [English](https://github.com/elijah7x/theme-opendian/blob/main/README.md) · 亮色 &amp; 暗色 · 桌面 &amp; 移动端 · 无需插件
 
-## 推荐字体
+## 字体
 
-Opendian 围绕 **IBM Plex Mono** 设计，这是 OpenCode 文档也在使用的开源等宽字体。主题本身已经写好了回退字体栈；不安装也可以使用，但安装 IBM Plex Mono 后，侧边栏、标题和正文的字距会更接近设计稿。
+Opendian 的排版对齐 **opencode.ai/docs**（Starlight 系统字体栈）：正文与界面用系统无衬线（macOS 上即 SF Pro），代码用系统等宽（SF Mono）。**无需安装任何字体**，所有平台开箱即是文档站观感。
 
-如果你的笔记以中文为主，建议再装一款 **CJK 等宽字体**——[更纱黑体 Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) 或 [Maple Mono CN](https://font.subf.dev)。它们的中英文宽度严格 2:1，中英混排时等宽韵律不会断。不装则回退到苹方，一切照常。
-
-macOS 用户如果已安装 Homebrew，可以运行：
-
-```bash
-brew install --cask font-ibm-plex-mono
-brew install --cask font-sarasa-gothic   # 中文等宽（或 font-maple-mono-cn）
-```
-
-也可以从 [IBM Plex 官方仓库](https://github.com/IBM/plex)下载。安装后建议重启 Obsidian。
+> 代码里的中文注释会依次回退到 Maple Mono CN / 更纱黑体 SC（严格 2:1 中宽比的等宽字体），都没装则用苹方。想在代码里保持等宽韵律可选装：`brew install --cask font-maple-mono-cn`。
 
 ## 为什么选择 Opendian
 
-- **等宽字体优先** —— IBM Plex Mono → Berkeley Mono → JetBrains Mono 横跨标题、正文与界面。你的知识库读起来像终端输出和技术文档。
+- **文档级排版** —— 系统无衬线正文 + 系统等宽代码，与 opencode.ai/docs 同一套字体策略。你的知识库读起来像专业文档站，而非笔记应用。
 - **分层圆角标尺** —— 内容保持锋利（代码块、表格、callout 为 0px），控件柔和（按钮、输入框、页签为 4–8px），弹窗更柔（12px）。一条连贯的原则，而非随意的圆角。
 - **极简线条** —— 用背景层级替代生硬的 1px 边框。页签栏、标题栏、视图头部融为一体的沉浸式表面。
 - **OpenCode 色彩系统** —— 精确的色彩 token，源自 OpenCode 官网和桌面客户端。链接与主要操作保持单色，蓝色只保留给选区和语义强调。
@@ -56,11 +47,11 @@ Opendian 建立在 OpenCode 色彩系统之上——一套精确的、以单色�
 | 主文本 | `#FFFFFF` | 正文 |
 | 强调 | `#007AFF` | 选区与语义强调 |
 
-排版使用等宽字体优先的字体栈，配合中日韩回退：
+排版对齐 opencode.ai/docs 的系统字体栈，配合中日韩回退：
 
-- **标题与正文：** IBM Plex Mono、Berkeley Mono、JetBrains Mono、SF Mono → 思源黑体 SC
-- **界面：** 同一等宽字体栈 → 苹方 SC
-- **代码：** 同一等宽字体栈（无需回退）
+- **标题与正文：** 系统无衬线（macOS 为 SF Pro）→ 苹方 SC / 思源黑体 SC
+- **界面：** 同上
+- **代码：** 系统等宽（SF Mono）→ Maple Mono CN / 更纱黑体 SC
 
 ### 圆角分层标尺
 

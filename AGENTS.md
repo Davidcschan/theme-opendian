@@ -1,9 +1,9 @@
 # AGENTS.md — Opendian
 
 Obsidian theme. Single-file CSS, no build step. Aesthetic: **OpenCode / terminal**
-— mono-forward type, sharp consistent radii, monochrome accents, flat tinted
-states (no drop shadows). When in doubt, choose the more restrained, more
-"developer-tool" option.
+— docs-grade system type (sans prose/UI, mono code, mirroring opencode.ai/docs),
+sharp consistent radii, monochrome accents, flat tinted states (no drop shadows).
+When in doubt, choose the more restrained, more "developer-tool" option.
 
 ## 纪律（必须遵守）
 

@@ -9,7 +9,7 @@
   - Light:  bg #FFFFFF, surface #F5F5F7, border #D2D2D7, text #1D1D1F
   - Dark:   bg #0C0C0E, surface #161618, border #38383A, text #FFFFFF
   - Accent: #007AFF (OpenCode blue)
-  - Fonts:  IBM Plex Mono / Berkeley Mono stack
+  - Fonts:  system sans for prose/UI + system mono for code (opencode.ai/docs style)
 */
 
 /* @settings
@@ -386,17 +386,21 @@ settings:
      your name is longer/shorter or CJK (~2ch per CJK glyph). */
   --oc-logo-split: 4ch;
 
-  /* OpenCode sharp "O" mark, reused by the ribbon settings icon and the
-     vault-profile settings button. Mask alpha only — the visible color
-     comes from each element's background-color. */
-  --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M4 2h16v20H4V2Zm4 4v12h8V6H8Z'/%3E%3C/svg%3E");
+  /* Official OpenCode mark (from opencode.ai/brand): square frame with the
+     lower half of the counter filled. The fill block sits at 35% alpha so the
+     two-tone effect adapts to whatever color the mask is painted with.
+     Reused by the ribbon settings icon and the vault-profile settings
+     button. Mask alpha only — the visible color comes from each element's
+     background-color. */
+  --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='30' viewBox='0 0 24 30'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M0 0h24v30H0V0Zm6 6v18h12V6H6Z'/%3E%3Cpath fill='white' fill-opacity='0.35' d='M6 12h12v12H6V12Z'/%3E%3C/svg%3E");
 
-  /* Typography: OpenCode uses a mono-forward stack. CJK falls back to true
-     monospace CJK faces first (Sarasa / Maple Mono CN, 2:1 width ratio) so
-     mixed-script text keeps the mono rhythm instead of collapsing into a
-     proportional sans. */
-  --font-default: 'IBM Plex Mono', 'Berkeley Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', 'Sarasa Mono SC', 'Maple Mono CN', monospace, 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --font-monospace: var(--font-default);
+  /* Typography: match opencode.ai/docs, which uses Starlight's system stacks
+     (verified from its stylesheet) — proportional system sans for prose and
+     UI, system mono only for code. No font install needed; on macOS this is
+     SF Pro + SF Mono. Code's CJK comments fall back to true CJK monospaces
+     (Maple Mono CN / Sarasa Mono SC, 2:1 width ratio) before PingFang. */
+  --font-default: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', 'Maple Mono CN', 'Sarasa Mono SC', monospace;
   --font-heading: var(--font-default);
 }
 
@@ -523,15 +527,16 @@ body {
 }
 
 /* Vault name / logo area — OpenCode dual-tone effect.
-   The split point is driven by --oc-logo-split (ch units), so it
-   stays accurate across vault names of different lengths in a
-   monospace stack. Override --oc-logo-split per-vault as needed. */
+   The split point is driven by --oc-logo-split (ch units), which only tracks
+   glyph positions in a monospace face — so the wordmark keeps the mono stack
+   even though prose/UI are sans. Override --oc-logo-split per-vault as
+   needed. */
 .nav-folder.mod-root > .nav-folder-title {
   margin: var(--oc-space-3) var(--oc-space-3) var(--oc-space-5) var(--oc-space-3);
   padding: var(--oc-space-2) var(--oc-space-3);
   background-color: transparent;
   border: none;
-  font-family: var(--font-heading);
+  font-family: var(--font-monospace);
   font-weight: 700;
   letter-spacing: -0.03em;
   font-size: 1.25em;
@@ -543,10 +548,12 @@ body {
 
 /* Dual-tone wordmark: first --oc-logo-split chars muted, rest full-bold.
    Covers the file-tree root title (left rail) and the vault profile
-   shown in the settings sidebar + left-bottom switcher. */
+   shown in the settings sidebar + left-bottom switcher. Kept on the mono
+   stack so the ch-unit split tracks glyph positions. */
 .nav-folder.mod-root > .nav-folder-title .nav-folder-title-content,
 .workspace-sidedock-vault-profile .workspace-sidedock-vault-profile-name,
 .workspace-sidedock-vault-profile .workspace-sidedock-vault-profile-text {
+  font-family: var(--font-monospace);
   background: linear-gradient(
     90deg,
     var(--oc-text-muted) 0,
@@ -607,8 +614,24 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  min-height: 24px;
+  /* Match the switcher pill's hover-chip height (24px name line-height +
+     2×4px native vertical padding) so both footer hovers read as one row. */
+  height: 32px;
+  min-height: 32px;
+  border-radius: var(--oc-radius-control);
+}
+
+/* Footer hover chips: one tint step deeper than the native hover fill
+   (--background-modifier-hover ≈ 6.7%) so the affordance reads on the
+   surface-gray footer. */
+body:not(.is-mobile) .workspace-split.mod-left-split
+  .workspace-sidedock-vault-profile .workspace-drawer-vault-switcher:hover,
+body:not(.is-mobile) .workspace-split.mod-left-split
+  .workspace-sidedock-vault-profile .workspace-drawer-vault-switcher.has-active-menu,
+body:not(.is-mobile) .workspace-sidedock-vault-profile [aria-label*="Settings" i]:hover,
+body:not(.is-mobile) .workspace-sidedock-vault-profile [aria-label*="设置" i]:hover,
+body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.lucide-settings):hover {
+  background-color: var(--oc-tint-4);
 }
 
 body:not(.is-mobile) .workspace-sidedock-vault-profile svg.lucide-settings,
@@ -634,7 +657,6 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  transform: translateY(-1px);
 }
 
 body:not(.is-mobile) .workspace-sidedock-vault-profile [aria-label*="Settings" i]:hover::before,
@@ -828,6 +850,33 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
    toggle arrow in its intended position relative to the icon column.
    A prior override (7px/7px) was reverted because Folio — which
    aligns correctly — leaves this entirely at the Obsidian default. */
+
+/* Kill the "ghost" toggle icon. When the sidebar is (un)collapsed,
+   Obsidian's updateFrameless() reparents the real button and leaves a deep
+   CLONE in the old header, then shrinks it for 140ms via inline styles
+   (`overflow: hidden; width: s -> 0`) before detaching it (app.js y()/Qf()).
+   The clone carries the exact same classes, so it flashes as a second icon
+   next to the real one. The clone is the ONLY toggle button that ever
+   carries an inline `overflow` style — the real button is reparented with
+   newStyle:"" and stays inline-style-free — so this attribute selector
+   targets precisely the clone. visibility (not display) keeps its shrinking
+   width animation intact so the header still collapses smoothly. */
+.sidebar-toggle-button.mod-left[style*="overflow"],
+.sidebar-toggle-button.mod-right[style*="overflow"] {
+  visibility: hidden !important;
+}
+
+/* Restore the native opaque surface on the FIXED right toggle. App CSS gives
+   the frameless-macOS fixed button `background: var(--tab-container-background)`
+   ("Smoother animation for right sidebar button positioning during close") so
+   the icon stays legible while the (possibly translucent) sidebar slides under
+   it; the blanket `transparent !important` above stripped that, letting the
+   dark sliding panel bleed through and wash the icon out mid-animation. The
+   surface color matches the surrounding chrome exactly, so this is invisible
+   at rest and only matters during the slide. */
+.mod-macos.is-hidden-frameless:not(.is-popout-window) .sidebar-toggle-button.mod-right {
+  background-color: var(--tab-container-background) !important;
+}
 
 /* Hide the help icon — scoped to the ribbon / left dock. (A previous global
    svg[class*="help"] also nuked any plugin or settings icon whose class merely
@@ -2606,10 +2655,13 @@ a.tag {
 /* Edit/read parity: no font-size here. Reading mode follows the user's
    Appearance font size (--font-text-size); the previous hardcoded 14px made
    every mode switch visibly re-scale the page (and disabled the font-size
-   slider in edit mode). line-height matches the 1.7 reading-mode rhythm. */
+   slider in edit mode). Font follows --font-default (system sans) to match
+   reading mode — code blocks (.HyperMD-codeblock below) and inline code
+   (.cm-inline-code) keep the mono stack on their own rules. line-height
+   matches the 1.7 reading-mode rhythm. */
 .markdown-source-view .cm-content,
 .markdown-source-view .cm-line {
-  font-family: var(--font-monospace);
+  font-family: var(--font-default);
   line-height: 1.7;
   color: var(--text-normal);
 }
