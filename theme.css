@@ -351,6 +351,13 @@ settings:
   --oc-space-5: 20px;
   --oc-space-6: 24px;
 
+  /* Reading-mode block gap. Edit mode separates blocks with the blank source
+     line (.cm-line at line-height 1.7 ≈ 26px); reading mode collapses blank
+     lines, so blocks that leaned on 1.2em/1rem margins read cramped next to
+     Live Preview. One token lifts every big block (callout/table/pre/list/
+     blockquote) to roughly one blank-line's worth of air. */
+  --oc-block-gap: 1.6em;
+
   /* Motion — one duration/easing for all UI transitions (color/opacity
      only; never animate layout properties). */
   --oc-motion: 0.12s ease;
@@ -425,6 +432,41 @@ body {
 }
 .markdown-rendered li {
   line-height: 1.7;
+}
+
+/* Big blocks get the full blank-line gap (see --oc-block-gap). Native list
+   margins ride --p-spacing (1rem) and blockquote margins are smaller still;
+   nested lists keep their native 0 via the more specific app.css rules. */
+.markdown-rendered ul,
+.markdown-rendered ol,
+.markdown-rendered blockquote {
+  margin-block-start: var(--oc-block-gap);
+  margin-block-end: var(--oc-block-gap);
+}
+
+/* Raw HTML blocks (<div>…) land in the reading flow with browser-default
+   margin: 0, so they sit flush against neighbours while Live Preview wraps
+   them in airy embed lines — the "夹成一坨" case. Reading mode wraps EVERY
+   top-level block in its own classless section div stamped `el-<tag>` after
+   its first child (app.js: MW section renderer, this.el.addClass("el-"+…)),
+   so raw blocks are never siblings of their p/h2 neighbours — adjacency and
+   depth selectors can't reach them. The `.el-*` stamp can: app.css itself
+   hooks these classes (".el-blockquote,.el-p,… + div > h2" heading gaps).
+   `.el-div > div` matches only the outermost raw div (callouts, embeds and
+   metadata carry classes and are excluded); its nested row divs are deeper
+   than a direct child and never match. Inline-style margins still win. */
+.markdown-rendered .el-div > div:not([class]):not(.mod-ui) {
+  margin-block-start: var(--oc-block-gap);
+  margin-block-end: var(--oc-block-gap);
+}
+
+/* Native gives a heading extra air (--heading-spacing) when it follows any
+   block kind — its hook list (.el-blockquote/.el-p/.el-pre/.el-table/
+   .el-ul/.el-ol, app.css) just omits .el-div, so a heading after a raw HTML
+   block fell back to the tighter plain heading margin. Mirror the native
+   rule with .el-div included. */
+.markdown-rendered div.el-div + div > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: var(--heading-spacing);
 }
 
 .workspace {
@@ -1187,7 +1229,7 @@ a:hover {
 .markdown-rendered table {
   border-collapse: collapse;
   width: 100%;
-  margin: 1.2em 0;
+  margin: var(--oc-block-gap) 0;
   border: none;
   font-size: 0.95em;
   /* Kill Obsidian's native column zebra striping (app.css:12720-12722 gives
@@ -1289,7 +1331,7 @@ a:hover {
   border-left: 2px solid var(--oc-callout-color);
   border-radius: 0;
   padding: var(--oc-space-3) var(--oc-space-4);
-  margin: 1.2em 0;
+  margin: var(--oc-block-gap) 0;
   box-shadow: none;
   display: flex;
   flex-direction: row;
@@ -1445,7 +1487,7 @@ a:hover {
   border: 1px solid var(--border-hairline);
   border-radius: 0;
   padding: 0;
-  margin: 1.2em 0;
+  margin: var(--oc-block-gap) 0;
   overflow: hidden;
   position: relative;
 }
