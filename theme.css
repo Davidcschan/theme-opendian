@@ -314,13 +314,14 @@ settings:
   --checkbox-marker-color: var(--background-primary);
   --checklist-done-decoration: none;
 
-  /* Blockquote: single quiet rail, not accent blue. The secondary-rail
-     tokens stay at 0 so §17's Live Preview :after renders nothing. */
-  --blockquote-border-color: var(--border-color);
-  --blockquote-border-thickness: 2px;
+  /* Blockquote: double parallel rails — a 1.5px primary rail plus a quieter
+     1px companion 7px inward, not accent blue. The secondary tokens also
+     drive §17's Live Preview :after rail. */
+  --blockquote-border-color: var(--text-muted);
+  --blockquote-border-thickness: 1.5px;
   --blockquote-rail-secondary-color: var(--oc-border-muted);
-  --blockquote-rail-secondary-thickness: 0px;
-  --blockquote-rail-gap: 0px;
+  --blockquote-rail-secondary-thickness: 1px;
+  --blockquote-rail-gap: 7px;
   --hr-color: var(--oc-border-muted);
   --hr-thickness: 1px;
 
@@ -722,18 +723,56 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   --nav-item-background-hover: var(--bg-nav-hover);
   --nav-item-background-active: transparent;
   --nav-item-background-selected: transparent;
+  position: relative;
   margin: 1px 0;
   color: var(--text-normal);
   letter-spacing: var(--sidebar-text-tracking);
   transition: background-color var(--oc-motion), color var(--oc-motion);
 }
 
-.nav-file-title.is-active {
-  background-color: var(--bg-active);
+/* Active state — terminal cursor + wipe, replacing the old full-height
+   2px inset rail (which read stiff and generic):
+   · the tinted fill rides a solid gradient whose background-size animates
+     0%→100% from the left (one-shot "sweep on" each time .is-active is
+     applied — the closest pure-CSS analogue of animate-ui's highlight);
+   · the indicator is a short vertically-CENTERED 3px block — a terminal
+     block cursor, not a full-height rail — fading/scaling in 40ms behind
+     the wipe. One-shot only, no perpetual blink; §19 squashes both under
+     prefers-reduced-motion. */
+@keyframes oc-nav-wipe {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
+}
+
+@keyframes oc-nav-cursor {
+  from { opacity: 0; transform: translateY(-50%) scaleY(0.3); }
+  to { opacity: 1; transform: translateY(-50%) scaleY(1); }
+}
+
+.nav-file-title.is-active,
+.tree-item-self.is-active {
   border: none;
-  box-shadow: inset 2px 0 0 var(--text-normal);
   font-weight: 600;
   color: var(--text-normal);
+  background-color: transparent;
+  background-image: linear-gradient(var(--bg-active), var(--bg-active));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: oc-nav-wipe 0.18s ease-out;
+}
+
+.nav-file-title.is-active::before,
+.tree-item-self.is-active::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 3px;
+  height: 56%;
+  background-color: var(--text-normal);
+  transform: translateY(-50%);
+  animation: oc-nav-cursor 0.22s ease-out 0.04s backwards;
+  pointer-events: none;
 }
 
 .nav-file-title:hover:not(.is-active),
@@ -754,9 +793,8 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
   opacity: 0.8;
 }
 
-/* Right sidebar (outline/backlinks) */
-.workspace-split.mod-right-split .nav-file-title.is-active,
-.workspace-split.mod-right-split .tree-item-self.is-active,
+/* Right sidebar (outline/backlinks) — same cursor + wipe as the left rail,
+   but the active fill keeps this pane's quieter --bg-hover tint. */
 .workspace-split.mod-right-split .nav-file-title:hover,
 .workspace-split.mod-right-split .tree-item-self:hover {
   background-color: var(--bg-hover);
@@ -764,7 +802,11 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 
 .workspace-split.mod-right-split .nav-file-title.is-active,
 .workspace-split.mod-right-split .tree-item-self.is-active {
-  box-shadow: inset 2px 0 0 var(--text-normal);
+  background-color: transparent;
+  background-image: linear-gradient(var(--bg-hover), var(--bg-hover));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: oc-nav-wipe 0.18s ease-out;
   color: var(--text-normal);
 }
 
@@ -1216,6 +1258,18 @@ a:hover {
   color: var(--text-muted);
   font-style: normal;
   margin-inline-start: 0;
+  /* Secondary rail: a 1px gradient stripe parked --blockquote-rail-gap inside
+     the primary border, so reading mode shows the same double rail as
+     Live Preview's :after. */
+  background-image: linear-gradient(
+    to right,
+    transparent var(--blockquote-rail-gap),
+    var(--blockquote-rail-secondary-color) var(--blockquote-rail-gap),
+    var(--blockquote-rail-secondary-color) calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness)),
+    transparent calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness))
+  );
+  background-repeat: no-repeat;
+  background-size: calc(var(--blockquote-rail-gap) + var(--blockquote-rail-secondary-thickness)) 100%;
 }
 
 .markdown-rendered blockquote p {
@@ -1326,6 +1380,10 @@ a:hover {
      into descendants); per-type rules below retarget only this var plus the
      per-type bg token, so snippet overrides of a single type keep working. */
   --oc-callout-color: var(--callout-info-text);
+  /* Fixed title-column width, so the content column of every callout starts
+     at the same x (reference: docs-style aside blocks). 8em of the title's
+     0.9em size ≈ 115px — fits a 5-CJK-char title + icon, longer titles wrap. */
+  --oc-callout-title-width: 8em;
   background-color: var(--callout-info-bg);
   border: none;
   border-left: 2px solid var(--oc-callout-color);
@@ -1349,13 +1407,10 @@ a:hover {
   padding: 0;
   margin: 0;
   font-family: var(--font-default);
-  flex: 0 0 auto;
-  min-width: auto;
-  /* Clamp a long title (e.g. a full sentence in [!warning]) so the left column
-     of the two-column flex-row callout doesn't blow out and squeeze the
-     content column. Short titles stay exactly content-sized (signature aside
-     look preserved); only oversized ones wrap inside this width. */
-  max-width: 27ch;
+  /* Fixed-width left column: every callout's content column starts at the
+     same x, regardless of title length. Titles longer than the column wrap
+     inside it (flex-wrap below) instead of pushing the content right. */
+  flex: 0 0 var(--oc-callout-title-width);
   flex-wrap: wrap;
   /* Match .callout-content's line-height so the title's first-line top-leading
      equals the content's — otherwise the two columns (flex-start) start their
@@ -2281,6 +2336,7 @@ a.tag {
 
 /* Tree items used in outline, backlinks, tag pane */
 .tree-item-self {
+  position: relative;
   border-radius: 0;
   margin: 1px 0;
   color: var(--text-normal);
@@ -2293,12 +2349,8 @@ a.tag {
   background-color: var(--bg-nav-hover);
 }
 
-.tree-item-self.is-active {
-  background-color: var(--bg-active);
-  box-shadow: inset 2px 0 0 var(--text-normal);
-  color: var(--text-normal);
-  font-weight: 600;
-}
+/* .tree-item-self.is-active itself needs no rule here: the shared
+   cursor + wipe active style lives in §2 next to .nav-file-title. */
 
 .tree-item-self .tree-item-inner {
   color: var(--text-normal);
