@@ -3049,3 +3049,17 @@ a.tag {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   20. PLUGIN: CLAUDIAN
+   ============================================================ */
+/* Claudian pins its composer and permission row to the very bottom of the
+   pane and ships zero container padding, so the floating status chip (§15)
+   covers its bottom row and message bubbles sit flush against the pane
+   edge. Inset the panel column and reserve the chip's height + margin.
+   Scoped to .claudian-chat-panel — every other view is untouched, and the
+   rules simply no-op when the plugin isn't installed. */
+.claudian-chat-panel {
+  padding-inline: var(--oc-space-4);
+  padding-bottom: calc(var(--oc-space-6) + var(--oc-space-4));
+}
