@@ -5,11 +5,11 @@
   Design philosophy:
   "Monospace documentation, minimal chrome, precise color."
 
-  Tokens are derived from the OpenCode website + Starlight docs site:
-  - Light:  bg #FFFFFF, surface #F5F5F7, border #D2D2D7, text #1D1D1F
-  - Dark:   bg #0C0C0E, surface #161618, border #38383A, text #FFFFFF
-  - Accent: #007AFF (OpenCode blue)
-  - Fonts:  system sans for prose/UI + system mono for code (opencode.ai/docs style)
+  Tokens are derived from the OpenCode docs site (https://opencode.ai/docs):
+  - Light:  bg #FDFCFC, surface #F8F7F7, border #D0CFCE, body #646262, strong #201D1D
+  - Dark:   bg #131010, warm surfaces lifted off the page, strong near #FDFCFC
+  - Accent: docs strong (#201D1D light / #FDFCFC dark) — not #007AFF
+  - Fonts:  IBM Plex Mono everywhere (UI, editor, headings, and code)
 */
 
 /* @settings
@@ -20,11 +20,11 @@ settings:
     -
         id: oc-accent
         title: Accent color
-        description: Drives focus rings, interactive accents and text selection. Default is OpenCode blue.
+        description: Drives focus rings and interactive accents. Default is docs strong, not OpenCode blue. Text selection is a separate warm yellow and does not follow this accent.
         type: variable-themed-color
         format: hex
-        default-light: '#007aff'
-        default-dark: '#007aff'
+        default-light: '#201d1d'
+        default-dark: '#fdfcfc'
     -
         id: oc-logo-split
         title: Logo split point
@@ -32,9 +32,9 @@ settings:
         type: variable-text
         default: '4ch'
     -
-        id: opendian-plain-inline-code
-        title: Plain inline code
-        description: Remove the tinted background from inline code.
+        id: opendian-tinted-inline-code
+        title: Tinted inline code
+        description: Add a tinted background chip behind inline code. Docs default is un-tinted (no chip).
         type: class-toggle
     -
         id: opendian-soft-content
@@ -48,20 +48,21 @@ settings:
    ============================================================ */
 
 .theme-dark {
-  /* OpenCode palette */
-  --oc-bg: #0c0c0e;
-  --oc-surface: #161618;
-  --oc-surface-elevated: #1c1c1f;
-  --oc-border: #38383a;
-  --oc-border-muted: #2c2c2e;
+  /* OpenCode docs palette (measured from opencode.ai/docs) */
+  --oc-bg: #131010;
+  --oc-surface: #1c1919;
+  --oc-surface-elevated: #252121;
+  --oc-border: #3d3838;
+  --oc-border-muted: #2c2828;
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
-  --oc-border-strong: #48484a;
-  --oc-text: #ffffff;
-  --oc-text-secondary: #c7c7cc;
-  --oc-text-muted: #a1a1a6;
-  --oc-text-disabled: #68686f;
-  --oc-accent: #007aff;
-  --oc-accent-hover: #0056b3;
+  --oc-border-strong: #4f4949;
+  --oc-text: #c4c1c1;           /* body */
+  --oc-text-strong: #fdfcfc;    /* headings + bold */
+  --oc-text-secondary: #e0dddd;
+  --oc-text-muted: #9a9898;
+  --oc-text-disabled: #6e6b6b;
+  --oc-accent: #fdfcfc;
+  --oc-accent-hover: #e0dddd;
   --oc-success: #30d158;
   --oc-warning: #ff9f0a;
   --oc-danger: #ff453a;
@@ -107,7 +108,7 @@ settings:
   --tag-color-hover: var(--text-normal);
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
-  --text-selection: color-mix(in srgb, var(--oc-accent) 25%, transparent);
+  --text-selection: color-mix(in srgb, hsl(62, 84%, 88%) 35%, transparent);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
@@ -163,30 +164,31 @@ settings:
   --status-chip-shadow: none;
   --status-chip-sync: var(--text-muted);
   /* Borderless dropdown chevron — light stroke for dark bg */
-  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a9898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
   /* Toggle switch colors (geometry lives in the shared token block below):
      OFF track is a mid gray (knob reads against it), ON track flips to
-     white (--text-normal) with a near-black knob. */
-  --oc-toggle-off: #636366;
-  --toggle-thumb-color: #0c0c0e;
+     strong (--oc-text-strong) with a near-bg knob. */
+  --oc-toggle-off: #636160;
+  --toggle-thumb-color: #131010;
 }
 
 .theme-light {
-  /* OpenCode palette */
-  --oc-bg: #ffffff;
-  --oc-surface: #f5f5f7;
-  --oc-surface-elevated: #ffffff;
-  --oc-border: #d2d2d7;
-  --oc-border-muted: #e5e5ea;
+  /* OpenCode docs palette (measured from opencode.ai/docs) */
+  --oc-bg: #fdfcfc;
+  --oc-surface: #f8f7f7;
+  --oc-surface-elevated: #fdfcfc;
+  --oc-border: #d0cfce;
+  --oc-border-muted: #e4e3e2;
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
-  --oc-border-strong: #b9b9bf;
-  --oc-text: #1d1d1f;
-  --oc-text-secondary: #424245;
-  --oc-text-muted: #6e6e73;
-  --oc-text-disabled: #86868b;
-  --oc-accent: #007aff;
-  --oc-accent-hover: #0056b3;
+  --oc-border-strong: #b5b4b3;
+  --oc-text: #646262;           /* body */
+  --oc-text-strong: #201d1d;    /* headings + bold */
+  --oc-text-secondary: #423f3f;
+  --oc-text-muted: #9a9898;
+  --oc-text-disabled: #b4b1b1;
+  --oc-accent: #201d1d;
+  --oc-accent-hover: #3a3737;
   --oc-success: #30d158;
   --oc-warning: #ff9f0a;
   --oc-danger: #ff3b30;
@@ -234,7 +236,7 @@ settings:
      ~2–3:1 contrast on #fff (below AA). Backgrounds keep the raw palette. */
   --text-error: #d70015;
   --text-success: #248a3d;
-  --text-selection: color-mix(in srgb, var(--oc-accent) 20%, transparent);
+  --text-selection: hsl(62, 84%, 88%);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
@@ -288,10 +290,10 @@ settings:
   --status-chip-shadow: 0 6px 18px rgba(0, 0, 0, 0.035);
   --status-chip-sync: var(--text-muted);
   /* Borderless dropdown chevron — dark stroke for light bg */
-  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a9898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
   /* Toggle switch colors (geometry lives in the shared token block below):
-     OFF track is a light gray, ON track flips to near-black (--text-normal)
+     OFF track is a light gray, ON track flips to near-black (--oc-text-strong)
      with a white knob — matches the OpenCode desktop switch. */
   --oc-toggle-off: #c7c7cc;
   --toggle-thumb-color: #ffffff;
@@ -353,7 +355,7 @@ settings:
   --oc-space-6: 24px;
 
   /* Reading-mode block gap. Edit mode separates blocks with the blank source
-     line (.cm-line at line-height 1.7 ≈ 26px); reading mode collapses blank
+     line (.cm-line at line-height 1.6875 ≈ 26px); reading mode collapses blank
      lines, so blocks that leaned on 1.2em/1rem margins read cramped next to
      Live Preview. One token lifts every big block (callout/table/pre/list/
      blockquote) to roughly one blank-line's worth of air. */
@@ -376,7 +378,7 @@ settings:
      variable-driven (height = thumb + 2*border, knob inset = border), so
      the knob is centered by construction on every platform — we never
      touch ::after geometry directly. Track/knob COLORS stay per-theme. */
-  --oc-toggle-on: var(--text-normal);
+  --oc-toggle-on: var(--oc-text-strong);
   --toggle-radius: 5px;
   --toggle-thumb-radius: 3px;
   --toggle-s-border-width: 3px;
@@ -402,14 +404,16 @@ settings:
      background-color. */
   --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='30' viewBox='0 0 24 30'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M0 0h24v30H0V0Zm6 6v18h12V6H6Z'/%3E%3Cpath fill='white' fill-opacity='0.35' d='M6 12h12v12H6V12Z'/%3E%3C/svg%3E");
 
-  /* Typography: match opencode.ai/docs, which uses Starlight's system stacks
-     (verified from its stylesheet) — proportional system sans for prose and
-     UI, system mono only for code. No font install needed; on macOS this is
-     SF Pro + SF Mono. Code's CJK comments fall back to true CJK monospaces
-     (Maple Mono CN / Sarasa Mono SC, 2:1 width ratio) before PingFang. */
-  --font-default: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
-  --font-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', 'Maple Mono CN', 'Sarasa Mono SC', monospace;
-  --font-heading: var(--font-default);
+  /* Typography: match opencode.ai/docs — IBM Plex Mono for UI, editor,
+     headings, AND code. No @import / remote font files; the family is used
+     if installed locally, otherwise system mono (and CJK mono) fallbacks. */
+  --oc-font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", "Maple Mono CN", "Sarasa Mono SC", monospace;
+  --font-default: var(--oc-font);
+  --font-monospace: var(--oc-font);
+  --font-heading: var(--oc-font);
+  --font-text: var(--oc-font);
+  --font-interface: var(--oc-font);
+  --font-editor: var(--oc-font);
 }
 
 /* ============================================================
@@ -421,8 +425,8 @@ body {
   font-family: var(--font-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--font-text-size);
+  line-height: 1.6875;
   font-variant-ligatures: none;
 }
 
@@ -432,7 +436,7 @@ body {
   margin-block: 0 0.9em;
 }
 .markdown-rendered li {
-  line-height: 1.7;
+  line-height: 1.6875;
 }
 
 /* Big blocks get the full blank-line gap (see --oc-block-gap). Native list
@@ -572,7 +576,7 @@ body {
 /* Vault name / logo area — OpenCode dual-tone effect.
    The split point is driven by --oc-logo-split (ch units), which only tracks
    glyph positions in a monospace face — so the wordmark keeps the mono stack
-   even though prose/UI are sans. Override --oc-logo-split per-vault as
+   like the rest of the UI. Override --oc-logo-split per-vault as
    needed. */
 .nav-folder.mod-root > .nav-folder-title {
   margin: var(--oc-space-3) var(--oc-space-3) var(--oc-space-5) var(--oc-space-3);
@@ -1213,27 +1217,28 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 .markdown-rendered h5,
 .markdown-rendered h6 {
   font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--text-normal);
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--oc-text-strong);
+  letter-spacing: 0;
   line-height: 1.25;
   border-bottom: none;
 }
 
-.HyperMD-header-1, .markdown-rendered h1 { font-size: 1.6em !important; margin-top: 1.4em; margin-bottom: 0.6em; font-weight: 700; }
-.HyperMD-header-2, .markdown-rendered h2 { font-size: 1.35em !important; margin-top: 1.3em; margin-bottom: 0.5em; }
-.HyperMD-header-3, .markdown-rendered h3 { font-size: 1.15em !important; margin-top: 1.2em; margin-bottom: 0.4em; }
-.HyperMD-header-4, .markdown-rendered h4 { font-size: 1.05em !important; font-weight: 600; margin-top: 1em; margin-bottom: 0.3em; color: var(--text-normal); }
-.HyperMD-header-5, .markdown-rendered h5 { font-size: 1em !important; font-weight: 600; color: var(--text-muted); margin-top: 0.8em; }
-.HyperMD-header-6, .markdown-rendered h6 { font-size: 0.95em !important; font-weight: 600; color: var(--text-muted); }
+/* Heading sizes relative to --font-text-size, using 14px as the docs content base. */
+.HyperMD-header-1, .markdown-rendered h1 { font-size: calc(26 / 14 * 1em) !important; margin-top: 1.4em; margin-bottom: 0.6em; font-weight: 500; letter-spacing: -0.5px; }
+.HyperMD-header-2, .markdown-rendered h2 { font-size: calc(22 / 14 * 1em) !important; margin-top: 1.3em; margin-bottom: 0.5em; }
+.HyperMD-header-3, .markdown-rendered h3 { font-size: calc(18 / 14 * 1em) !important; margin-top: 1.2em; margin-bottom: 0.4em; }
+.HyperMD-header-4, .markdown-rendered h4 { font-size: calc(16 / 14 * 1em) !important; font-weight: 500; margin-top: 1em; margin-bottom: 0.3em; color: var(--oc-text-strong); }
+.HyperMD-header-5, .markdown-rendered h5 { font-size: calc(18 / 14 * 1em) !important; font-weight: 500; color: var(--oc-text-strong); margin-top: 0.8em; }
+.HyperMD-header-6, .markdown-rendered h6 { font-size: calc(16 / 14 * 1em) !important; font-weight: 500; color: var(--oc-text-strong); }
 
-strong, b { font-weight: 700; color: var(--text-normal); }
+strong, b, .cm-strong { font-weight: 500; color: var(--oc-text-strong); }
 a {
   color: var(--link-color);
   text-decoration-line: underline;
   text-decoration-color: var(--link-decoration-color);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.1875rem;
   transition: color var(--oc-motion), text-decoration-color var(--oc-motion);
 }
 a:hover {
@@ -1536,10 +1541,9 @@ a:hover {
    7. CODE BLOCKS
    ============================================================ */
 .markdown-rendered pre {
-  /* Softer, filled code surface (subtle tint + hairline) instead of a hard
-     1px box on the page colour — reads cleaner / more modern. */
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-hairline);
+  /* Docs code chrome: surface fill + 1px border, radius 0. */
+  background-color: var(--oc-surface);
+  border: 1px solid var(--oc-border);
   border-radius: 0;
   padding: 0;
   margin: var(--oc-block-gap) 0;
@@ -1562,22 +1566,22 @@ a:hover {
 .markdown-rendered code:not(pre code) {
   font-family: var(--font-monospace);
   font-size: 0.85em;
-  font-weight: 500;
-  color: var(--text-normal);
-  background-color: var(--bg-hover);
+  font-weight: 600;
+  color: inherit;
+  background-color: transparent;
   border: none;
-  padding: 1px 5px;
+  padding: 0;
   border-radius: 0;
   line-height: 1.4;
 }
 
 /* Style Settings toggles (see @settings block at the top of the file):
-   - opendian-plain-inline-code: drop the tinted chip behind inline code
+   - opendian-tinted-inline-code: add a tinted chip behind inline code
    - opendian-soft-content: swap sharp content corners for the 4px chip radius */
-body.opendian-plain-inline-code .markdown-rendered code:not(pre code),
-body.opendian-plain-inline-code .markdown-source-view .cm-inline-code {
-  background-color: transparent;
-  padding-inline: 1px;
+body.opendian-tinted-inline-code .markdown-rendered code:not(pre code),
+body.opendian-tinted-inline-code .markdown-source-view .cm-inline-code {
+  background-color: var(--bg-hover);
+  padding: 1px 5px;
 }
 
 body.opendian-soft-content .markdown-rendered pre,
@@ -1600,8 +1604,8 @@ body.opendian-soft-content .markdown-source-view .cm-inline-code {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--border-hairline);
-  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--oc-border);
+  background-color: var(--oc-surface);
   font-family: var(--font-default);
 }
 
@@ -2749,14 +2753,14 @@ a.tag {
 /* Edit/read parity: no font-size here. Reading mode follows the user's
    Appearance font size (--font-text-size); the previous hardcoded 14px made
    every mode switch visibly re-scale the page (and disabled the font-size
-   slider in edit mode). Font follows --font-default (system sans) to match
+   slider in edit mode). Font follows --font-default (IBM Plex Mono) to match
    reading mode — code blocks (.HyperMD-codeblock below) and inline code
-   (.cm-inline-code) keep the mono stack on their own rules. line-height
-   matches the 1.7 reading-mode rhythm. */
+   (.cm-inline-code) share the same stack. line-height matches the 1.6875
+   reading-mode rhythm. */
 .markdown-source-view .cm-content,
 .markdown-source-view .cm-line {
   font-family: var(--font-default);
-  line-height: 1.7;
+  line-height: 1.6875;
   color: var(--text-normal);
 }
 
@@ -2769,13 +2773,13 @@ a.tag {
    despite identical declared values. Here we keep only color/weight. */
 .markdown-source-view .cm-header {
   font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--text-normal);
+  font-weight: 500;
+  color: var(--oc-text-strong);
 }
 
-.markdown-source-view .cm-header-1 { font-weight: 700; }
-.markdown-source-view .cm-header-5 { color: var(--text-muted); }
-.markdown-source-view .cm-header-6 { color: var(--text-muted); }
+.markdown-source-view .cm-header-1 { font-weight: 500; }
+.markdown-source-view .cm-header-5 { color: var(--oc-text-strong); }
+.markdown-source-view .cm-header-6 { color: var(--oc-text-strong); }
 
 /* Markdown formatting markers */
 .markdown-source-view .cm-formatting {
@@ -2845,7 +2849,7 @@ a.tag {
   color: var(--link-color);
   text-decoration-color: var(--link-decoration-color);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.1875rem;
 }
 
 .markdown-source-view .cm-url {
@@ -2861,13 +2865,13 @@ a.tag {
 /* Inline code in source mode */
 .markdown-source-view .cm-inline-code {
   font-family: var(--font-monospace);
-  /* Match reading-mode inline code exactly: 0.85em / 500 / 1px 5px. */
+  /* Match reading-mode inline code exactly: 0.85em / 600 / no chip. */
   font-size: 0.85em;
-  font-weight: 500;
-  color: var(--text-normal);
-  background-color: var(--bg-hover);
+  font-weight: 600;
+  color: inherit;
+  background-color: transparent;
   border: none;
-  padding: 1px 5px;
+  padding: 0;
   border-radius: 0;
 }
 
@@ -2965,8 +2969,8 @@ a.tag {
 }
 
 .markdown-source-view .HyperMD-codeblock-bg {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-hairline);
+  background-color: var(--oc-surface);
+  border: 1px solid var(--oc-border);
 }
 
 /* Lists */
