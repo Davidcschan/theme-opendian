@@ -95,6 +95,59 @@ settings:
         default-light: '#3b7dd8'
         default-dark: '#fab283'
     -
+        id: opendian-sidebar
+        title: Sidebar
+        title.zh: 侧边栏
+        type: heading
+        level: 2
+        collapsed: false
+    -
+        id: oc-surface
+        title: Sidebar background
+        title.zh: 侧边栏背景
+        description: File tree, ribbon, and right sidebar. Editor uses Background above.
+        description.zh: 文件树、ribbon、右侧栏。编辑区用上面的「背景」。
+        type: variable-themed-color
+        format: hex
+        default-light: '#fafafa'
+        default-dark: '#141414'
+    -
+        id: icon-color
+        title: Sidebar / ribbon icons
+        title.zh: 侧边栏与 ribbon 图标
+        description: Idle icon color. Default is muted gray at full opacity.
+        description.zh: 默认图标色。默认是不透明的 muted 灰。
+        type: variable-themed-color
+        format: hex
+        default-light: '#8a8a8a'
+        default-dark: '#808080'
+    -
+        id: icon-color-hover
+        title: Icon hover
+        title.zh: 图标悬停
+        type: variable-themed-color
+        format: hex
+        default-light: '#1a1a1a'
+        default-dark: '#eeeeee'
+    -
+        id: icon-color-active
+        title: Icon active
+        title.zh: 图标选中
+        type: variable-themed-color
+        format: hex
+        default-light: '#1a1a1a'
+        default-dark: '#eeeeee'
+    -
+        id: oc-text-muted
+        title: Muted text
+        title.zh: 次要文字
+        description: Folder hints and secondary chrome text.
+        description.zh: 次要说明文字。不自动改图标（图标用上面三项）。
+        type: variable-themed-color
+        format: hex
+        default-light: '#8a8a8a'
+        default-dark: '#808080'
+    -
         id: opendian-chrome
         title: Chrome
         title.zh: 界面
