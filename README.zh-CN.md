@@ -132,7 +132,7 @@ Opendian 支持 Obsidian 原生任务语法，也支持常见的 Minimal 风格�
 - 支持亮色与暗色模式
 - 支持桌面端与移动端
 - 不依赖插件
-- 可选增强：安装 Style Settings 插件后，可在设置里直接调节强调色、库名分割点、行内代码底色与内容区圆角（不装插件则全部使用默认值）
+- 可选增强：安装 [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) 后，到「外观 → Style Settings → Opendian」可改 CLI 语义色（背景、正文、标题、粗体、斜体/引用、行内 code、链接），以及强调色、库名分割点、行内代码底色与内容圆角。不装插件则用默认值。
 
 ## 许可证
 
