@@ -22,9 +22,91 @@ name: Opendian
 id: opendian
 settings:
     -
+        id: opendian-info
+        title: OpenCode CLI tokens
+        title.zh: OpenCode CLI 色板
+        description: "Install the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin, then Appearance → Style Settings → Opendian. Defaults match CLI theme `opencode`. Accent does **not** recolor headings."
+        description.zh: "安装 [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) 后，到「外观 → Style Settings → Opendian」。默认对齐 CLI `opencode`。强调色不会改标题紫/金。"
+        type: info-text
+        markdown: true
+    -
+        id: opendian-markup
+        title: Markdown colors
+        title.zh: Markdown 颜色
+        type: heading
+        level: 2
+        collapsed: false
+    -
+        id: oc-bg
+        title: Background
+        title.zh: 背景
+        type: variable-themed-color
+        format: hex
+        default-light: '#ffffff'
+        default-dark: '#0a0a0a'
+    -
+        id: oc-text
+        title: Body text
+        title.zh: 正文
+        type: variable-themed-color
+        format: hex
+        default-light: '#1a1a1a'
+        default-dark: '#eeeeee'
+    -
+        id: oc-text-strong
+        title: Headings
+        title.zh: 标题
+        description: h1–h6 only. Dark purple / light gold.
+        description.zh: 只作用于 h1–h6。暗色紫、浅色金。
+        type: variable-themed-color
+        format: hex
+        default-light: '#d68c27'
+        default-dark: '#9d7cd8'
+    -
+        id: oc-strong
+        title: Bold
+        title.zh: 粗体
+        type: variable-themed-color
+        format: hex
+        default-light: '#d68c27'
+        default-dark: '#f5a742'
+    -
+        id: oc-emph
+        title: Italic and quotes
+        title.zh: 斜体与引用
+        type: variable-themed-color
+        format: hex
+        default-light: '#b0851f'
+        default-dark: '#e5c07b'
+    -
+        id: oc-code
+        title: Inline code
+        title.zh: 行内代码
+        type: variable-themed-color
+        format: hex
+        default-light: '#3d9a57'
+        default-dark: '#7fd88f'
+    -
+        id: oc-link
+        title: Links
+        title.zh: 链接
+        type: variable-themed-color
+        format: hex
+        default-light: '#3b7dd8'
+        default-dark: '#fab283'
+    -
+        id: opendian-chrome
+        title: Chrome
+        title.zh: 界面
+        type: heading
+        level: 2
+        collapsed: true
+    -
         id: oc-accent
         title: Accent color
-        description: Drives focus rings and interactive accents. Default is CLI primary (peach dark / blue light). Text selection is a mix of the same primary.
+        title.zh: 强调色
+        description: Focus rings and interactive accents. Default is CLI primary (peach dark / blue light). Does not recolor headings.
+        description.zh: 焦点环和交互强调。默认是 CLI primary（暗桃 / 浅蓝）。不会改标题颜色。
         type: variable-themed-color
         format: hex
         default-light: '#3b7dd8'
@@ -32,18 +114,31 @@ settings:
     -
         id: oc-logo-split
         title: Logo split point
+        title.zh: 库名分割点
         description: Leading vault-name characters shown muted, in ch units (one CJK glyph ≈ 2ch).
+        description.zh: 库名前面灰色那段的宽度，单位 ch（一个汉字大约 2ch）。
         type: variable-text
         default: '4ch'
     -
+        id: opendian-features
+        title: Features
+        title.zh: 功能
+        type: heading
+        level: 2
+        collapsed: true
+    -
         id: opendian-tinted-inline-code
         title: Tinted inline code
+        title.zh: 行内代码底色
         description: Add a tinted background chip behind inline code. Default is un-tinted (green text, no chip).
+        description.zh: 给行内 code 加一层底色 chip。默认是纯绿色文字、无底。
         type: class-toggle
     -
         id: opendian-soft-content
         title: Soft content corners
+        title.zh: 内容圆角
         description: Round code blocks, callouts and inline code with the 4px chip radius instead of sharp corners.
+        description.zh: 代码块、callout、行内 code 用 4px 圆角，替代直角。
         type: class-toggle
 */
 
