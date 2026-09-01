@@ -224,6 +224,21 @@ settings:
   --text-success: var(--oc-success);
   --text-selection: color-mix(in srgb, #fab283 32%, #0a0a0a);
 
+  /* Sidebar / ribbon icons: map Obsidian chrome vars to CLI text.
+     Idle = muted gray at FULL opacity (do not also fade with opacity). */
+  --icon-color: var(--oc-text-muted);
+  --icon-color-hover: var(--oc-text);
+  --icon-color-active: var(--oc-text);
+  --icon-color-focused: var(--oc-text);
+  --nav-item-color: var(--oc-text);
+  --nav-item-color-hover: var(--oc-text);
+  --nav-item-color-active: var(--oc-text);
+  --nav-item-color-selected: var(--oc-text);
+  --nav-collapse-icon-color: var(--oc-text-muted);
+  --ribbon-background: var(--oc-surface);
+  --ribbon-background-collapsed: var(--oc-surface);
+
+
   /* Obsidian built-in syntax tokens */
   --code-normal: var(--oc-code-fg);
   --code-comment: var(--oc-syntax-comment);
@@ -376,6 +391,21 @@ settings:
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
   --text-selection: color-mix(in srgb, #3b7dd8 20%, transparent);
+
+  /* Sidebar / ribbon icons: map Obsidian chrome vars to CLI text.
+     Idle = muted gray at FULL opacity (do not also fade with opacity). */
+  --icon-color: var(--oc-text-muted);
+  --icon-color-hover: var(--oc-text);
+  --icon-color-active: var(--oc-text);
+  --icon-color-focused: var(--oc-text);
+  --nav-item-color: var(--oc-text);
+  --nav-item-color-hover: var(--oc-text);
+  --nav-item-color-active: var(--oc-text);
+  --nav-item-color-selected: var(--oc-text);
+  --nav-collapse-icon-color: var(--oc-text-muted);
+  --ribbon-background: var(--oc-surface);
+  --ribbon-background-collapsed: var(--oc-surface);
+
 
   /* Obsidian built-in syntax tokens */
   --code-normal: var(--oc-code-fg);
@@ -956,16 +986,18 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 }
 
 .nav-folder-title {
-  color: var(--text-muted);
+  color: var(--text-normal);
   font-weight: 500;
 }
 
 .nav-folder-collapse-indicator {
-  opacity: 0.4;
-  transition: opacity var(--oc-motion);
+  opacity: 0.75;
+  color: var(--nav-collapse-icon-color);
+  transition: opacity var(--oc-motion), color var(--oc-motion);
 }
 .nav-folder-title:hover .nav-folder-collapse-indicator {
-  opacity: 0.8;
+  opacity: 1;
+  color: var(--icon-color-hover);
 }
 
 /* Right sidebar (outline/backlinks) — same cursor + wipe as the left rail,
@@ -1044,18 +1076,18 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
    All §3 geometry rules are now scoped to .mod-root so the sidebar tab
    headers keep their native geometry. We add nothing to the ribbon. */
 .workspace-ribbon .clickable-icon {
-  opacity: 0.45;
+  opacity: 1;
+  color: var(--icon-color);
   border-radius: var(--oc-radius-control);
-  transition: opacity var(--oc-motion), background-color var(--oc-motion);
+  transition: color var(--oc-motion), background-color var(--oc-motion);
 }
 .workspace-ribbon .clickable-icon:hover {
-  opacity: 0.9;
+  color: var(--icon-color-hover);
   background-color: var(--bg-hover);
 }
 .workspace-ribbon .clickable-icon.is-active {
-  opacity: 1;
+  color: var(--icon-color-active);
   background-color: var(--bg-active);
-  color: var(--text-normal);
 }
 
 /* Icon buttons (view-actions, headers, tab bar): soft rounded highlight
@@ -1238,6 +1270,15 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 .workspace-split.mod-left-split .workspace-tab-header .workspace-tab-header-inner,
 .workspace-split.mod-right-split .workspace-tab-header .workspace-tab-header-inner {
   border-radius: var(--oc-radius-control) !important;
+  color: var(--icon-color);
+}
+.workspace-split.mod-left-split .workspace-tab-header:hover .workspace-tab-header-inner,
+.workspace-split.mod-right-split .workspace-tab-header:hover .workspace-tab-header-inner {
+  color: var(--icon-color-hover);
+}
+.workspace-split.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner,
+.workspace-split.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner {
+  color: var(--icon-color-active);
 }
 .workspace-split.mod-left-split .workspace-tab-header,
 .workspace-split.mod-right-split .workspace-tab-header,
@@ -2477,21 +2518,19 @@ a.tag {
 
 .workspace-split.mod-left-split .nav-buttons-container .clickable-icon,
 .workspace-split.mod-right-split .nav-buttons-container .clickable-icon {
-  opacity: 0.6;
-  color: var(--text-muted);
+  opacity: 1;
+  color: var(--icon-color);
   border-radius: var(--oc-radius-control);
-  transition: opacity 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  transition: color 0.18s ease, background-color 0.18s ease;
 }
 .workspace-split.mod-left-split .nav-buttons-container .clickable-icon:hover,
 .workspace-split.mod-right-split .nav-buttons-container .clickable-icon:hover {
-  opacity: 1;
-  color: var(--text-normal);
+  color: var(--icon-color-hover);
   background-color: var(--bg-hover);
 }
 .workspace-split.mod-left-split .nav-buttons-container .clickable-icon.is-active,
 .workspace-split.mod-right-split .nav-buttons-container .clickable-icon.is-active {
-  opacity: 1;
-  color: var(--text-normal);
+  color: var(--icon-color-active);
   background-color: var(--bg-active);
 }
 
