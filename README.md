@@ -132,7 +132,7 @@ Manual installation is also possible by downloading the latest release and placi
 - Light and dark modes
 - Desktop and mobile
 - No plugin required
-- Optional: with the Style Settings plugin installed, you can tune the accent color, logo split point, inline-code tint, and content-corner radius from the settings UI (defaults apply without it)
+- Optional: install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings), then Appearance → Style Settings → Opendian to override CLI markdown colors (background, body, headings, bold, italic/quotes, inline code, links) plus accent, logo split, inline-code chip, and content radius. Defaults apply without the plugin.
 
 ## License
 

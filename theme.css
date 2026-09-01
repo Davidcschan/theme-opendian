@@ -5,11 +5,15 @@
   Design philosophy:
   "Monospace documentation, minimal chrome, precise color."
 
-  Tokens are derived from the OpenCode website + Starlight docs site:
-  - Light:  bg #FFFFFF, surface #F5F5F7, border #D2D2D7, text #1D1D1F
-  - Dark:   bg #0C0C0E, surface #161618, border #38383A, text #FFFFFF
-  - Accent: #007AFF (OpenCode blue)
-  - Fonts:  system sans for prose/UI + system mono for code (opencode.ai/docs style)
+  Tokens come from the OpenCode CLI TUI theme `opencode`
+  (packages/tui/src/theme/assets/opencode.json) — not the docs site.
+  - Dark:   bg #0a0a0a, panel #141414, element #1e1e1e, text #eeeeee, muted #808080
+            primary/links #fab283, headings/accent #9d7cd8, strong #f5a742
+  - Light:  bg #ffffff, panel #fafafa, element #f5f5f5, text #1a1a1a, muted #8a8a8a
+            primary/links #3b7dd8, headings/strong #d68c27
+  - Fonts:  IBM Plex Mono everywhere (UI, editor, headings, and code).
+            CLI itself does not set a font; brand fallback is IBM Plex Mono.
+            No @import / remote webfonts.
 */
 
 /* @settings
@@ -18,28 +22,123 @@ name: Opendian
 id: opendian
 settings:
     -
-        id: oc-accent
-        title: Accent color
-        description: Drives focus rings, interactive accents and text selection. Default is OpenCode blue.
+        id: opendian-info
+        title: OpenCode CLI tokens
+        title.zh: OpenCode CLI 色板
+        description: "Install the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin, then Appearance → Style Settings → Opendian. Defaults match CLI theme `opencode`. Accent does **not** recolor headings."
+        description.zh: "安装 [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) 后，到「外观 → Style Settings → Opendian」。默认对齐 CLI `opencode`。强调色不会改标题紫/金。"
+        type: info-text
+        markdown: true
+    -
+        id: opendian-markup
+        title: Markdown colors
+        title.zh: Markdown 颜色
+        type: heading
+        level: 2
+        collapsed: false
+    -
+        id: oc-bg
+        title: Background
+        title.zh: 背景
         type: variable-themed-color
         format: hex
-        default-light: '#007aff'
-        default-dark: '#007aff'
+        default-light: '#ffffff'
+        default-dark: '#0a0a0a'
+    -
+        id: oc-text
+        title: Body text
+        title.zh: 正文
+        type: variable-themed-color
+        format: hex
+        default-light: '#1a1a1a'
+        default-dark: '#eeeeee'
+    -
+        id: oc-text-strong
+        title: Headings
+        title.zh: 标题
+        description: h1–h6 only. Dark purple / light gold.
+        description.zh: 只作用于 h1–h6。暗色紫、浅色金。
+        type: variable-themed-color
+        format: hex
+        default-light: '#d68c27'
+        default-dark: '#9d7cd8'
+    -
+        id: oc-strong
+        title: Bold
+        title.zh: 粗体
+        type: variable-themed-color
+        format: hex
+        default-light: '#d68c27'
+        default-dark: '#f5a742'
+    -
+        id: oc-emph
+        title: Italic and quotes
+        title.zh: 斜体与引用
+        type: variable-themed-color
+        format: hex
+        default-light: '#b0851f'
+        default-dark: '#e5c07b'
+    -
+        id: oc-code
+        title: Inline code
+        title.zh: 行内代码
+        type: variable-themed-color
+        format: hex
+        default-light: '#3d9a57'
+        default-dark: '#7fd88f'
+    -
+        id: oc-link
+        title: Links
+        title.zh: 链接
+        type: variable-themed-color
+        format: hex
+        default-light: '#3b7dd8'
+        default-dark: '#fab283'
+    -
+        id: opendian-chrome
+        title: Chrome
+        title.zh: 界面
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: oc-accent
+        title: Accent color
+        title.zh: 强调色
+        description: Focus rings and interactive accents. Default is CLI primary (peach dark / blue light). Does not recolor headings.
+        description.zh: 焦点环和交互强调。默认是 CLI primary（暗桃 / 浅蓝）。不会改标题颜色。
+        type: variable-themed-color
+        format: hex
+        default-light: '#3b7dd8'
+        default-dark: '#fab283'
     -
         id: oc-logo-split
         title: Logo split point
+        title.zh: 库名分割点
         description: Leading vault-name characters shown muted, in ch units (one CJK glyph ≈ 2ch).
+        description.zh: 库名前面灰色那段的宽度，单位 ch（一个汉字大约 2ch）。
         type: variable-text
         default: '4ch'
     -
-        id: opendian-plain-inline-code
-        title: Plain inline code
-        description: Remove the tinted background from inline code.
+        id: opendian-features
+        title: Features
+        title.zh: 功能
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: opendian-tinted-inline-code
+        title: Tinted inline code
+        title.zh: 行内代码底色
+        description: Add a tinted background chip behind inline code. Default is un-tinted (green text, no chip).
+        description.zh: 给行内 code 加一层底色 chip。默认是纯绿色文字、无底。
         type: class-toggle
     -
         id: opendian-soft-content
         title: Soft content corners
+        title.zh: 内容圆角
         description: Round code blocks, callouts and inline code with the 4px chip radius instead of sharp corners.
+        description.zh: 代码块、callout、行内 code 用 4px 圆角，替代直角。
         type: class-toggle
 */
 
@@ -48,23 +147,39 @@ settings:
    ============================================================ */
 
 .theme-dark {
-  /* OpenCode palette */
-  --oc-bg: #0c0c0e;
-  --oc-surface: #161618;
-  --oc-surface-elevated: #1c1c1f;
-  --oc-border: #38383a;
-  --oc-border-muted: #2c2c2e;
+  /* OpenCode CLI TUI palette (opencode.json) */
+  --oc-bg: #0a0a0a;
+  --oc-surface: #141414;
+  --oc-surface-elevated: #1e1e1e;
+  --oc-border: #484848;
+  --oc-border-muted: #3c3c3c;
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
-  --oc-border-strong: #48484a;
-  --oc-text: #ffffff;
-  --oc-text-secondary: #c7c7cc;
-  --oc-text-muted: #a1a1a6;
-  --oc-text-disabled: #68686f;
-  --oc-accent: #007aff;
-  --oc-accent-hover: #0056b3;
-  --oc-success: #30d158;
-  --oc-warning: #ff9f0a;
-  --oc-danger: #ff453a;
+  --oc-border-strong: #606060;
+  --oc-text: #eeeeee;           /* markdownText / body */
+  --oc-text-strong: #9d7cd8;    /* markdownHeading — h1–h6 ONLY */
+  --oc-text-secondary: #eeeeee;
+  --oc-text-muted: #808080;
+  --oc-text-disabled: #606060;
+  --oc-code-fg: #eeeeee;      /* markdownCodeBlock = body text */
+  --oc-strong: #f5a742;       /* markdownStrong */
+  --oc-emph: #e5c07b;         /* markdownEmph / blockquote */
+  --oc-code: #7fd88f;         /* markdownCode (inline) */
+  --oc-link: #fab283;         /* markdownLink */
+  --oc-link-text: #56b6c2;    /* markdownLinkText */
+  --oc-accent: #fab283;       /* primary — focus / interactive */
+  --oc-accent-hover: #ffc09f;
+  --oc-success: #7fd88f;
+  --oc-warning: #f5a742;
+  --oc-danger: #e06c75;
+  --oc-syntax-comment: #808080;
+  --oc-syntax-keyword: #9d7cd8;
+  --oc-syntax-function: #fab283;
+  --oc-syntax-variable: #e06c75;
+  --oc-syntax-string: #7fd88f;
+  --oc-syntax-number: #f5a742;
+  --oc-syntax-type: #e5c07b;
+  --oc-syntax-operator: #56b6c2;
+  --oc-syntax-punctuation: #eeeeee;
 
   /* Semantic aliases (used by Obsidian internals) */
   --background-primary: var(--oc-bg);
@@ -77,20 +192,20 @@ settings:
   --background-modifier-border: var(--oc-border);
   --background-modifier-border-hover: var(--oc-border-strong);
   --background-modifier-border-focus: var(--oc-accent);
-  --background-modifier-error: rgba(255, 69, 58, 0.12);
-  --background-modifier-error-hover: rgba(255, 69, 58, 0.18);
-  --background-modifier-success: rgba(48, 209, 88, 0.12);
+  --background-modifier-error: color-mix(in srgb, #e06c75 12%, transparent);
+  --background-modifier-error-hover: color-mix(in srgb, #e06c75 18%, transparent);
+  --background-modifier-success: color-mix(in srgb, #7fd88f 12%, transparent);
   --background-modifier-message: var(--oc-surface-elevated);
 
   --text-normal: var(--oc-text);
   --text-muted: var(--oc-text-muted);
   --text-faint: var(--oc-text-disabled);
-  --text-accent: var(--oc-accent);
+  --text-accent: var(--oc-link);
   --text-accent-hover: var(--oc-accent-hover);
-  --link-color: var(--text-normal);
-  --link-color-hover: var(--text-normal);
-  --link-decoration-color: rgba(255, 255, 255, 0.28);
-  --link-decoration-color-hover: rgba(255, 255, 255, 0.55);
+  --link-color: var(--oc-link);
+  --link-color-hover: var(--oc-accent-hover);
+  --link-decoration-color: color-mix(in srgb, var(--oc-link) 50%, transparent);
+  --link-decoration-color-hover: color-mix(in srgb, var(--oc-link) 80%, transparent);
   --link-decoration: underline;
   --link-decoration-hover: underline;
   --link-external-decoration: underline;
@@ -107,7 +222,19 @@ settings:
   --tag-color-hover: var(--text-normal);
   --text-error: var(--oc-danger);
   --text-success: var(--oc-success);
-  --text-selection: color-mix(in srgb, var(--oc-accent) 25%, transparent);
+  --text-selection: color-mix(in srgb, #fab283 32%, #0a0a0a);
+
+  /* Obsidian built-in syntax tokens */
+  --code-normal: var(--oc-code-fg);
+  --code-comment: var(--oc-syntax-comment);
+  --code-function: var(--oc-syntax-function);
+  --code-important: var(--oc-syntax-keyword);
+  --code-keyword: var(--oc-syntax-keyword);
+  --code-property: var(--oc-syntax-function);
+  --code-punctuation: var(--oc-syntax-punctuation);
+  --code-string: var(--oc-syntax-string);
+  --code-tag: var(--oc-syntax-keyword);
+  --code-value: var(--oc-syntax-number);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
@@ -142,54 +269,70 @@ settings:
   /* Callouts: neutral technical surface, semantic color on rail/title/icon. */
   --callout-surface: rgba(255, 255, 255, 0.026);
   --callout-info-bg: var(--callout-surface);
-  --callout-info-text: #8ab4df;
+  --callout-info-text: #56b6c2;
   --callout-success-bg: var(--callout-surface);
-  --callout-success-text: #80c990;
+  --callout-success-text: #7fd88f;
   --callout-warning-bg: var(--callout-surface);
-  --callout-warning-text: #d8a04b;
+  --callout-warning-text: #f5a742;
   --callout-error-bg: var(--callout-surface);
-  --callout-error-text: #e7827a;
+  --callout-error-text: #e06c75;
   --callout-tip-bg: var(--callout-surface);
-  --callout-tip-text: #b48ad6;
+  --callout-tip-text: #9d7cd8;
 
   /* UI chrome */
   --sidebar-pill-bg: rgba(255, 255, 255, 0.08);
   --sidebar-pill-border: rgba(255, 255, 255, 0.12);
   --sidebar-text-tracking: -0.02em;
   --code-dot-color: var(--oc-text-disabled);
-  --status-chip-background: rgba(28, 28, 31, 0.92);
+  --status-chip-background: color-mix(in srgb, #141414 92%, transparent);
   --status-chip-border: rgba(255, 255, 255, 0.10);
   --status-chip-separator: rgba(255, 255, 255, 0.22);
   --status-chip-shadow: none;
   --status-chip-sync: var(--text-muted);
   /* Borderless dropdown chevron — light stroke for dark bg */
-  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
   /* Toggle switch colors (geometry lives in the shared token block below):
-     OFF track is a mid gray (knob reads against it), ON track flips to
-     white (--text-normal) with a near-black knob. */
-  --oc-toggle-off: #636366;
-  --toggle-thumb-color: #0c0c0e;
+     OFF track is a mid gray (knob reads against it), ON track uses CLI
+     primary (--oc-accent) with a near-bg knob. */
+  --oc-toggle-off: #484848;
+  --toggle-thumb-color: #0a0a0a;
 }
 
 .theme-light {
-  /* OpenCode palette */
+  /* OpenCode CLI TUI palette (opencode.json) */
   --oc-bg: #ffffff;
-  --oc-surface: #f5f5f7;
-  --oc-surface-elevated: #ffffff;
-  --oc-border: #d2d2d7;
-  --oc-border-muted: #e5e5ea;
+  --oc-surface: #fafafa;
+  --oc-surface-elevated: #f5f5f5;
+  --oc-border: #b8b8b8;
+  --oc-border-muted: #d4d4d4;
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
-  --oc-border-strong: #b9b9bf;
-  --oc-text: #1d1d1f;
-  --oc-text-secondary: #424245;
-  --oc-text-muted: #6e6e73;
-  --oc-text-disabled: #86868b;
-  --oc-accent: #007aff;
-  --oc-accent-hover: #0056b3;
-  --oc-success: #30d158;
-  --oc-warning: #ff9f0a;
-  --oc-danger: #ff3b30;
+  --oc-border-strong: #a0a0a0;
+  --oc-text: #1a1a1a;           /* markdownText / body */
+  --oc-text-strong: #d68c27;    /* markdownHeading — h1–h6 ONLY */
+  --oc-text-secondary: #1a1a1a;
+  --oc-text-muted: #8a8a8a;
+  --oc-text-disabled: #a0a0a0;
+  --oc-code-fg: #1a1a1a;      /* markdownCodeBlock = body text */
+  --oc-strong: #d68c27;       /* markdownStrong (same hue as heading in light) */
+  --oc-emph: #b0851f;         /* markdownEmph / blockquote */
+  --oc-code: #3d9a57;         /* markdownCode (inline) */
+  --oc-link: #3b7dd8;         /* markdownLink */
+  --oc-link-text: #318795;    /* markdownLinkText */
+  --oc-accent: #3b7dd8;       /* primary — focus / interactive */
+  --oc-accent-hover: #2968c3;
+  --oc-success: #3d9a57;
+  --oc-warning: #d68c27;
+  --oc-danger: #d1383d;
+  --oc-syntax-comment: #8a8a8a;
+  --oc-syntax-keyword: #d68c27;
+  --oc-syntax-function: #3b7dd8;
+  --oc-syntax-variable: #d1383d;
+  --oc-syntax-string: #3d9a57;
+  --oc-syntax-number: #d68c27;
+  --oc-syntax-type: #b0851f;
+  --oc-syntax-operator: #318795;
+  --oc-syntax-punctuation: #1a1a1a;
 
   /* Semantic aliases */
   --background-primary: var(--oc-bg);
@@ -202,20 +345,20 @@ settings:
   --background-modifier-border: var(--oc-border);
   --background-modifier-border-hover: var(--oc-border-strong);
   --background-modifier-border-focus: var(--oc-accent);
-  --background-modifier-error: rgba(255, 59, 48, 0.10);
-  --background-modifier-error-hover: rgba(255, 59, 48, 0.16);
-  --background-modifier-success: rgba(48, 209, 88, 0.10);
+  --background-modifier-error: color-mix(in srgb, #d1383d 10%, transparent);
+  --background-modifier-error-hover: color-mix(in srgb, #d1383d 16%, transparent);
+  --background-modifier-success: color-mix(in srgb, #3d9a57 10%, transparent);
   --background-modifier-message: var(--oc-surface-elevated);
 
   --text-normal: var(--oc-text);
   --text-muted: var(--oc-text-muted);
   --text-faint: var(--oc-text-disabled);
-  --text-accent: var(--oc-accent);
+  --text-accent: var(--oc-link);
   --text-accent-hover: var(--oc-accent-hover);
-  --link-color: var(--text-normal);
-  --link-color-hover: var(--text-normal);
-  --link-decoration-color: rgba(0, 0, 0, 0.22);
-  --link-decoration-color-hover: rgba(0, 0, 0, 0.46);
+  --link-color: var(--oc-link);
+  --link-color-hover: var(--oc-accent-hover);
+  --link-decoration-color: color-mix(in srgb, var(--oc-link) 45%, transparent);
+  --link-decoration-color-hover: color-mix(in srgb, var(--oc-link) 75%, transparent);
   --link-decoration: underline;
   --link-decoration-hover: underline;
   --link-external-decoration: underline;
@@ -230,11 +373,21 @@ settings:
   --tag-background-hover: var(--oc-tint-3);
   --tag-color: var(--text-normal);
   --tag-color-hover: var(--text-normal);
-  /* Deeper variants for TEXT on white: raw --oc-success/--oc-danger sit at
-     ~2–3:1 contrast on #fff (below AA). Backgrounds keep the raw palette. */
-  --text-error: #d70015;
-  --text-success: #248a3d;
-  --text-selection: color-mix(in srgb, var(--oc-accent) 20%, transparent);
+  --text-error: var(--oc-danger);
+  --text-success: var(--oc-success);
+  --text-selection: color-mix(in srgb, #3b7dd8 20%, transparent);
+
+  /* Obsidian built-in syntax tokens */
+  --code-normal: var(--oc-code-fg);
+  --code-comment: var(--oc-syntax-comment);
+  --code-function: var(--oc-syntax-function);
+  --code-important: var(--oc-syntax-keyword);
+  --code-keyword: var(--oc-syntax-keyword);
+  --code-property: var(--oc-syntax-function);
+  --code-punctuation: var(--oc-syntax-punctuation);
+  --code-string: var(--oc-syntax-string);
+  --code-tag: var(--oc-syntax-keyword);
+  --code-value: var(--oc-syntax-number);
 
   --interactive-normal: var(--oc-surface);
   --interactive-hover: var(--oc-surface-elevated);
@@ -267,15 +420,15 @@ settings:
   /* Callouts */
   --callout-surface: rgba(0, 0, 0, 0.018);
   --callout-info-bg: var(--callout-surface);
-  --callout-info-text: #315f8f;
+  --callout-info-text: #318795;
   --callout-success-bg: var(--callout-surface);
-  --callout-success-text: #3b7f52;
+  --callout-success-text: #3d9a57;
   --callout-warning-bg: var(--callout-surface);
-  --callout-warning-text: #8a6a20;
+  --callout-warning-text: #d68c27;
   --callout-error-bg: var(--callout-surface);
-  --callout-error-text: #9c3f38;
+  --callout-error-text: #d1383d;
   --callout-tip-bg: var(--callout-surface);
-  --callout-tip-text: #6f4a8e;
+  --callout-tip-text: #7b5bb6;
 
   /* UI chrome */
   --sidebar-pill-bg: #ffffff;
@@ -288,12 +441,12 @@ settings:
   --status-chip-shadow: 0 6px 18px rgba(0, 0, 0, 0.035);
   --status-chip-sync: var(--text-muted);
   /* Borderless dropdown chevron — dark stroke for light bg */
-  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --oc-dropdown-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a8a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 
   /* Toggle switch colors (geometry lives in the shared token block below):
-     OFF track is a light gray, ON track flips to near-black (--text-normal)
-     with a white knob — matches the OpenCode desktop switch. */
-  --oc-toggle-off: #c7c7cc;
+     OFF track is a light gray, ON track uses CLI primary (--oc-accent)
+     with a white knob. */
+  --oc-toggle-off: #d4d4d4;
   --toggle-thumb-color: #ffffff;
 }
 
@@ -322,7 +475,7 @@ settings:
   --blockquote-rail-secondary-color: var(--oc-border-muted);
   --blockquote-rail-secondary-thickness: 1px;
   --blockquote-rail-gap: 7px;
-  --hr-color: var(--oc-border-muted);
+  --hr-color: var(--oc-text-muted);
   --hr-thickness: 1px;
 
   /* Radius scale — one consistent system across the whole theme:
@@ -353,7 +506,7 @@ settings:
   --oc-space-6: 24px;
 
   /* Reading-mode block gap. Edit mode separates blocks with the blank source
-     line (.cm-line at line-height 1.7 ≈ 26px); reading mode collapses blank
+     line (.cm-line at line-height 1.6875 ≈ 26px); reading mode collapses blank
      lines, so blocks that leaned on 1.2em/1rem margins read cramped next to
      Live Preview. One token lifts every big block (callout/table/pre/list/
      blockquote) to roughly one blank-line's worth of air. */
@@ -376,7 +529,7 @@ settings:
      variable-driven (height = thumb + 2*border, knob inset = border), so
      the knob is centered by construction on every platform — we never
      touch ::after geometry directly. Track/knob COLORS stay per-theme. */
-  --oc-toggle-on: var(--text-normal);
+  --oc-toggle-on: var(--oc-accent);
   --toggle-radius: 5px;
   --toggle-thumb-radius: 3px;
   --toggle-s-border-width: 3px;
@@ -402,14 +555,36 @@ settings:
      background-color. */
   --oc-icon-o-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='30' viewBox='0 0 24 30'%3E%3Cpath fill='white' fill-rule='evenodd' clip-rule='evenodd' d='M0 0h24v30H0V0Zm6 6v18h12V6H6Z'/%3E%3Cpath fill='white' fill-opacity='0.35' d='M6 12h12v12H6V12Z'/%3E%3C/svg%3E");
 
-  /* Typography: match opencode.ai/docs, which uses Starlight's system stacks
-     (verified from its stylesheet) — proportional system sans for prose and
-     UI, system mono only for code. No font install needed; on macOS this is
-     SF Pro + SF Mono. Code's CJK comments fall back to true CJK monospaces
-     (Maple Mono CN / Sarasa Mono SC, 2:1 width ratio) before PingFang. */
-  --font-default: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
-  --font-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', 'Maple Mono CN', 'Sarasa Mono SC', monospace;
-  --font-heading: var(--font-default);
+  /* Typography: IBM Plex Mono for UI, editor, headings, AND code.
+     CLI itself does not set a font; this is the OpenCode brand fallback.
+     No @import / remote font files; the family is used if installed locally,
+     otherwise system mono (and CJK mono) fallbacks. */
+  --oc-font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", "Maple Mono CN", "Sarasa Mono SC", monospace;
+  --font-default: var(--oc-font);
+  --font-monospace: var(--oc-font);
+  --font-heading: var(--oc-font);
+  --font-text: var(--oc-font);
+  --font-interface: var(--oc-font);
+  --font-editor: var(--oc-font);
+
+  /* Heading px sizes kept from the prior 16px-root tuning (26/22/18/16).
+     Color comes from the TUI heading token; hierarchy is size/weight only.
+     Body uses 1.6875; headings 1.2. */
+  --line-height-normal: 1.6875;
+  --line-height-tight: 1.2;
+  --p-spacing: 1.375rem;
+  --h1-size: calc(26 / 16 * 1em);
+  --h2-size: calc(22 / 16 * 1em);
+  --h3-size: calc(18 / 16 * 1em);
+  --h4-size: calc(16 / 16 * 1em);
+  --h5-size: calc(18 / 16 * 1em);
+  --h6-size: calc(16 / 16 * 1em);
+  --h1-line-height: 1.2;
+  --h2-line-height: 1.2;
+  --h3-line-height: 1.2;
+  --h4-line-height: 1.2;
+  --h5-line-height: 1.2;
+  --h6-line-height: 1.2;
 }
 
 /* ============================================================
@@ -421,22 +596,22 @@ body {
   font-family: var(--font-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--font-text-size);
+  line-height: 1.6875;
   font-variant-ligatures: none;
 }
 
 /* Comfortable prose rhythm — more air between blocks reads more modern than
    the previous dense 1.6 / tight margins. */
 .markdown-rendered p {
-  margin-block: 0 0.9em;
+  margin-block: 0 var(--p-spacing);
 }
 .markdown-rendered li {
-  line-height: 1.7;
+  line-height: 1.6875;
 }
 
 /* Big blocks get the full blank-line gap (see --oc-block-gap). Native list
-   margins ride --p-spacing (1rem) and blockquote margins are smaller still;
+   margins ride --p-spacing (1.375rem, docs paragraph-spacing) and blockquote margins are smaller still;
    nested lists keep their native 0 via the more specific app.css rules. */
 .markdown-rendered ul,
 .markdown-rendered ol,
@@ -572,7 +747,7 @@ body {
 /* Vault name / logo area — OpenCode dual-tone effect.
    The split point is driven by --oc-logo-split (ch units), which only tracks
    glyph positions in a monospace face — so the wordmark keeps the mono stack
-   even though prose/UI are sans. Override --oc-logo-split per-vault as
+   like the rest of the UI. Override --oc-logo-split per-vault as
    needed. */
 .nav-folder.mod-root > .nav-folder-title {
   margin: var(--oc-space-3) var(--oc-space-3) var(--oc-space-5) var(--oc-space-3);
@@ -1213,27 +1388,55 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 .markdown-rendered h5,
 .markdown-rendered h6 {
   font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--text-normal);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  font-weight: 500;
+  color: var(--oc-text-strong);
+  letter-spacing: 0;
+  line-height: var(--h1-line-height);
   border-bottom: none;
 }
 
-.HyperMD-header-1, .markdown-rendered h1 { font-size: 1.6em !important; margin-top: 1.4em; margin-bottom: 0.6em; font-weight: 700; }
-.HyperMD-header-2, .markdown-rendered h2 { font-size: 1.35em !important; margin-top: 1.3em; margin-bottom: 0.5em; }
-.HyperMD-header-3, .markdown-rendered h3 { font-size: 1.15em !important; margin-top: 1.2em; margin-bottom: 0.4em; }
-.HyperMD-header-4, .markdown-rendered h4 { font-size: 1.05em !important; font-weight: 600; margin-top: 1em; margin-bottom: 0.3em; color: var(--text-normal); }
-.HyperMD-header-5, .markdown-rendered h5 { font-size: 1em !important; font-weight: 600; color: var(--text-muted); margin-top: 0.8em; }
-.HyperMD-header-6, .markdown-rendered h6 { font-size: 0.95em !important; font-weight: 600; color: var(--text-muted); }
+/* Heading sizes relative to --font-text-size, using 16px (Obsidian default) as the docs px base. */
+.HyperMD-header-1, .markdown-rendered h1 {
+  font-size: var(--h1-size) !important;
+  line-height: var(--h1-line-height);
+  margin-top: 1.1em;
+  margin-bottom: 0.4em;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  /* TUI underlines H1 only; h2–h6 share the same hue, size/weight for hierarchy. */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: currentColor;
+}
+.HyperMD-header-2, .markdown-rendered h2 { font-size: var(--h2-size) !important; line-height: var(--h2-line-height); margin-top: 1.1em; margin-bottom: 0.4em; }
+.HyperMD-header-3, .markdown-rendered h3 { font-size: var(--h3-size) !important; line-height: var(--h3-line-height); margin-top: 1.1em; margin-bottom: 0.35em; }
+.HyperMD-header-4, .markdown-rendered h4 { font-size: var(--h4-size) !important; line-height: var(--h4-line-height); font-weight: 500; margin-top: 1em; margin-bottom: 0.3em; color: var(--oc-text-strong); }
+.HyperMD-header-5, .markdown-rendered h5 { font-size: var(--h5-size) !important; line-height: var(--h5-line-height); font-weight: 500; color: var(--oc-text-strong); margin-top: 0.8em; margin-bottom: 0.3em; }
+.HyperMD-header-6, .markdown-rendered h6 { font-size: var(--h6-size) !important; line-height: var(--h6-line-height); font-weight: 500; color: var(--oc-text-strong); margin-top: 0.8em; margin-bottom: 0.3em; }
 
-strong, b { font-weight: 700; color: var(--text-normal); }
+/* TUI markdownStrong is a color, not extra-black. Headings use --oc-text-strong
+   (h1–h6 only); body bold uses --oc-strong. */
+strong, b, .cm-strong {
+  font-weight: 600;
+  color: var(--oc-strong);
+}
+em, i, .cm-em {
+  color: var(--oc-emph);
+  font-style: italic;
+}
+.markdown-rendered ul > li::marker {
+  color: var(--oc-link); /* markdownListItem */
+}
+.markdown-rendered ol > li::marker {
+  color: var(--oc-link-text); /* markdownListEnumeration */
+}
 a {
   color: var(--link-color);
   text-decoration-line: underline;
   text-decoration-color: var(--link-decoration-color);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.1875rem;
   transition: color var(--oc-motion), text-decoration-color var(--oc-motion);
 }
 a:hover {
@@ -1255,7 +1458,8 @@ a:hover {
 .markdown-rendered blockquote {
   border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
   padding: 2px 0 2px calc(var(--blockquote-rail-gap) + 1em);
-  color: var(--text-muted);
+  /* TUI markdownBlockQuote = emph yellow, not muted / body. */
+  color: var(--oc-emph);
   font-style: normal;
   margin-inline-start: 0;
   /* Secondary rail: a 1px gradient stripe parked --blockquote-rail-gap inside
@@ -1273,7 +1477,7 @@ a:hover {
 }
 
 .markdown-rendered blockquote p {
-  color: var(--text-muted);
+  color: inherit;
   text-indent: 0;
 }
 
@@ -1305,8 +1509,8 @@ a:hover {
 
 .markdown-rendered th {
   background-color: transparent;
-  font-weight: 700;
-  color: var(--text-normal);
+  font-weight: 600;
+  color: var(--oc-text-strong);
   text-align: left;
   padding: 10px 16px 10px 0;
   border: none;
@@ -1340,7 +1544,7 @@ a:hover {
   font-family: var(--font-monospace);
   font-size: 0.88em;
   font-weight: 600;
-  color: var(--text-normal);
+  color: var(--oc-code);
   background-color: transparent;
   padding: 0;
   border: none;
@@ -1460,8 +1664,9 @@ a:hover {
 .callout-content code {
   font-family: var(--font-monospace);
   font-size: 0.85em;
-  /* Same flat overlay tint as tags — one token covers both themes. */
-  background-color: var(--tag-background);
+  font-weight: 600;
+  color: var(--oc-code);
+  background-color: color-mix(in srgb, var(--oc-code) 10%, transparent);
   padding: 2px 5px;
   border-radius: 0;
 }
@@ -1536,10 +1741,9 @@ a:hover {
    7. CODE BLOCKS
    ============================================================ */
 .markdown-rendered pre {
-  /* Softer, filled code surface (subtle tint + hairline) instead of a hard
-     1px box on the page colour — reads cleaner / more modern. */
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-hairline);
+  /* Docs code chrome: surface fill + 1px border, radius 0. */
+  background-color: var(--oc-surface);
+  border: 1px solid var(--oc-border);
   border-radius: 0;
   padding: 0;
   margin: var(--oc-block-gap) 0;
@@ -1552,8 +1756,8 @@ a:hover {
   display: block;
   font-family: var(--font-monospace);
   font-size: 13px;
-  line-height: 1.65;
-  color: var(--text-normal);
+  line-height: 1.6875;
+  color: var(--oc-code-fg);
   background-color: transparent;
   overflow-x: auto;
   tab-size: 2;
@@ -1562,22 +1766,23 @@ a:hover {
 .markdown-rendered code:not(pre code) {
   font-family: var(--font-monospace);
   font-size: 0.85em;
-  font-weight: 500;
-  color: var(--text-normal);
-  background-color: var(--bg-hover);
+  font-weight: 600;
+  /* TUI markdownCode — green, no heavy chip. */
+  color: var(--oc-code);
+  background-color: transparent;
   border: none;
-  padding: 1px 5px;
+  padding: 0;
   border-radius: 0;
   line-height: 1.4;
 }
 
 /* Style Settings toggles (see @settings block at the top of the file):
-   - opendian-plain-inline-code: drop the tinted chip behind inline code
+   - opendian-tinted-inline-code: add a tinted chip behind inline code
    - opendian-soft-content: swap sharp content corners for the 4px chip radius */
-body.opendian-plain-inline-code .markdown-rendered code:not(pre code),
-body.opendian-plain-inline-code .markdown-source-view .cm-inline-code {
-  background-color: transparent;
-  padding-inline: 1px;
+body.opendian-tinted-inline-code .markdown-rendered code:not(pre code),
+body.opendian-tinted-inline-code .markdown-source-view .cm-inline-code {
+  background-color: color-mix(in srgb, var(--oc-code) 12%, transparent);
+  padding: 1px 5px;
 }
 
 body.opendian-soft-content .markdown-rendered pre,
@@ -1600,8 +1805,8 @@ body.opendian-soft-content .markdown-source-view .cm-inline-code {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--border-hairline);
-  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--oc-border);
+  background-color: var(--oc-surface);
   font-family: var(--font-default);
 }
 
@@ -2644,97 +2849,70 @@ a.tag {
 }
 
 /* ============================================================
-   16. SYNTAX HIGHLIGHTING (BASIC FALLBACK)
+   16. SYNTAX HIGHLIGHTING (CLI TUI `opencode.json`)
    ============================================================ */
-.cm-keyword, .cm-operator,
-.markdown-rendered pre code .token.keyword,
+.cm-keyword,
+.markdown-rendered pre code .token.keyword {
+  color: var(--oc-syntax-keyword);
+}
+
+.cm-operator,
 .markdown-rendered pre code .token.operator {
-  color: #b392f0;
+  color: var(--oc-syntax-operator);
 }
 
 .cm-string, .cm-string-2,
 .markdown-rendered pre code .token.string,
 .markdown-rendered pre code .token.url {
-  color: #9ecbff;
+  color: var(--oc-syntax-string);
 }
 
 .cm-number,
 .markdown-rendered pre code .token.number {
-  color: #79b8ff;
+  color: var(--oc-syntax-number);
 }
 
 .cm-comment,
 .markdown-rendered pre code .token.comment {
-  color: #99a0a6;
+  color: var(--oc-syntax-comment);
 }
 
 .cm-variable, .cm-variable-2, .cm-variable-3,
 .markdown-rendered pre code .token.variable,
 .markdown-rendered pre code .token.parameter {
-  color: var(--text-normal);
+  color: var(--oc-syntax-variable);
 }
 
 .cm-property,
 .markdown-rendered pre code .token.property {
-  color: #79b8ff;
+  color: var(--oc-syntax-function);
+}
+
+.cm-type, .cm-atom,
+.markdown-rendered pre code .token.class-name,
+.markdown-rendered pre code .token.builtin,
+.markdown-rendered pre code .token.type {
+  color: var(--oc-syntax-type);
 }
 
 .cm-tag,
 .markdown-rendered pre code .token.tag {
-  color: #85e89d;
+  color: var(--oc-syntax-keyword);
 }
 
 .cm-attribute,
 .markdown-rendered pre code .token.attr-name {
-  color: #b392f0;
+  color: var(--oc-syntax-type);
 }
 
 .cm-function,
 .markdown-rendered pre code .token.function {
-  color: #b392f0;
+  color: var(--oc-syntax-function);
 }
 
-.theme-light .cm-keyword, .theme-light .cm-operator,
-.theme-light .markdown-rendered pre code .token.keyword,
-.theme-light .markdown-rendered pre code .token.operator {
-  color: #6f42c1;
-}
-
-.theme-light .cm-string, .theme-light .cm-string-2,
-.theme-light .markdown-rendered pre code .token.string,
-.theme-light .markdown-rendered pre code .token.url {
-  color: #032f62;
-}
-
-.theme-light .cm-number,
-.theme-light .markdown-rendered pre code .token.number {
-  color: #005cc5;
-}
-
-.theme-light .cm-comment,
-.theme-light .markdown-rendered pre code .token.comment {
-  color: #616972;
-}
-
-.theme-light .cm-property,
-.theme-light .markdown-rendered pre code .token.property {
-  color: #005cc5;
-}
-
-.theme-light .cm-tag,
-.theme-light .markdown-rendered pre code .token.tag {
-  color: #22863a;
-}
-
-/* Function / attribute names: the dark-mode #b392f0 (light lavender) washes
-   out on the white light-mode surface. Drop them to the same deep purple the
-   keyword override uses, matching GitHub's light palette. (Without this they
-   were the only two token types left at their dark-mode color in light mode.) */
-.theme-light .cm-attribute,
-.theme-light .markdown-rendered pre code .token.attr-name,
-.theme-light .cm-function,
-.theme-light .markdown-rendered pre code .token.function {
-  color: #6f42c1;
+.cm-punctuation,
+.markdown-rendered pre code .token.punctuation {
+  color: var(--oc-syntax-punctuation);
 }
 
 /* ============================================================
@@ -2749,14 +2927,14 @@ a.tag {
 /* Edit/read parity: no font-size here. Reading mode follows the user's
    Appearance font size (--font-text-size); the previous hardcoded 14px made
    every mode switch visibly re-scale the page (and disabled the font-size
-   slider in edit mode). Font follows --font-default (system sans) to match
+   slider in edit mode). Font follows --font-default (IBM Plex Mono) to match
    reading mode — code blocks (.HyperMD-codeblock below) and inline code
-   (.cm-inline-code) keep the mono stack on their own rules. line-height
-   matches the 1.7 reading-mode rhythm. */
+   (.cm-inline-code) share the same stack. line-height matches the 1.6875
+   reading-mode rhythm. */
 .markdown-source-view .cm-content,
 .markdown-source-view .cm-line {
   font-family: var(--font-default);
-  line-height: 1.7;
+  line-height: 1.6875;
   color: var(--text-normal);
 }
 
@@ -2769,13 +2947,29 @@ a.tag {
    despite identical declared values. Here we keep only color/weight. */
 .markdown-source-view .cm-header {
   font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--text-normal);
+  font-weight: 500;
+  color: var(--oc-text-strong);
+  letter-spacing: 0;
+  line-height: var(--h1-line-height);
 }
 
-.markdown-source-view .cm-header-1 { font-weight: 700; }
-.markdown-source-view .cm-header-5 { color: var(--text-muted); }
-.markdown-source-view .cm-header-6 { color: var(--text-muted); }
+.markdown-source-view .cm-header-1 {
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: currentColor;
+}
+.markdown-source-view .cm-header-5 { color: var(--oc-text-strong); }
+.markdown-source-view .cm-header-6 { color: var(--oc-text-strong); }
+
+/* Beat .markdown-source-view .cm-line { line-height: 1.6875 } so heading
+   lines keep the docs 1.2 rhythm in source / Live Preview. */
+.markdown-source-view .cm-line.HyperMD-header,
+.markdown-source-view .HyperMD-header {
+  line-height: var(--h1-line-height);
+}
 
 /* Markdown formatting markers */
 .markdown-source-view .cm-formatting {
@@ -2783,7 +2977,10 @@ a.tag {
 }
 
 .markdown-source-view .cm-formatting-list {
-  color: var(--text-muted);
+  color: var(--oc-link);
+}
+.markdown-source-view .cm-formatting-list-ol {
+  color: var(--oc-link-text);
 }
 
 .markdown-source-view .cm-formatting-task {
@@ -2791,7 +2988,7 @@ a.tag {
 }
 
 .markdown-source-view .cm-formatting-quote {
-  color: var(--text-muted);
+  color: var(--oc-emph);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
@@ -2845,11 +3042,11 @@ a.tag {
   color: var(--link-color);
   text-decoration-color: var(--link-decoration-color);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.1875rem;
 }
 
 .markdown-source-view .cm-url {
-  color: var(--text-muted);
+  color: var(--oc-link-text);
 }
 
 .markdown-source-view .cm-hmd-external-link,
@@ -2861,13 +3058,13 @@ a.tag {
 /* Inline code in source mode */
 .markdown-source-view .cm-inline-code {
   font-family: var(--font-monospace);
-  /* Match reading-mode inline code exactly: 0.85em / 500 / 1px 5px. */
+  /* Match reading-mode inline code exactly: 0.85em / 600 / green / no chip. */
   font-size: 0.85em;
-  font-weight: 500;
-  color: var(--text-normal);
-  background-color: var(--bg-hover);
+  font-weight: 600;
+  color: var(--oc-code);
+  background-color: transparent;
   border: none;
-  padding: 1px 5px;
+  padding: 0;
   border-radius: 0;
 }
 
@@ -2955,8 +3152,8 @@ a.tag {
 .markdown-source-view .HyperMD-codeblock {
   font-family: var(--font-monospace);
   font-size: 13px;
-  line-height: 1.65;
-  color: var(--text-normal);
+  line-height: 1.6875;
+  color: var(--oc-code-fg);
 }
 
 .markdown-source-view .HyperMD-codeblock-begin,
@@ -2965,8 +3162,8 @@ a.tag {
 }
 
 .markdown-source-view .HyperMD-codeblock-bg {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-hairline);
+  background-color: var(--oc-surface);
+  border: 1px solid var(--oc-border);
 }
 
 /* Lists */
@@ -2975,7 +3172,7 @@ a.tag {
 }
 
 .markdown-source-view .cm-quote {
-  color: var(--text-muted);
+  color: var(--oc-emph);
   /* No border here — the single bar is drawn by Obsidian's native
      .cm-blockquote-border, now neutralized via --blockquote-border-color.
      A border-left here would re-introduce the doubled line. */
