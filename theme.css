@@ -6,7 +6,7 @@
   "Monospace documentation, minimal chrome, precise color."
 
   Tokens are derived from the OpenCode docs site (https://opencode.ai/docs):
-  - Light:  bg #FDFCFC, surface #F8F7F7, border #D0CFCE, body #646262, strong #201D1D
+  - Light:  bg #FDFCFC, surface #F8F7F7, border #D0CFCE, body #646262, headings #201D1D
   - Dark:   bg #131010, warm surfaces lifted off the page, strong near #FDFCFC
   - Accent: docs strong (#201D1D light / #FDFCFC dark) — not #007AFF
   - Fonts:  IBM Plex Mono everywhere (UI, editor, headings, and code)
@@ -57,7 +57,7 @@ settings:
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
   --oc-border-strong: #4f4949;
   --oc-text: #c4c1c1;           /* body */
-  --oc-text-strong: #fdfcfc;    /* headings + bold */
+  --oc-text-strong: #fdfcfc;    /* headings (body strong inherits) */
   --oc-text-secondary: #e0dddd;
   --oc-text-muted: #9a9898;
   --oc-text-disabled: #6e6b6b;
@@ -184,7 +184,7 @@ settings:
   /* One step ABOVE --oc-border — hover borders must read stronger, not fainter. */
   --oc-border-strong: #b5b4b3;
   --oc-text: #646262;           /* body */
-  --oc-text-strong: #201d1d;    /* headings + bold */
+  --oc-text-strong: #201d1d;    /* headings (body strong inherits) */
   --oc-text-secondary: #423f3f;
   --oc-text-muted: #9a9898;
   --oc-text-disabled: #b4b1b1;
@@ -1253,7 +1253,9 @@ body:not(.is-mobile) .workspace-sidedock-vault-profile .clickable-icon:has(svg.l
 .HyperMD-header-5, .markdown-rendered h5 { font-size: var(--h5-size) !important; line-height: var(--h5-line-height); font-weight: 500; color: var(--oc-text-strong); margin-top: 0.8em; margin-bottom: 0.3em; }
 .HyperMD-header-6, .markdown-rendered h6 { font-size: var(--h6-size) !important; line-height: var(--h6-line-height); font-weight: 500; color: var(--oc-text-strong); margin-top: 0.8em; margin-bottom: 0.3em; }
 
-strong, b, .cm-strong { font-weight: 500; color: var(--oc-text-strong); }
+/* Docs `strong{font-weight:500!important}` sets weight only — color inherits
+   the parent (body #646262 in p/li, heading strong-token inside h1–h6). */
+strong, b, .cm-strong { font-weight: 500; color: inherit; }
 a {
   color: var(--link-color);
   text-decoration-line: underline;
@@ -1281,7 +1283,9 @@ a:hover {
 .markdown-rendered blockquote {
   border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
   padding: 2px 0 2px calc(var(--blockquote-rail-gap) + 1em);
-  color: var(--text-muted);
+  /* Docs quote uses `color: var(--color-text-secondary)` but that token is
+     undefined, so computed color inherits body. Do the same. */
+  color: var(--text-normal);
   font-style: normal;
   margin-inline-start: 0;
   /* Secondary rail: a 1px gradient stripe parked --blockquote-rail-gap inside
@@ -1299,7 +1303,7 @@ a:hover {
 }
 
 .markdown-rendered blockquote p {
-  color: var(--text-muted);
+  color: inherit;
   text-indent: 0;
 }
 
@@ -1331,8 +1335,8 @@ a:hover {
 
 .markdown-rendered th {
   background-color: transparent;
-  font-weight: 700;
-  color: var(--text-normal);
+  font-weight: 600;
+  color: var(--oc-text-strong);
   text-align: left;
   padding: 10px 16px 10px 0;
   border: none;
@@ -1588,7 +1592,9 @@ a:hover {
   font-family: var(--font-monospace);
   font-size: 0.85em;
   font-weight: 600;
-  color: inherit;
+  /* Docs `.sl-markdown-content code { color: var(--sl-color-text) }` — body
+     color even inside headings, not inherit. */
+  color: var(--text-normal);
   background-color: transparent;
   border: none;
   padding: 0;
@@ -2898,7 +2904,7 @@ a.tag {
   /* Match reading-mode inline code exactly: 0.85em / 600 / no chip. */
   font-size: 0.85em;
   font-weight: 600;
-  color: inherit;
+  color: var(--text-normal);
   background-color: transparent;
   border: none;
   padding: 0;
@@ -3009,7 +3015,7 @@ a.tag {
 }
 
 .markdown-source-view .cm-quote {
-  color: var(--text-muted);
+  color: var(--text-normal);
   /* No border here — the single bar is drawn by Obsidian's native
      .cm-blockquote-border, now neutralized via --blockquote-border-color.
      A border-left here would re-introduce the doubled line. */
