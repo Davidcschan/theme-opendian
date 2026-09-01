@@ -193,6 +193,13 @@ settings:
         description: Round code blocks, callouts and inline code with the 4px chip radius instead of sharp corners.
         description.zh: 代码块、callout、行内 code 用 4px 圆角，替代直角。
         type: class-toggle
+    -
+        id: opendian-aside-callout
+        title: Aside-style callouts
+        title.zh: 两列 aside 标注
+        description: Starlight two-column callouts (icon+title left, body right). Default is stacked so long titles stay readable.
+        description.zh: 还原文档站两列 aside（左标题右正文）。默认是上下堆叠，长标题才读得下去。
+        type: class-toggle
 */
 
 /* ============================================================
@@ -1671,16 +1678,14 @@ a:hover {
 }
 
 /* ============================================================
-   6. CALLOUT (STARLIGHT ASIDE STYLE)
+   6. CALLOUT (stacked title / body; aside is opt-in)
    ============================================================ */
 .callout {
   /* One variable carries the semantic color to rail/title/icon (it inherits
      into descendants); per-type rules below retarget only this var plus the
      per-type bg token, so snippet overrides of a single type keep working. */
   --oc-callout-color: var(--callout-info-text);
-  /* Fixed title-column width, so the content column of every callout starts
-     at the same x (reference: docs-style aside blocks). 8em of the title's
-     0.9em size ≈ 115px — fits a 5-CJK-char title + icon, longer titles wrap. */
+  /* Used only by the optional aside (two-column) layout. */
   --oc-callout-title-width: 8em;
   background-color: var(--callout-info-bg);
   border: none;
@@ -1689,10 +1694,12 @@ a:hover {
   padding: var(--oc-space-3) var(--oc-space-4);
   margin: var(--oc-block-gap) 0;
   box-shadow: none;
+  /* Default: stacked. Long titles (release notes, dated headings) stay
+     readable; the old Starlight two-column aside is an opt-in class. */
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: var(--oc-space-3);
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--oc-space-2);
 }
 
 .callout-title {
@@ -1700,24 +1707,29 @@ a:hover {
   font-weight: 600;
   font-size: 0.9em;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   gap: var(--oc-space-2);
   padding: 0;
   margin: 0;
   font-family: var(--font-default);
-  /* Fixed-width left column: every callout's content column starts at the
-     same x, regardless of title length. Titles longer than the column wrap
-     inside it (flex-wrap below) instead of pushing the content right. */
-  flex: 0 0 var(--oc-callout-title-width);
-  flex-wrap: wrap;
-  /* Match .callout-content's line-height so the title's first-line top-leading
-     equals the content's — otherwise the two columns (flex-start) start their
-     text at different y and the right side reads ~2px low. */
+  flex: 0 0 auto;
+  width: 100%;
   line-height: 1.6;
 }
 
 .callout-title-inner {
   font-weight: 600;
+  color: var(--oc-callout-color);
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+}
+
+.callout-fold {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
   color: var(--oc-callout-color);
 }
 
@@ -1738,7 +1750,9 @@ a:hover {
   color: var(--text-normal);
   font-size: 0.95em;
   line-height: 1.6;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
   margin: 0;
 }
 
@@ -1794,37 +1808,43 @@ a:hover {
   background-color: var(--callout-error-bg);
 }
 
-/* Quote callout keeps the shared two-column aside layout (icon+title left,
-   body right), but the right-column body should align with the quoted TEXT,
-   not the quote glyph. The hard part: in the shared layout .callout-title is a
-   flex row whose first child is the icon, so flex `baseline` alignment takes
-   the ICON's baseline as the left column's baseline — never the text's.
-   Inline/block tricks still leave the icon in the flow, perturbing the title
-   box position. The clean fix is to pull the icon OUT of the flow entirely
-   with absolute positioning: .callout-title becomes `position: relative` and
-   hosts the icon absolutely in its top-left corner, while the only thing left
-   in-flow inside it is the quoted text. So .callout-title's baseline IS the
-   text's baseline, and `align-items: baseline` on the callout then aligns the
-   body's first <p> line with the quote line exactly — no magic px/em, and it
-   tracks font-size changes. Quote-only; every other callout type keeps the
-   shared flex-center'd icon+title. */
-.callout[data-callout="quote"] {
+/* Optional Starlight aside: icon+title in a fixed left column, body on the
+   right. Opt in via Style Settings (`opendian-aside-callout`). Long titles
+   wrap inside the 8em column — that is the layout the stacked default avoids. */
+body.opendian-aside-callout .callout {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--oc-space-3);
+}
+body.opendian-aside-callout .callout-title {
+  flex: 0 0 var(--oc-callout-title-width);
+  width: var(--oc-callout-title-width);
+  flex-wrap: wrap;
+  align-items: center;
+}
+body.opendian-aside-callout .callout-title-inner {
+  flex: 1 1 auto;
+}
+body.opendian-aside-callout .callout-fold {
+  margin-inline-start: 0;
+}
+body.opendian-aside-callout .callout-content {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+/* Quote + aside: align the body to the quoted TEXT, not the glyph.
+   Pull the icon out of flow so .callout-title's baseline is the text. */
+body.opendian-aside-callout .callout[data-callout="quote"] {
   align-items: baseline;
 }
-
-.callout[data-callout="quote"] .callout-title {
+body.opendian-aside-callout .callout[data-callout="quote"] .callout-title {
   display: block;
   position: relative;
-  /* Hold horizontal space for the absolutely-positioned glyph so the quoted
-     text doesn't underlap it. 1em glyph + 0.3em gap, in the title's em. */
   padding-left: 1.3em;
 }
-
-.callout[data-callout="quote"] .callout-icon {
+body.opendian-aside-callout .callout[data-callout="quote"] .callout-icon {
   position: absolute;
-  /* Sit at the top-left of the title box, above the quote line. top:0 + the
-     text's half-leading above the cap height make the glyph read as hanging
-     over the start of the quote. */
   top: 0;
   left: 0;
   width: 1em;
