@@ -1709,7 +1709,7 @@ a:hover {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--oc-space-2);
   padding: 0;
   margin: 0;
@@ -1725,10 +1725,12 @@ a:hover {
   flex: 1 1 auto;
   min-width: 0;
   white-space: normal;
+  line-height: 1.6;
 }
 
 .callout-fold {
   flex: 0 0 auto;
+  align-self: center;
   margin-inline-start: auto;
   color: var(--oc-callout-color);
 }
@@ -1737,13 +1739,18 @@ a:hover {
   color: var(--oc-callout-color);
   display: flex;
   align-items: center;
-  width: 16px;
-  height: 16px;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0;
 }
 
 .callout-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 1.15em;
+  height: 1.15em;
+  display: block;
 }
 
 .callout-content {
